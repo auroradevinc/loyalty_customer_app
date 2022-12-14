@@ -12,9 +12,9 @@ import React from 'react';
 export function BoilerPlateComponent() {
     return (
         <div className=''>
-            <h1>
+            <h3>
                 BOILTER PLATE COMPONENT
-            </h1>
+            </h3>
         </div>
     );
 }

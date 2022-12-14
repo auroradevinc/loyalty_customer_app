@@ -20,14 +20,17 @@ export const customerSlice = createSlice({
     name: 'customer',
     initialState,
     reducers: {
-      // function(state, action) => { //change state, param in action.payload}
+        log_func: (state, action) => { 
+            //change state, param in action.payload
+            console.log('Reducer Called');
+        }
     },
     extraReducers: (builder) => {
-        builder.addCase(incrementAsync.pending, (state) => {});
-        builder.addCase(incrementAsync.fulfilled, (state, action) => {console.log(action.payload)});
-        builder.addCase(incrementAsync.rejected, (state, action) => {console.log(action.payload)});
+        builder.addCase(async_func.pending, (state) => {});
+        builder.addCase(async_func.fulfilled, (state, action) => {console.log(action.payload)});
+        builder.addCase(async_func.rejected, (state, action) => {console.log(action.payload)});
     }
   });
 
-export const {} = customerSlice.actions;
+export const { log_func } = customerSlice.actions;
 export default customerSlice.reducer;

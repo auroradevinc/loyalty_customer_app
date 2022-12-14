@@ -12,9 +12,9 @@ import React from 'react';
 export function Footer() {
     return (
         <div className=''>
-            <h1>
+            <h3>
                 Footer
-            </h1>
+            </h3>
         </div>
     );
 }
