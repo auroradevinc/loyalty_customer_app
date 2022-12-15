@@ -8,6 +8,7 @@ import React from 'react';
 // Other Files Imports
 
 // Styling Imports
+import './Settings.css';
 
 export function Settings() {
     return (

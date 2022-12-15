@@ -1,5 +1,6 @@
 // Base Imports
 import React from 'react';
+import env from "react-dotenv";
 
 // Modules Imports
 
@@ -8,6 +9,7 @@ import React from 'react';
 // Other Files Imports
 
 // Styling Imports
+import './assets/bulma/css/bulma.min.css';
 
 export function BoilerPlateComponent() {
     return (

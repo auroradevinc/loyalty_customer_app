@@ -1,0 +1,110 @@
+/* ============== */
+/* GLOBAL STYLING */
+/* ============== */
+/* Primary Colours */
+#root {
+    width: 70%;
+    margin: auto;
+}
+
+body {
+    -webkit-transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000);  
+    -moz-transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000); 
+    -o-transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000);
+    -ms-transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000); 
+    transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000);
+}
+
+.primary-color {
+    color: #c9a36b;
+}
+
+.secondary-color {
+    /* Green */
+    color: #112d1e;
+    /* Blue */
+    color: #19234f;
+}
+
+.center, .center-column, .top, .right, .bottom, .left {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.center-column {
+    flex-direction: column;
+}
+
+.top    { align-items:     flex-start; }
+.right  { justify-content: flex-end;   }
+.bottom { align-items:     flex-end;   }
+.left   { justify-content: flex-start; }
+
+.single-spaced, .single-spaced * {
+    line-height: 1;
+}
+
+/* RESPONSIVENESS
+- mobile: up to 768px
+- tablet: from 769px
+- desktop: from 1024px
+- widescreen: from 1216px 
+*/
+@media (max-width: 1024px) {
+	.desktop {
+		display: none !important;
+	}
+}
+
+/* ================== */
+/* COMPONENTS STYLING */
+/* ================== */
+/* ------ */
+/* NAVBAR */
+/* ------ */
+.navbar-item img {
+    max-height: 4.5rem !important;
+}
+
+.navbar-brand {
+    align-items: center !important;
+}
+
+.navbar-burger {
+    border-radius: 0.3rem !important;
+
+    -webkit-transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000);  
+    -moz-transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000); 
+    -o-transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000);
+    -ms-transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000); 
+    transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000);
+}
+
+.navbar-menu.is-active > .navbar-burger {
+    color: aliceblue;
+    background-color: #c9a36b;
+}
+
+/* ------ */
+/* SIGNUP */
+/* ------ */
+#signup .column.bg-image {
+    background: url(./bg-1.jpg) center / cover;
+}
+
+.bg-image {
+    background: url(./bg-1.jpg) center / cover;
+}
+
+/* ------ */
+/* SIGNIN */
+/* ------ */
+
+/* ------ */
+/* PROMOS */
+/* ------ */
+
+/* -------- */
+/* SETTINGS */
+/* -------- */
