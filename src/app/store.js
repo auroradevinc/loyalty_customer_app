@@ -8,5 +8,5 @@ export const store = configureStore({
     auth: authReducer,
     customer: customerReducer,
     promo: promoReducer
-  },
+  }
 });

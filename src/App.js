@@ -1,10 +1,14 @@
-// Base Imports
+// React Imports
 import React from 'react';
 import { useEffect, useState } from 'react';
 
+// Redux Imports
+import { useSelector, useDispatch } from 'react-redux';
+import { authStore, fetchUserFromLocal } from './app/authSlice';
+
 // Modules Imports
-import {BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Amplify, Auth } from 'aws-amplify';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Amplify } from 'aws-amplify';
 
 // Components Imports
 import { Navbar } from './components/Navbar'
@@ -36,25 +40,28 @@ Amplify.configure({
 });
 
 function App() {
+  const auth = useSelector(authStore);
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(Amplify);
-    async function fetchLocalStorageData() {
-      console.log("Trying to Fetch User Data from local storgae if exists");
-      try {
-          const session = await Auth.currentSession();
-          const user = await Auth.currentAuthenticatedUser();
-          console.log('- User Fetched',session, user);
-      }
-      catch (err){
-          console.log('- Error Fetching data from local storage', err);
-      }
+    console.log("COMPONENT RENDERED: App");
+}, [])
+
+  useEffect(() => {
+    dispatch(fetchUserFromLocal());
+  }, [dispatch])
+
+  useEffect(() => {
+    if(auth.isAuthenticated){ 
+      console.log("COMPONENT App: User already logged in, Route to Promos")
+      navigate(ROUTES.PROMOS) 
     }
-    fetchLocalStorageData();
-  }, [])
+  }, [auth.isAuthenticated])
 
   return (
-    <BrowserRouter>
+    <div className='app'>
           <Navbar/> 
 
           <Routes>
@@ -65,9 +72,9 @@ function App() {
             <Route exact path={ROUTES.SETTINGS} element={<Settings/>}></Route>
           </Routes>
         
-          {/* <Footer/> */}
+          <Footer/>
 
-    </BrowserRouter>
+    </div>
   );
 }
 

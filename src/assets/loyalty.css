@@ -57,21 +57,27 @@ body {
 	}
 }
 
+@media (min-width: 1023px) {
+	.mobile {
+		display: none !important;
+	}
+}
+
 /* ================== */
 /* COMPONENTS STYLING */
 /* ================== */
 /* ------ */
 /* NAVBAR */
 /* ------ */
-.navbar-item img {
+nav .navbar-item img {
     max-height: 4.5rem !important;
 }
 
-.navbar-brand {
+nav .navbar-brand {
     align-items: center !important;
 }
 
-.navbar-burger {
+nav .navbar-burger {
     border-radius: 0.3rem !important;
 
     -webkit-transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000);  
@@ -81,9 +87,17 @@ body {
     transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000);
 }
 
-.navbar-menu.is-active > .navbar-burger {
+nav .navbar-menu.is-active > .navbar-burger {
     color: aliceblue;
     background-color: #c9a36b;
+}
+
+nav .navbar-item {
+    height: fit-content;
+}
+
+nav .navbar-end {
+    justify-content: center;
 }
 
 /* ------ */
