@@ -25,13 +25,35 @@ export const fetchUserFromLocal = createAsyncThunk(
   }
 );
 
+export const signUp = createAsyncThunk(
+  'signUp',
+  async (param) => {
+    console.log("authSlice: signUp");
+    try {
+      let email = param.email;
+      let phone = param.phone;
+      let password = param.password;
+      let given_name = param.given_name;
+      let middle_name = param.middle_name;
+      let family_name = param.family_name;
+      let attributes = {email, phone_number: phone, given_name, middle_name, family_name};
+      const signUpResponse = await Auth.signUp({username: email, password: password, attributes});
+      return {message: "successfully signed up", type: "success", data: ((signUpResponse && signUpResponse.attributes) ? signUpResponse.attributes : signUpResponse)};
+    }
+    catch (err){
+      return {message: err.message, type: "error", data: null};
+    }
+  }
+);
+
 export const signIn = createAsyncThunk(
   'signIn',
   async (param) => {
     console.log("authSlice: signIn");
     try {
       const signUpResponse = await Auth.signIn({username: param.email, password: param.password});
-      return {message: "successfully logged in", type: "success", data: ((signUpResponse && signUpResponse.attributes) ? signUpResponse.attributes : signUpResponse)};
+      console.log(signUpResponse);
+      return {message: "successfully signed in", type: "success", data: ((signUpResponse && signUpResponse.attributes) ? signUpResponse.attributes : signUpResponse)};
     }
     catch (err){
       return {message: err.message, type: "error", data: null};
@@ -78,6 +100,26 @@ export const authSlice = createSlice({
           console.log(`\t Message: ${action.payload.message}, Data: ${action.payload.data}`);
         });
         builder.addCase(fetchUserFromLocal.rejected, (state, action) => {
+          console.log('\t Request Rejected', action);
+          state.isAuthenticated = false;
+          console.log(`\t Message: ${action.payload.message}, Data: ${action.payload.data}`);
+        });
+
+        // signUp
+        builder.addCase(signUp.pending, (state, action) => {
+          console.log('\t Request Pending', action);
+        });
+        builder.addCase(signUp.fulfilled, (state, action) => {
+          console.log('\t Request Fulfilled', action);
+          if(action.payload.type === 'error'){ 
+            state.error = action.payload.message;
+            state.isAuthenticated = false; 
+          } else { 
+            state.user = action.payload.data; 
+            state.isAuthenticated = true;
+          }
+        });
+        builder.addCase(signUp.rejected, (state, action) => {
           console.log('\t Request Rejected', action);
           state.isAuthenticated = false;
           console.log(`\t Message: ${action.payload.message}, Data: ${action.payload.data}`);

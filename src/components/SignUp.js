@@ -1,137 +1,163 @@
 // Base Imports
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+
+// Redux Imports
+import { useSelector, useDispatch } from 'react-redux';
+import { authStore, fetchUserFromLocal, signUp } from '../app/authSlice';
 
 // Modules Imports
-import { Auth } from 'aws-amplify';
+import { NavLink } from "react-router-dom";
 
 // Components Imports
 
 // Other Files Imports
+import * as ROUTES from '../constants/routes';
 
 // Styling Imports
 import './SignUp.css';
 
 export function SignUp() {
-    // useEffect(() => {
-    //     async function signUp() {
-    //         console.log("Try SignUp")
-    //         var given_name = "first_name"
-    //         var middle_name = "middle_name"
-    //         var family_name = "last_name"
-    //         var password = "password_test"
-    //         var email = "test_user@gmail.com"
-    //         var phone = "+17787512337"
 
-    //         const signUpResponse = await Auth.signUp({
-    //             username: email,
-    //             password,
-    //             attributes: {
-    //                 email,
-    //                 given_name,
-    //                 middle_name,
-    //                 family_name,
-    //                 phone_number: phone
-    //             } 
-    //         });
-    //         console.log('SignUpResponse', signUpResponse);
-    //     }
-    //     async function signIn() {
-    //         console.log("Try SignIn")
+  const auth = useSelector(authStore);
+  const dispatch = useDispatch();
 
-    //         var password = "password_test"
-    //         var email = "test_user@gmail.com"
-    //         const signUpResponse = await Auth.signIn({username: email, password});
-    //         console.log('SignUpResponse', signUpResponse);
-    //     }
-    //     async function confirmAccount() {
-    //         console.log("Try Confirming Account")
+  const emailRef = useRef();
+  const phoneRef = useRef();
+  const passwordRef = useRef();
+  const givenNameRef = useRef();
+  const middleNameRef = useRef();
+  const familyNameRef = useRef();
 
-    //         var password = "password_test"
-    //         var email = "test_user@gmail.com"
-    //         var code = "354171";
-    //         const signUpResponse = await Auth.confirmSignUp(email, code);
-    //         console.log('SignUpResponse', signUpResponse);
-    //     }
-    //     async function signOut() {
-    //         console.log("Try SignOut")
+  const [emailError, setEmailError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [givenNameError, setGivenNameError] = useState('');
+  const [middleNameError, setMiddleNameError] = useState('');
+  const [familyNameError, setFamilyNameError] = useState('');
 
-    //         const signUpResponse = await Auth.signOut();
-    //         console.log('SignUpResponse', signUpResponse);
-    //     }
-    //     //signUp();
-    //     //confirmAccount();
-    //     //signIn();
-    //     //signOut();
-        
-    // }, [])
+  useEffect(() => {
+    console.log("COMPONENT RENDERED: SignUp");
+  }, [])
 
-    return (
-        //<section id='sign-up' className='hero is-fullheight-with-navbar'>
-            // <div id='signup' className='container'>
-            //     <div className='columns'>
-            //         <div className='column'>
-            //             <div className='container authentication'>
-            //                 <h1 className="title">
-            //                     Welcome back
-            //                 </h1>
-            //                 <p className="subtitle">
-            //                     Welcome back! Please enter your details to login
-            //                 </p>
-            //                 <div className="field">
-            //                     <label className="label">Name</label>
-            //                     <div className="control">
-            //                         <input className="input" type="text" placeholder="Text input"/>
-            //                     </div>
-            //                 </div>
-            //             </div>
-            //         </div>
-            //         <div className='column desktop bg-image'></div>
-            //     </div>
-            // </div>
-        //</section>
+  useEffect(() => {
+    dispatch(fetchUserFromLocal());
+  }, [dispatch])
 
-        <section className="section is-relative is-clipped">
-  <div className="is-hidden-touch has-background-primary" ></div>
-  <div className="is-hidden-desktop has-background-primary is-fullwidth"></div>
-  <div className="container mx-auto is-relative">
-    <div className="is-vcentered columns is-multiline">
-      <div className="column is-6 is-5-desktop mb-5">
-        <div>
-          <h2 className="has-text-white mb-4 is-size-1 is-size-3-mobile has-text-weight-bold">Lorem ipsum dolor sit amet consectutar domor at elis</h2>
-          <p className="has-text-white mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque massa nibh, pulvinar vitae aliquet nec, accumsan aliquet orci.</p>
-        </div>
-      </div>
-      <div className="column is-6 is-4-desktop mx-auto">
-        <div className="box has-background-light has-text-centered">
-          <form action="#">
-            <span className="has-text-grey-dark">Sign In</span>
-            <h3 className="mb-5 is-size-4 has-text-weight-bold">Join our community</h3>
-            <div className="field">
-              <div className="control">
-                <input className="input" type="email" placeholder="E-mail address"/>
+  useEffect(() => {
+    if(auth.error && auth.error.toLowerCase().includes('email')){ setEmailError(auth.error) }
+    if(auth.error && auth.error.toLowerCase().includes('phone')){ setPhoneError(auth.error) }
+    if(auth.error && auth.error.toLowerCase().includes('password')){ setPasswordError(auth.error) }
+    if(auth.error && auth.error.toLowerCase().includes('name')){ setGivenNameError(auth.error) }
+    if(auth.error && auth.error.toLowerCase().includes('name')){ setMiddleNameError(auth.error) }
+    if(auth.error && auth.error.toLowerCase().includes('name')){ setFamilyNameError(auth.error) }
+}, [auth.error])
+
+  let formSubmitHandler = (event) => {
+    event.preventDefault();
+
+    console.log(emailRef, phoneRef, passwordRef, givenNameRef, middleNameRef, familyNameRef);
+
+    let email = emailRef.current.value;
+    let phone = phoneRef.current.value;
+    let password = passwordRef.current.value;
+    let given_name = givenNameRef.current.value;
+    let middle_name = middleNameRef.current.value;
+    let family_name = familyNameRef.current.value;
+
+    console.log(`COMPONENT SignUp: SignUp form Submission. Email: ${email}, Phone: ${phone}, Password: ${password}, Name: ${given_name} ${middle_name} ${family_name}`);
+
+    // dispatch(signUp({email, phone, password, given_name, middle_name, family_name}));
+}
+
+
+  return (
+
+    <section className="section is-relative">
+          <div className="container">
+              <div className="columns is-multiline">
+                  <div className="column is-12 is-6-desktop mb-5 mr-auto ml-auto box has-background-light pr-6 pl-6">
+                      <div>
+                          <div className="mx-auto py-5 has-text-centered">
+                              <form onSubmit={formSubmitHandler}>
+                                  <h3 className="is-size-3 has-text-weight-bold">Welcome</h3>
+                                  <h3 className="mb-5 has-text-grey-dark">Please Enter your Details to Register</h3>
+                                  <div className="field mt-3">
+                                      <div className="field-label mb-1">
+                                          <label className="label has-text-left has-text-weight-medium">First Name*</label>
+                                      </div>
+                                      <div className="control has-icons-left has-icons-right">
+                                          <input className="input" type="text" placeholder="Enter your first name" name="fname" ref={givenNameRef} required/>
+                                          <span className="icon is-small is-left"><i className="fa-solid fa-marker"></i></span>
+                                          {givenNameError ? <span className="icon is-small is-right"><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                                      </div>
+                                      <p className="help is-danger has-text-left">{givenNameError}</p>
+                                  </div>
+                                  <div className="field mt-3">
+                                      <div className="field-label mb-1">
+                                          <label className="label has-text-left has-text-weight-medium">Middle Name</label>
+                                      </div>
+                                      <div className="control has-icons-left has-icons-right">
+                                          <input className="input" type="text" placeholder="Enter your middle name" name="mname" ref={middleNameRef}/>
+                                          <span className="icon is-small is-left"><i className="fa-solid fa-marker"></i></span>
+                                          {middleNameError ? <span className="icon is-small is-right"><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                                      </div>
+                                      <p className="help is-danger has-text-left">{middleNameError}</p>
+                                  </div>
+                                  <div className="field mt-3">
+                                      <div className="field-label mb-1">
+                                          <label className="label has-text-left has-text-weight-medium">Last Name*</label>
+                                      </div>
+                                      <div className="control has-icons-left has-icons-right">
+                                          <input className="input" type="text" placeholder="Enter your last name" name="lname" ref={familyNameRef} required/>
+                                          <span className="icon is-small is-left"><i className="fa-solid fa-marker"></i></span>
+                                          {familyNameError ? <span className="icon is-small is-right"><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                                      </div>
+                                      <p className="help is-danger has-text-left">{familyNameError}</p>
+                                  </div>
+                                  <div className="field mt-3">
+                                      <div className="field-label mb-1">
+                                          <label className="label has-text-left has-text-weight-medium">Email*</label>
+                                      </div>
+                                      <div className="control has-icons-left has-icons-right">
+                                          <input className="input" type="email" placeholder="Enter your email" name="email" ref={emailRef} required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}"/>
+                                          <span className="icon is-small is-left"><i className="fas fa-envelope"></i></span>
+                                          {emailError ? <span className="icon is-small is-right"><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                                      </div>
+                                      <p className="help is-danger has-text-left">{emailError}</p>
+                                  </div>
+                                  <div className="field mt-3">
+                                      <div className="field-label mb-1">
+                                          <label className="label has-text-left has-text-weight-medium">Phone*</label>
+                                      </div>
+                                      <div className="control has-icons-left has-icons-right">
+                                          <input className="input" type="tel" placeholder="Enter your phone number" name="phone" ref={phoneRef} required pattern="[0-9]{10}"/>
+                                          <span className="icon is-small is-left"><i className="fa-solid fa-phone"></i></span>
+                                          {phoneError ? <span className="icon is-small is-right"><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                                      </div>
+                                      <p className="help is-danger has-text-left">{phoneError}</p>
+                                  </div>
+                                  <div className="field mt-3">
+                                      <div className="field-label mb-1">
+                                          <label className="label has-text-left has-text-weight-medium">Password*</label>
+                                      </div>
+                                      <div className="control has-icons-left has-icons-right">
+                                          <input className="input" type="password" placeholder="Enter your password" name="password" ref={passwordRef} required/>
+                                          <span className="icon is-small is-left"><i className="fas fa-lock"></i></span>
+                                          {passwordError ? <span className="icon is-small is-right"><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                                      </div>
+                                      <p className="help is-danger has-text-left">{passwordError}</p>
+                                  </div>
+                                  <button className="button is-primary mb-4 is-fullwidth">Sign Up</button>
+                                  <p className="is-size-6">Already have an account? <NavLink className="has-text-weight-medium has-text-primary" to={ROUTES.SIGN_IN}><span>Sign In</span></NavLink></p>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
               </div>
-            </div>
-            <div className="field">
-              <div className="control">
-                <input className="input" type="password" placeholder="Password"/>
-              </div>
-            </div>
-            <button className="button is-primary mb-4 is-fullwidth">Get Started</button>
-            <a className="mb-4 is-inline-block" href="#"><small>Forgot password?</small></a>
-            <a className="button is-white mb-2 is-flex is-justify-content-center is-align-items-center is-fullwidth" href="#">
-              {/* <img className="image mr-2" style="height: 24px" src="bulma-plain-assets/socials/facebook.svg" alt=""/> */}
-              <span className="has-text-grey-dark">Sign in with Facebook</span>
-            </a>
-            <a className="button is-white mb-2 is-flex is-justify-content-center is-align-items-center is-fullwidth" href="#">
-              {/* <img className="image mr-2" style="height: 24px" src="bulma-plain-assets/socials/twitter.svg" alt=""/> */}
-              <span className="has-text-grey-dark">Sign in with Twitter</span>
-            </a>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-    );
+          </div>
+          {/* <div className="is-hidden-mobile is-hidden-desktop" style={{position: 'absolute', top: '0', bottom: '0', right: '0', width: '45%', backgroundImage: "url('./bg-1.jpg')", backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}></div>
+          <div className="is-hidden-touch" style={{position: 'absolute', top: '0', bottom: '0', right: '0', width: '50%', backgroundImage: "url('./bg-1.jpg')", backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}></div> */}
+      </section>
+  );
 }

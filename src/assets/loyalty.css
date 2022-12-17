@@ -96,8 +96,9 @@ nav .navbar-item {
     height: fit-content;
 }
 
+nav .navbar-menu, 
 nav .navbar-end {
-    justify-content: center;
+    align-items: center !important;
 }
 
 /* ------ */
