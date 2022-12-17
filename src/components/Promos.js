@@ -27,15 +27,15 @@ export function Promos() {
         console.log("COMPONENT RENDERED: Promos");
 
         if(auth.isAuthenticated == false) { 
-            console.log("COMPONENT Promos: User NOT logged in, Route to Home Page")
-            navigate(ROUTES.HOME_PAGE) 
+            console.log("COMPONENT Promos: User NOT logged in, Route to Sign In Page")
+            navigate(ROUTES.SIGN_IN) 
         }
     }, [])
 
     useEffect(() => {
         if(auth.isAuthenticated == false) { 
-            console.log("COMPONENT Promos: User NOT logged in, Route to Home Page")
-            navigate(ROUTES.HOME_PAGE) 
+            console.log("COMPONENT Promos: User NOT logged in, Route to Sign In Page")
+            navigate(ROUTES.SIGN_IN) 
         }
     }, [auth.isAuthenticated])
 

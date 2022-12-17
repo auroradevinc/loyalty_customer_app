@@ -65,7 +65,7 @@ export function Navbar() {
                     {(!auth.isAuthenticated) ? 
                     <div className="navbar-item">
                         <div className="buttons">
-                            <NavLink className="button is-primary" to={ROUTES.SIGN_IN}><span>Login/Register</span></NavLink>
+                            <NavLink className="button is-primary" to={ROUTES.SIGN_IN}><span>Sign In</span></NavLink>
                         </div>
                     </div> : ""}
 

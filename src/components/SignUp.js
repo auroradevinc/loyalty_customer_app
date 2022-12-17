@@ -80,7 +80,7 @@ export function SignUp() {
                       <div>
                           <div className="mx-auto py-5 has-text-centered">
                               <form onSubmit={formSubmitHandler}>
-                                  <h3 className="is-size-3 has-text-weight-bold">Welcome</h3>
+                                  <h3 className="is-size-2 has-text-weight-bold has-text-primary">Welcome</h3>
                                   <h3 className="mb-5 has-text-grey-dark">Please Enter your Details to Register</h3>
                                   <div className="field mt-3">
                                       <div className="field-label mb-1">
@@ -131,7 +131,7 @@ export function SignUp() {
                                           <label className="label has-text-left has-text-weight-medium">Phone*</label>
                                       </div>
                                       <div className="control has-icons-left has-icons-right">
-                                          <input className="input" type="tel" placeholder="Enter your phone number" name="phone" ref={phoneRef} required pattern="[0-9]{10}"/>
+                                          <input className="input" type="tel" placeholder="Enter your phone number" name="phone" ref={phoneRef} required pattern="[0-9]{10}" inputMode="decimal"/>
                                           <span className="icon is-small is-left"><i className="fa-solid fa-phone"></i></span>
                                           {phoneError ? <span className="icon is-small is-right"><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
                                       </div>

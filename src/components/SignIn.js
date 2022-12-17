@@ -61,7 +61,7 @@ export function SignIn() {
                         <div>
                             <div className="mx-auto py-5 has-text-centered">
                                 <form onSubmit={formSubmitHandler}>
-                                    <h3 className="is-size-3 has-text-weight-bold">Welcome Back</h3>
+                                    <h3 className="is-size-2 has-text-weight-bold has-text-primary">Welcome Back</h3>
                                     <h3 className="mb-5 has-text-grey-dark">Please Enter your Details</h3>
                                     <div className="field mt-3">
                                         <div className="field-label mb-1">
