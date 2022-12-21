@@ -82,9 +82,9 @@ export function Navbar() {
             <nav className="flex justify-between p-6 px-4">
                 <div className="flex justify-between items-center w-full">
                     <div className="md:w-1/3">
-                    <NavLink className="block max-w-max" to={ROUTES.HOME_PAGE}>
-                        <img className="h-20" src="./loyalty_logo.png" alt="" />
-                    </NavLink>
+                        <NavLink className="block max-w-max" to={ROUTES.HOME_PAGE}>
+                            <img className="h-20" src="./loyalty_logo.png" alt="" />
+                        </NavLink>
                     </div>
                     <div className="hidden md:block md:w-1/3">
                         <ul className="flex justify-center">
