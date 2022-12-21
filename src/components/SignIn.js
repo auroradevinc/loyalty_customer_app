@@ -54,48 +54,59 @@ export function SignIn() {
     }
     
     return (
-        <section className="section is-relative">
-            <div className="container">
-                <div className="columns is-multiline">
-                    <div className="column is-12 is-6-desktop mb-5 mr-auto ml-auto box has-background-light pr-6 pl-6">
-                        <div>
-                            <div className="mx-auto py-5 has-text-centered">
-                                <form onSubmit={formSubmitHandler}>
-                                    <h3 className="is-size-2 has-text-weight-bold has-text-primary">Welcome Back</h3>
-                                    <h3 className="mb-5 has-text-grey-dark">Please Enter your Details</h3>
-                                    <div className="field mt-3">
-                                        <div className="field-label mb-1">
-                                            <label className="label has-text-left has-text-weight-medium">Email or Phone</label>
-                                        </div>
-                                        <div className="control has-icons-left has-icons-right">
-                                            <input className="input" type="text" placeholder="Enter your email or phone number" name="username" ref={usernameRef} required pattern = "^([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3})|([0-9]{10})$"/>
-                                            <span className="icon is-small is-left"><i className="fas fa-envelope"></i></span>
-                                            {usernameError ? <span className="icon is-small is-right"><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
-                                        </div>
-                                        <p className="help is-danger has-text-left">{usernameError}</p>
-                                    </div>
-                                    <div className="field mt-3">
-                                        <div className="field-label mb-1">
-                                            <label className="label has-text-left has-text-weight-medium">Password</label>
-                                        </div>
-                                        <div className="control has-icons-left has-icons-right">
-                                            <input className="input" type="password" placeholder="Enter your password" name="password" ref={passwordRef} required/>
-                                            <span className="icon is-small is-left"><i className="fas fa-lock"></i></span>
-                                            {passwordError ? <span className="icon is-small is-right"><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
-                                        </div>
-                                        <p className="help is-danger has-text-left">{passwordError}</p>
-                                    </div>
-                                    <button className="button is-primary mb-4 is-fullwidth">Sign In</button>
-                                    <a className="mb-1 is-size-6 has-text-weight-medium has-text-primary" href="#">Forgot password</a>
-                                    <p className="is-size-6">Don't have an account? <NavLink className="has-text-weight-medium has-text-primary" to={ROUTES.SIGN_UP}><span>Sign Up</span></NavLink></p>
-                                </form>
+        <section className="bg-white bg-opacity-0">
+            {/* Background Image */}
+            {/* style={{ backgroundImage: "url('./pattern-white.svg')", backgroundPosition: "center" }} */}
+            <div className="container px-4 mx-auto">
+                <div className="max-w-lg mx-auto">
+
+                    <div className="mb-7 text-center">
+                        <NavLink className="hidden mb-3 sm:inline-block" to={ROUTES.HOME_PAGE}>
+                            <img className="h-24" src="./loyalty_logo.png" alt=""/>
+                        </NavLink>
+                        <h3 className="mb-2 text-2xl text-coolGray-900 md:text-3xl font-bold">Sign in to your account</h3>
+                        <p className="text-lg text-coolGray-500 font-medium">Welcome back!</p>
+                    </div>
+
+                    <form onSubmit={formSubmitHandler}>
+                        <div className="mb-6">
+                            <label className="block mb-2 text-coolGray-600 font-medium" htmlFor="">Email or Phone</label>
+                            <div className='flex justify-between items-center relative'>
+                                <input ref={usernameRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="email" type="text" placeholder="Enter your email or phone number" required pattern = "^([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3})|([0-9]{10})$" onInvalid={(e) => {e.preventDefault(); setUsernameError("Please enter a valid email or phone");}}/>
+                                {usernameError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                            </div>
+                            {usernameError ? <p className="text-sm text-red-600 mt-1">{usernameError}</p> : ""}
+                        </div>
+                        <div className="mb-4">
+                            <label className="block mb-2 text-coolGray-600 font-medium" htmlFor="">Password</label>
+                            <div className='flex justify-between items-center relative'>
+                                <input ref={passwordRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="password" type="password" placeholder="Enter your password" required onInvalid={(e) => {e.preventDefault(); setPasswordError("Please enter a valid passoword");}}/>
+                                {passwordError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                            </div>
+                            {passwordError ? <p className="text-sm text-red-600 mt-1">{passwordError}</p> : ""}
+                        </div>
+
+                        <div className="flex items-center justify-between mb-6">
+                            <div className="w-full md:w-1/2 flex items-center justify-start">
+                                <label className="relative inline-flex items-center">
+                                    <input className="form-checkbox accent-loyaltyGold-200" type="checkbox" />
+                                    <span className="ml-2 text-xs text-coolGray-800 font-medium">Remember me</span>
+                                </label>
+                            </div>
+                            <div className="w-full md:w-auto flex justify-end">
+                                <NavLink className="inline-block text-xs font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200" to={ROUTES.HOME_PAGE}>Forgot your password?</NavLink>
                             </div>
                         </div>
-                    </div>
+
+                        <button type='submit' className="inline-block py-3 px-7 mb-6 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">Sign In</button>
+                        
+                        <p className="text-center">
+                            <span className="text-xs font-medium text-coolGray-800">Don’t have an account?</span>
+                            <NavLink className="inline-block text-xs ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all" to={ROUTES.SIGN_UP}>Sign up</NavLink>
+                        </p>
+                    </form>
                 </div>
             </div>
-            {/* <div className="is-hidden-mobile is-hidden-desktop" style={{position: 'absolute', top: '0', bottom: '0', right: '0', width: '45%', backgroundImage: "url('./bg-1.jpg')", backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}></div>
-            <div className="is-hidden-touch" style={{position: 'absolute', top: '0', bottom: '0', right: '0', width: '50%', backgroundImage: "url('./bg-1.jpg')", backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}></div> */}
-        </section>
+      </section>
     );
 }

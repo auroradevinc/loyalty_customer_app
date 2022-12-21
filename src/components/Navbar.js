@@ -1,6 +1,6 @@
 // React Imports
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
@@ -24,9 +24,11 @@ export function Navbar() {
 
     const navigate = useNavigate();
 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     useEffect(() => {
 
-        console.log("COMPONENT RENDERED: NavBar Test");
+        console.log("COMPONENT RENDERED: NavBar");
 
         // Toggling Navbar(as sidebar) for smaller screens
         // open
@@ -68,8 +70,15 @@ export function Navbar() {
         }
     },[])
 
+    useEffect(() => {
+        if(!auth.isAuthenticated){ 
+          console.log("COMPONENT NavBar: User is not logged in, Route to Home")
+          navigate(ROUTES.HOME_PAGE); 
+        }
+    }, [auth.isAuthenticated])
+
     return (
-        <section className="bg-white">
+        <section className="bg-white bg-opacity-0">
             <nav className="flex justify-between p-6 px-4">
                 <div className="flex justify-between items-center w-full">
                     <div className="md:w-1/3">
@@ -85,8 +94,17 @@ export function Navbar() {
                     </div>
                     <div className="hidden md:block md:w-1/3">
                         <div className="flex items-center justify-end">
-                            <NavLink className="inline-block py-2 px-4 mr-2 leading-5 text-coolGray-500 hover:text-loyaltyGold-100 bg-transparent font-medium rounded-md transition-all" to={ROUTES.SIGN_IN}>Log In</NavLink>
-                            <NavLink className="inline-block py-2 px-4 text-sm leading-5 text-white bg-loyaltyGold-100 hover:bg-loyaltyGold-200 font-medium focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" to={ROUTES.SIGN_UP}>Sign Up</NavLink>
+                            {(auth.isAuthenticated) ? 
+                                ""
+                                :
+                                <NavLink className="inline-block py-2 px-4 mr-2 leading-5 text-coolGray-500 hover:text-loyaltyGold-100 bg-transparent font-medium rounded-md transition-all" to={ROUTES.SIGN_IN}>Log In</NavLink>
+                            }
+
+                            {(auth.isAuthenticated) ? 
+                                <button className="inline-block py-2 px-4 text-sm leading-5 text-white bg-loyaltyGold-100 hover:bg-loyaltyGold-200 font-medium focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" onClick={() => dispatch(signOut())}>Sign Out</button>
+                                :
+                                <NavLink className="inline-block py-2 px-4 text-sm leading-5 text-white bg-loyaltyGold-100 hover:bg-loyaltyGold-200 font-medium focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" to={ROUTES.SIGN_UP}>Sign Up</NavLink>
+                            }
                         </div>
                     </div>
                 </div>
@@ -108,20 +126,21 @@ export function Navbar() {
                             <ul className="py-6">
                                 <li><NavLink className="block mx-auto py-3 px-4 w-fit text-coolGray-500 hover:text-loyaltyGold-100 font-medium hover:bg-coolGray-50 rounded-md transition-all" to={ROUTES.HOME_PAGE}><i className="fa-solid fa-house mr-3"></i>Home</NavLink></li>
                                 <li><NavLink className="block mx-auto py-3 px-4 w-fit text-coolGray-500 hover:text-loyaltyGold-100 font-medium hover:bg-coolGray-50 rounded-md transition-all" to={ROUTES.PROMOS}><i className="fa-solid fa-tags mr-3"></i>Promos</NavLink></li>
+                                <li><NavLink className="block mx-auto py-3 px-4 w-fit text-coolGray-500 hover:text-loyaltyGold-100 font-medium hover:bg-coolGray-50 rounded-md transition-all" to={ROUTES.SETTINGS}><i className="fa-solid fa-gear mr-3"></i>Settings</NavLink></li>
                             </ul>
                             <div className="flex flex-wrap">
                                 <div className="w-full mb-2">
-                                    {!(auth.isAuthenticated) ?
-                                        <NavLink className="inline-block py-2 px-4 w-full text-sm leading-5 text-coolGray-500 hover:text-loyaltyGold-100 bg-transparent font-medium text-center rounded-md transition-all" to={ROUTES.SIGN_IN}>Log In</NavLink>
-                                        :
-                                        <NavLink className="block mx-auto py-3 px-4 w-fit text-coolGray-500 hover:text-loyaltyGold-100 font-medium hover:bg-coolGray-50 rounded-md transition-all" to={ROUTES.SETTINGS}><i className="fa-solid fa-gear mr-3"></i>Settings</NavLink>
+                                    {!(auth.isAuthenticated) ? 
+                                        <NavLink className="inline-block py-2 px-4 w-full text-md leading-5 text-coolGray-500 hover:text-loyaltyGold-100 bg-transparent font-medium text-center rounded-md transition-all" to={ROUTES.SIGN_IN}>Log In</NavLink> 
+                                        : 
+                                        ""
                                     }
                                 </div>
                                 <div className="w-full">
                                     {!(auth.isAuthenticated) ? 
-                                        <NavLink className="inline-block py-2 px-4 w-full text-sm leading-5 text-white bg-loyaltyGold-100 hover:bg-loyaltyGold-200 font-medium text-center focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" to={ROUTES.SIGN_UP}>Sign Up</NavLink> 
+                                        <NavLink className="inline-block py-2 px-4 w-full text-md leading-5 text-white bg-loyaltyGold-100 hover:bg-loyaltyGold-200 font-medium text-center focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" to={ROUTES.SIGN_UP}>Sign Up</NavLink> 
                                         : 
-                                        <button className="inline-block py-2 px-4 w-full text-sm leading-5 text-white bg-loyaltyGold-100 hover:bg-loyaltyGold-200 font-medium text-center focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" onClick={() => dispatch(signOut())}>Sign Out</button>  
+                                        <button className="inline-block py-2 px-4 w-full text-md leading-5 text-white bg-loyaltyGold-100 hover:bg-loyaltyGold-200 font-medium text-center focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" onClick={() => dispatch(signOut())}>Sign Out</button>  
                                     }
                                 </div>
                             </div>

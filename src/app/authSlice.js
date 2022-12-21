@@ -91,11 +91,12 @@ export const authSlice = createSlice({
         builder.addCase(fetchUserFromLocal.fulfilled, (state, action) => {
           console.log('\t Request Fulfilled', action);
           if(action.payload.type === 'error'){ 
-            state.error = action.payload.message;
             state.isAuthenticated = false; 
+            state.error = action.payload.message;
           } else { 
             state.user = action.payload.data; 
             state.isAuthenticated = true;
+            state.error = null;
           }
           console.log(`\t Message: ${action.payload.message}, Data: ${action.payload.data}`);
         });
@@ -112,11 +113,12 @@ export const authSlice = createSlice({
         builder.addCase(signUp.fulfilled, (state, action) => {
           console.log('\t Request Fulfilled', action);
           if(action.payload.type === 'error'){ 
-            state.error = action.payload.message;
             state.isAuthenticated = false; 
+            state.error = action.payload.message;
           } else { 
             state.user = action.payload.data; 
             state.isAuthenticated = true;
+            state.error = null;
           }
         });
         builder.addCase(signUp.rejected, (state, action) => {
@@ -132,11 +134,12 @@ export const authSlice = createSlice({
         builder.addCase(signIn.fulfilled, (state, action) => {
           console.log('\t Request Fulfilled', action);
           if(action.payload.type === 'error'){ 
-            state.error = action.payload.message;
             state.isAuthenticated = false; 
+            state.error = action.payload.message;
           } else { 
             state.user = action.payload.data; 
             state.isAuthenticated = true;
+            state.error = null;
           }
         });
         builder.addCase(signIn.rejected, (state, action) => {
@@ -152,11 +155,12 @@ export const authSlice = createSlice({
         builder.addCase(signOut.fulfilled, (state, action) => {
           console.log('\t Request Fulfilled', action);
           if(action.payload.type === 'error'){ 
-            state.error = action.payload.message;
             state.isAuthenticated = true; 
+            state.error = action.payload.message;
           } else { 
             state.user = null; 
             state.isAuthenticated = false;
+            state.error = null;
           }
         });
         builder.addCase(signOut.rejected, (state, action) => {

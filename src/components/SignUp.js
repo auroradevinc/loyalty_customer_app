@@ -18,146 +18,106 @@ import * as ROUTES from '../constants/routes';
 import './SignUp.css';
 
 export function SignUp() {
+    const auth = useSelector(authStore);
+    const dispatch = useDispatch();
 
-  const auth = useSelector(authStore);
-  const dispatch = useDispatch();
+    const emailRef = useRef();
+    const phoneRef = useRef();
+    const passwordRef = useRef();
+    const nameRef = useRef();
 
-  const emailRef = useRef();
-  const phoneRef = useRef();
-  const passwordRef = useRef();
-  const givenNameRef = useRef();
-  const middleNameRef = useRef();
-  const familyNameRef = useRef();
+    const [emailError, setEmailError] = useState('');
+    const [phoneError, setPhoneError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [nameError, setNameError] = useState('');
 
-  const [emailError, setEmailError] = useState('');
-  const [phoneError, setPhoneError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [givenNameError, setGivenNameError] = useState('');
-  const [middleNameError, setMiddleNameError] = useState('');
-  const [familyNameError, setFamilyNameError] = useState('');
+    useEffect(() => {
+        console.log("COMPONENT RENDERED: SignUp");
+    }, [])
 
-  useEffect(() => {
-    console.log("COMPONENT RENDERED: SignUp");
-  }, [])
+    useEffect(() => {
+        dispatch(fetchUserFromLocal());
+    }, [dispatch])
 
-  useEffect(() => {
-    dispatch(fetchUserFromLocal());
-  }, [dispatch])
+    useEffect(() => {
+        if(auth.error && auth.error.toLowerCase().includes('email')){ setEmailError(auth.error) }
+        if(auth.error && auth.error.toLowerCase().includes('phone')){ setPhoneError(auth.error) }
+        if(auth.error && auth.error.toLowerCase().includes('password')){ setPasswordError(auth.error) }
+        if(auth.error && auth.error.toLowerCase().includes('name')){ setNameError(auth.error) }
+    }, [auth.error])
 
-  useEffect(() => {
-    if(auth.error && auth.error.toLowerCase().includes('email')){ setEmailError(auth.error) }
-    if(auth.error && auth.error.toLowerCase().includes('phone')){ setPhoneError(auth.error) }
-    if(auth.error && auth.error.toLowerCase().includes('password')){ setPasswordError(auth.error) }
-    if(auth.error && auth.error.toLowerCase().includes('name')){ setGivenNameError(auth.error) }
-    if(auth.error && auth.error.toLowerCase().includes('name')){ setMiddleNameError(auth.error) }
-    if(auth.error && auth.error.toLowerCase().includes('name')){ setFamilyNameError(auth.error) }
-}, [auth.error])
+    let formSubmitHandler = (event) => {
+        event.preventDefault();
 
-  let formSubmitHandler = (event) => {
-    event.preventDefault();
+        console.log(emailRef, phoneRef, passwordRef, nameRef);
 
-    console.log(emailRef, phoneRef, passwordRef, givenNameRef, middleNameRef, familyNameRef);
+        let email = emailRef.current.value;
+        let phone = phoneRef.current.value;
+        let password = passwordRef.current.value;
+        let full_name = nameRef.current.value;
+        
+        console.log(`COMPONENT SignUp: SignUp form Submission. Email: ${email}, Phone: ${phone}, Password: ${password}, Name: ${full_name}`);
 
-    let email = emailRef.current.value;
-    let phone = phoneRef.current.value;
-    let password = passwordRef.current.value;
-    let given_name = givenNameRef.current.value;
-    let middle_name = middleNameRef.current.value;
-    let family_name = familyNameRef.current.value;
-
-    console.log(`COMPONENT SignUp: SignUp form Submission. Email: ${email}, Phone: ${phone}, Password: ${password}, Name: ${given_name} ${middle_name} ${family_name}`);
-
-    // dispatch(signUp({email, phone, password, given_name, middle_name, family_name}));
-}
+        // dispatch(signUp({email, phone, password, given_name, middle_name, family_name}));
+    }
 
 
-  return (
+    return (
+        <section className="bg-white bg-opacity-0">
+            <div className="container px-4 mx-auto">
+            <div className="max-w-lg mx-auto">
 
-    <section className="section is-relative">
-          <div className="container">
-              <div className="columns is-multiline">
-                  <div className="column is-12 is-6-desktop mb-5 mr-auto ml-auto box has-background-light pr-6 pl-6">
-                      <div>
-                          <div className="mx-auto py-5 has-text-centered">
-                              <form onSubmit={formSubmitHandler}>
-                                  <h3 className="is-size-2 has-text-weight-bold has-text-primary">Welcome</h3>
-                                  <h3 className="mb-5 has-text-grey-dark">Please Enter your Details to Register</h3>
-                                  <div className="field mt-3">
-                                      <div className="field-label mb-1">
-                                          <label className="label has-text-left has-text-weight-medium">First Name*</label>
-                                      </div>
-                                      <div className="control has-icons-left has-icons-right">
-                                          <input className="input" type="text" placeholder="Enter your first name" name="fname" ref={givenNameRef} required/>
-                                          <span className="icon is-small is-left"><i className="fa-solid fa-marker"></i></span>
-                                          {givenNameError ? <span className="icon is-small is-right"><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
-                                      </div>
-                                      <p className="help is-danger has-text-left">{givenNameError}</p>
-                                  </div>
-                                  <div className="field mt-3">
-                                      <div className="field-label mb-1">
-                                          <label className="label has-text-left has-text-weight-medium">Middle Name</label>
-                                      </div>
-                                      <div className="control has-icons-left has-icons-right">
-                                          <input className="input" type="text" placeholder="Enter your middle name" name="mname" ref={middleNameRef}/>
-                                          <span className="icon is-small is-left"><i className="fa-solid fa-marker"></i></span>
-                                          {middleNameError ? <span className="icon is-small is-right"><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
-                                      </div>
-                                      <p className="help is-danger has-text-left">{middleNameError}</p>
-                                  </div>
-                                  <div className="field mt-3">
-                                      <div className="field-label mb-1">
-                                          <label className="label has-text-left has-text-weight-medium">Last Name*</label>
-                                      </div>
-                                      <div className="control has-icons-left has-icons-right">
-                                          <input className="input" type="text" placeholder="Enter your last name" name="lname" ref={familyNameRef} required/>
-                                          <span className="icon is-small is-left"><i className="fa-solid fa-marker"></i></span>
-                                          {familyNameError ? <span className="icon is-small is-right"><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
-                                      </div>
-                                      <p className="help is-danger has-text-left">{familyNameError}</p>
-                                  </div>
-                                  <div className="field mt-3">
-                                      <div className="field-label mb-1">
-                                          <label className="label has-text-left has-text-weight-medium">Email*</label>
-                                      </div>
-                                      <div className="control has-icons-left has-icons-right">
-                                          <input className="input" type="email" placeholder="Enter your email" name="email" ref={emailRef} required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}"/>
-                                          <span className="icon is-small is-left"><i className="fas fa-envelope"></i></span>
-                                          {emailError ? <span className="icon is-small is-right"><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
-                                      </div>
-                                      <p className="help is-danger has-text-left">{emailError}</p>
-                                  </div>
-                                  <div className="field mt-3">
-                                      <div className="field-label mb-1">
-                                          <label className="label has-text-left has-text-weight-medium">Phone*</label>
-                                      </div>
-                                      <div className="control has-icons-left has-icons-right">
-                                          <input className="input" type="tel" placeholder="Enter your phone number" name="phone" ref={phoneRef} required pattern="[0-9]{10}" inputMode="decimal"/>
-                                          <span className="icon is-small is-left"><i className="fa-solid fa-phone"></i></span>
-                                          {phoneError ? <span className="icon is-small is-right"><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
-                                      </div>
-                                      <p className="help is-danger has-text-left">{phoneError}</p>
-                                  </div>
-                                  <div className="field mt-3">
-                                      <div className="field-label mb-1">
-                                          <label className="label has-text-left has-text-weight-medium">Password*</label>
-                                      </div>
-                                      <div className="control has-icons-left has-icons-right">
-                                          <input className="input" type="password" placeholder="Enter your password" name="password" ref={passwordRef} required/>
-                                          <span className="icon is-small is-left"><i className="fas fa-lock"></i></span>
-                                          {passwordError ? <span className="icon is-small is-right"><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
-                                      </div>
-                                      <p className="help is-danger has-text-left">{passwordError}</p>
-                                  </div>
-                                  <button className="button is-primary mb-4 is-fullwidth">Sign Up</button>
-                                  <p className="is-size-6">Already have an account? <NavLink className="has-text-weight-medium has-text-primary" to={ROUTES.SIGN_IN}><span>Sign In</span></NavLink></p>
-                              </form>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          {/* <div className="is-hidden-mobile is-hidden-desktop" style={{position: 'absolute', top: '0', bottom: '0', right: '0', width: '45%', backgroundImage: "url('./bg-1.jpg')", backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}></div>
-          <div className="is-hidden-touch" style={{position: 'absolute', top: '0', bottom: '0', right: '0', width: '50%', backgroundImage: "url('./bg-1.jpg')", backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}></div> */}
-      </section>
-  );
+                <div className="mb-7 text-center">
+                    <NavLink className="hidden mb-3 sm:inline-block" to={ROUTES.HOME_PAGE}>
+                        <img className="h-24" src="./loyalty_logo.png" alt=""/>
+                    </NavLink>
+                    <h3 className="mb-2 text-2xl text-coolGray-900 md:text-3xl font-bold">Register your account</h3>
+                    <p className="text-lg text-coolGray-500 font-medium">Jour our community</p>
+                </div>
+
+                <form onSubmit={formSubmitHandler}>
+                    <div className="mb-6">
+                        <label className="block mb-2 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">Full Name</label>
+                        <div className='flex justify-between items-center relative'>
+                            <input ref={nameRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="name" type="name" placeholder="Enter your full name" required onInvalid={(e) => {e.preventDefault(); setNameError("Please enter a valid name");}}/>
+                            {nameError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                        </div>
+                        {nameError ? <p className="text-sm text-red-600 mt-1">{nameError}</p> : ""}
+                    </div>
+                    <div className="mb-6">
+                        <label className="block mb-2 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">Email</label>
+                        <div className='flex justify-between items-center relative'>
+                            <input ref={emailRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="email" type="email" placeholder="Enter your email" required onInvalid={(e) => {e.preventDefault(); setEmailError("Please enter a valid email");}}/>
+                            {emailError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                        </div>
+                        {emailError ? <p className="text-sm text-red-600 mt-1">{emailError}</p> : ""}
+                    </div>
+                    <div className="mb-6">
+                        <label className="block mb-2 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">Phone</label>
+                        <div className='flex justify-between items-center relative'>
+                            <input ref={phoneRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="phone" type="tel" placeholder="Enter your phone number" pattern = "^([0-9]{10})$" onInvalid={(e) => {e.preventDefault(); setPhoneError("Please enter a valid phone");}}/>
+                            {phoneError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                        </div>
+                        {phoneError ? <p className="text-sm text-red-600 mt-1">{phoneError}</p> : ""}
+                    </div>
+                    <div className="mb-6">
+                        <label className="block mb-2 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">Password</label>
+                        <div className='flex justify-between items-center relative'>
+                            <input ref={passwordRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="password" type="password" placeholder="Enter your password" required onInvalid={(e) => {e.preventDefault(); setPasswordError("Please enter a valid password");}}/>
+                            {passwordError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                        </div>
+                        {passwordError ? <p className="text-sm text-red-600 mt-1">{passwordError}</p> : ""}
+                    </div>
+
+                    <button type='submit' className="inline-block py-3 px-7 mt-2 mb-6 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">Sign Up</button>
+                    
+                    <p className="text-center">
+                        <span className="text-xs font-medium text-coolGray-800">Already have an account?</span>
+                        <NavLink className="inline-block text-xs ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all" to={ROUTES.SIGN_IN}>Sign In</NavLink>
+                    </p>
+                </form>
+            </div>
+            </div>
+        </section>
+    );
 }

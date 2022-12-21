@@ -61,20 +61,22 @@ function App() {
   }, [auth.isAuthenticated])
 
   return (
-    <div id='app' className='w-11/12 sm:w-10/12 lg:9/12 max-w-7xl mx-auto'>
+    <div id='wrapper' style={{ backgroundImage: "url('./pattern-white.svg')", backgroundPosition: "center" }}>
+      <div id='app' className='w-11/12 sm:w-10/12 lg:9/12 max-w-7xl mx-auto'>
 
-      <Navbar/>
+        <Navbar/>
 
-      <Routes>
-        <Route exact path={ROUTES.HOME_PAGE} element={<HomePage/>}></Route>
-        <Route exact path={ROUTES.SIGN_IN} element={<SignIn/>}></Route>
-        <Route exact path={ROUTES.SIGN_UP} element={<SignUp/>}></Route>
-        <Route exact path={ROUTES.PROMOS} element={<Promos/>}></Route>
-        <Route exact path={ROUTES.SETTINGS} element={<Settings/>}></Route>
-      </Routes>
-    
-      <Footer/>
+        <Routes>
+          <Route exact path={ROUTES.HOME_PAGE} element={<HomePage/>}></Route>
+          <Route exact path={ROUTES.SIGN_IN} element={<SignIn/>}></Route>
+          <Route exact path={ROUTES.SIGN_UP} element={<SignUp/>}></Route>
+          <Route exact path={ROUTES.PROMOS} element={<Promos/>}></Route>
+          <Route exact path={ROUTES.SETTINGS} element={<Settings/>}></Route>
+        </Routes>
+      
+        <Footer/>
 
+      </div>
     </div>
   );
 }
