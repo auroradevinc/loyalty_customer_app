@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 // Other Files Imports
 
 // Styling Imports
-import './assets/bulma/css/bulma.min.css';
+//import './assets/bulma/css/bulma.min.css';
 
 export function BoilerPlateComponent() {
     useEffect(() => {

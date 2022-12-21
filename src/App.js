@@ -11,9 +11,10 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Amplify } from 'aws-amplify';
 
 // Components Imports
-import { Navbar } from './components/Navbar'
-import { Footer } from './components/Footer'
-import { HomePage } from './components/HomePage'
+import { Navbar } from './components/Navbar';
+import { Navbar_test } from './components/Navbar_test';
+import { Footer } from './components/Footer';
+import { HomePage } from './components/HomePage';
 import { SignIn } from './components/SignIn';
 import { SignUp } from './components/SignUp';
 import { Promos } from './components/Promos';
@@ -26,7 +27,6 @@ import * as ROUTES from './constants/routes';
 
 
 // Styling Imports
-import './assets/bulma.min.css';
 import './assets/loyalty.css';
 //import './assets/debug.css';
 
@@ -47,7 +47,7 @@ function App() {
 
   useEffect(() => {
     console.log("COMPONENT RENDERED: App");
-}, [])
+  }, [])
 
   useEffect(() => {
     dispatch(fetchUserFromLocal());
@@ -61,18 +61,19 @@ function App() {
   }, [auth.isAuthenticated])
 
   return (
-    <div className='app'>
-          <Navbar/> 
+    <div id='app' className='w-11/12 sm:w-10/12 lg:9/12 max-w-7xl mx-auto'>
 
-          <Routes>
-          <Route exact path={ROUTES.HOME_PAGE} element={<HomePage/>}></Route>
-            <Route exact path={ROUTES.SIGN_IN} element={<SignIn/>}></Route>
-            <Route exact path={ROUTES.SIGN_UP} element={<SignUp/>}></Route>
-            <Route exact path={ROUTES.PROMOS} element={<Promos/>}></Route>
-            <Route exact path={ROUTES.SETTINGS} element={<Settings/>}></Route>
-          </Routes>
-        
-          <Footer/>
+      <Navbar/>
+
+      <Routes>
+        <Route exact path={ROUTES.HOME_PAGE} element={<HomePage/>}></Route>
+        <Route exact path={ROUTES.SIGN_IN} element={<SignIn/>}></Route>
+        <Route exact path={ROUTES.SIGN_UP} element={<SignUp/>}></Route>
+        <Route exact path={ROUTES.PROMOS} element={<Promos/>}></Route>
+        <Route exact path={ROUTES.SETTINGS} element={<Settings/>}></Route>
+      </Routes>
+    
+      <Footer/>
 
     </div>
   );

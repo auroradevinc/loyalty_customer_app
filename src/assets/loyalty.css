@@ -2,11 +2,6 @@
 /* GLOBAL STYLING */
 /* ============== */
 /* Primary Colours */
-#root {
-    width: 70%;
-    margin: auto;
-}
-
 body {
     -webkit-transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000);  
     -moz-transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000); 

@@ -38,7 +38,7 @@ export function Promos() {
             navigate(ROUTES.SIGN_IN) 
         }
     }, [auth.isAuthenticated])
-
+    
     return (
         <div className=''>
             <h1>

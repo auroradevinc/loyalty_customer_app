@@ -17,7 +17,8 @@ import reportWebVitals from './reportWebVitals';
 
 // Styling Imports
 import './index.css';
-import './assets/bulma/css/bulma.min.css';
+import './tailwind.css';
+//import './assets/bulma/css/bulma.min.css';
 
 const container = document.getElementById('root');
 const root = createRoot(container);

@@ -1,0 +1,7 @@
+{
+    "tailwindCSS.includeLanguages": {
+        "javascript": "javascript",
+        "html": "HTML",
+        "javascriptreact": "javascriptreact"
+    }
+}
