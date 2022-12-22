@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
-import { authStore, signOut } from '../app/authSlice';
+import { authStore, signIn, signOut } from '../app/authSlice';
+import { appStore, updateActiveNav } from '../app/appSlice';
 
 // Modules Imports
 import { NavLink, useNavigate } from "react-router-dom";
@@ -20,11 +21,17 @@ import './Navbar.css';
 
 export function Navbar() {
     const auth = useSelector(authStore);
+    const app = useSelector(appStore);
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const [homeNavOptionClassName, setHomeNavOptionClassName] = useState('');
+    const [promosNavOptionClassName, setPromosNavOptionClassName] = useState('');
+    const [settingsNavOptionClassName, setSettingsNavOptionClassName] = useState('');
+    const [signInNavOptionClassName, setSignInNavOptionClassName] = useState('');
 
     useEffect(() => {
 
@@ -71,6 +78,43 @@ export function Navbar() {
     },[])
 
     useEffect(() => {
+        let active_link = 'text-loyaltyGold-200 border-b-2 border-loyaltyGold-200';
+        let inactive_link = '';
+        switch(app.nav.active_link){
+            case ROUTES.HOME_PAGE:
+                setHomeNavOptionClassName(active_link);
+                setPromosNavOptionClassName(inactive_link);
+                setSettingsNavOptionClassName(inactive_link);
+                setSignInNavOptionClassName(inactive_link);
+                break;
+            case ROUTES.PROMOS:
+                setHomeNavOptionClassName(inactive_link);
+                setPromosNavOptionClassName(active_link);
+                setSettingsNavOptionClassName(inactive_link);
+                setSignInNavOptionClassName(inactive_link);
+                break;
+            case ROUTES.SETTINGS:
+                setHomeNavOptionClassName(inactive_link);
+                setPromosNavOptionClassName(inactive_link);
+                setSettingsNavOptionClassName(active_link);
+                setSignInNavOptionClassName(inactive_link);
+                break;
+            case ROUTES.SIGN_IN:
+                setHomeNavOptionClassName(inactive_link);
+                setPromosNavOptionClassName(inactive_link);
+                setSettingsNavOptionClassName(inactive_link);
+                setSignInNavOptionClassName(active_link);
+                break;
+            default:
+                setHomeNavOptionClassName(inactive_link);
+                setPromosNavOptionClassName(inactive_link);
+                setSettingsNavOptionClassName(inactive_link);
+                setSignInNavOptionClassName(inactive_link);
+                break;
+        }
+    }, [app.nav])
+
+    useEffect(() => {
         if(!auth.isAuthenticated){ 
           console.log("COMPONENT NavBar: User is not logged in, Route to Home")
           navigate(ROUTES.HOME_PAGE); 
@@ -88,22 +132,22 @@ export function Navbar() {
                     </div>
                     <div className="hidden md:block md:w-1/3">
                         <ul className="flex justify-center">
-                            <li className="mr-12"><NavLink className="text-coolGray-500 hover:text-loyaltyGold-100 font-medium transition-all" to={ROUTES.HOME_PAGE}>Home</NavLink></li>
-                            <li className="mr-12"><NavLink className="text-coolGray-500 hover:text-loyaltyGold-100  font-medium transition-all" to={ROUTES.PROMOS}>Promos</NavLink></li>
+                            <li className="mr-12"><NavLink className={`py-1 px-1 text-coolGray-500 hover:text-loyaltyGold-100 font-medium transition-all ${homeNavOptionClassName}`} to={ROUTES.HOME_PAGE}>Home</NavLink></li>
+                            <li className="mr-12"><NavLink className={`py-1 px-1 text-coolGray-500 hover:text-loyaltyGold-100 font-medium transition-all ${promosNavOptionClassName}`} to={ROUTES.PROMOS}>Promos</NavLink></li>
                         </ul>
                     </div>
                     <div className="hidden md:block md:w-1/3">
                         <div className="flex items-center justify-end">
-                            {(auth.isAuthenticated) ? 
-                                ""
+                            {(auth.isAuthenticated) ?
+                                <NavLink className={`inline-block py-1 px-1 mr-4 leading-5 text-coolGray-500 hover:text-loyaltyGold-100 bg-transparent font-medium transition-all ${settingsNavOptionClassName}`} to={ROUTES.SETTINGS}>Settings</NavLink>
                                 :
-                                <NavLink className="inline-block py-2 px-4 mr-2 leading-5 text-coolGray-500 hover:text-loyaltyGold-100 bg-transparent font-medium rounded-md transition-all" to={ROUTES.SIGN_IN}>Log In</NavLink>
+                                <NavLink className={`inline-block py-1 px-1 mr-4 leading-5 text-coolGray-500 hover:text-loyaltyGold-100 bg-transparent font-medium transition-all ${signInNavOptionClassName}`} to={ROUTES.SIGN_IN}>Log In</NavLink>
                             }
 
                             {(auth.isAuthenticated) ? 
-                                <button className="inline-block py-2 px-4 text-sm leading-5 text-white bg-loyaltyGold-100 hover:bg-loyaltyGold-200 font-medium focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" onClick={() => dispatch(signOut())}>Sign Out</button>
+                                <button className={`inline-block py-2 px-4 text-sm leading-5 text-white bg-loyaltyGold-100 hover:bg-loyaltyGold-200 font-medium focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all ${setHomeNavOptionClassName}`} onClick={() => dispatch(signOut())}>Sign Out</button>
                                 :
-                                <NavLink className="inline-block py-2 px-4 text-sm leading-5 text-white bg-loyaltyGold-100 hover:bg-loyaltyGold-200 font-medium focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" to={ROUTES.SIGN_UP}>Sign Up</NavLink>
+                                <NavLink className={`inline-block py-2 px-4 text-sm leading-5 text-white bg-loyaltyGold-100 hover:bg-loyaltyGold-200 font-medium focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all ${setHomeNavOptionClassName}`} to={ROUTES.SIGN_UP}>Sign Up</NavLink>
                             }
                         </div>
                     </div>
@@ -124,14 +168,14 @@ export function Navbar() {
                                 <img className="h-20" src="./loyalty_logo.png" alt="" />
                             </NavLink>
                             <ul className="py-6">
-                                <li><NavLink className="block mx-auto py-3 px-4 w-fit text-coolGray-500 hover:text-loyaltyGold-100 font-medium hover:bg-coolGray-50 rounded-md transition-all" to={ROUTES.HOME_PAGE}><i className="fa-solid fa-house mr-3"></i>Home</NavLink></li>
-                                <li><NavLink className="block mx-auto py-3 px-4 w-fit text-coolGray-500 hover:text-loyaltyGold-100 font-medium hover:bg-coolGray-50 rounded-md transition-all" to={ROUTES.PROMOS}><i className="fa-solid fa-tags mr-3"></i>Promos</NavLink></li>
-                                <li><NavLink className="block mx-auto py-3 px-4 w-fit text-coolGray-500 hover:text-loyaltyGold-100 font-medium hover:bg-coolGray-50 rounded-md transition-all" to={ROUTES.SETTINGS}><i className="fa-solid fa-gear mr-3"></i>Settings</NavLink></li>
+                                <li><NavLink className={`block mx-auto py-3 px-4 w-fit text-coolGray-500 hover:text-loyaltyGold-100 font-medium hover:bg-coolGray-50 transition-all ${homeNavOptionClassName}`} to={ROUTES.HOME_PAGE}><i className="fa-solid fa-house mr-3"></i>Home</NavLink></li>
+                                <li><NavLink className={`block mx-auto py-3 px-4 w-fit text-coolGray-500 hover:text-loyaltyGold-100 font-medium hover:bg-coolGray-50 transition-all ${promosNavOptionClassName}`} to={ROUTES.PROMOS}><i className="fa-solid fa-tags mr-3"></i>Promos</NavLink></li>
+                                <li><NavLink className={`block mx-auto py-3 px-4 w-fit text-coolGray-500 hover:text-loyaltyGold-100 font-medium hover:bg-coolGray-50 transition-all ${settingsNavOptionClassName}`} to={ROUTES.SETTINGS}><i className="fa-solid fa-gear mr-3"></i>Settings</NavLink></li>
                             </ul>
                             <div className="flex flex-wrap">
                                 <div className="w-full mb-2">
                                     {!(auth.isAuthenticated) ? 
-                                        <NavLink className="inline-block py-2 px-4 w-full text-md leading-5 text-coolGray-500 hover:text-loyaltyGold-100 bg-transparent font-medium text-center rounded-md transition-all" to={ROUTES.SIGN_IN}>Log In</NavLink> 
+                                        <NavLink className={`inline-block py-2 px-4 w-full text-md leading-5 text-coolGray-500 hover:text-loyaltyGold-100 bg-transparent font-medium text-center rounded-md transition-all ${signInNavOptionClassName}`} to={ROUTES.SIGN_IN}>Log In</NavLink> 
                                         : 
                                         ""
                                     }

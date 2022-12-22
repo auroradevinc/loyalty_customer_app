@@ -25,7 +25,6 @@ import { Settings } from './components/Settings';
 import { BoilerPlateComponent } from './BoilerPlateComponent';
 import * as ROUTES from './constants/routes';
 
-
 // Styling Imports
 import './assets/loyalty.css';
 //import './assets/debug.css';

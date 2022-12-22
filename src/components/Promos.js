@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
 import { authStore } from '../app/authSlice';
+import { updateActiveNav } from '../app/appSlice';
 
 // Modules Imports
 import { useNavigate } from 'react-router-dom';
@@ -25,11 +26,7 @@ export function Promos() {
 
     useEffect(() => {
         console.log("COMPONENT RENDERED: Promos");
-
-        if(auth.isAuthenticated == false) { 
-            console.log("COMPONENT Promos: User NOT logged in, Route to Sign In Page")
-            navigate(ROUTES.SIGN_IN) 
-        }
+        dispatch(updateActiveNav(ROUTES.PROMOS));
     }, [])
 
     useEffect(() => {
