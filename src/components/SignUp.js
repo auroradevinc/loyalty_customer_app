@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from 'react';
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
 import { authStore, fetchUserFromLocal, signUp } from '../app/authSlice';
+import { updateActiveNav } from '../app/appSlice';
 
 // Modules Imports
 import { NavLink } from "react-router-dom";
@@ -33,6 +34,7 @@ export function SignUp() {
 
     useEffect(() => {
         console.log("COMPONENT RENDERED: SignUp");
+        dispatch(updateActiveNav(ROUTES.SIGN_UP));
     }, [])
 
     useEffect(() => {
