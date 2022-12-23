@@ -8,7 +8,7 @@ import { authStore, fetchUserFromLocal, signIn } from '../app/authSlice';
 import { updateActiveNav } from '../app/appSlice';
 
 // Modules Imports
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 // Components Imports
 
@@ -22,11 +22,14 @@ export function SignIn() {
     const auth = useSelector(authStore);
     const dispatch = useDispatch();
 
+    const navigate = useNavigate();
+
     const usernameRef = useRef();
     const passwordRef = useRef();
 
     const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [signInError, setSignInError] = useState("");
 
     useEffect(() => {
         console.log("COMPONENT RENDERED: SignIn");
@@ -38,8 +41,16 @@ export function SignIn() {
     }, [dispatch])
 
     useEffect(() => {
+        if(auth.isAuthenticated){ 
+          console.log("COMPONENT SignIn: User already logged in, Route to Promos");
+          navigate(ROUTES.PROMOS) 
+        }
+      }, [auth.isAuthenticated])
+
+    useEffect(() => {
         if(auth.error && auth.error.toLowerCase().includes('username')){ setUsernameError(auth.error) }
         if(auth.error && auth.error.toLowerCase().includes('password')){ setPasswordError(auth.error) }
+        if(auth.error && !auth.error.toLowerCase().includes('no current user')) { setSignInError(auth.error) } // No Current User: Error when fetchUserFromLocal does not return a user
     }, [auth.error])
 
     let formSubmitHandler = (event) => {
@@ -48,11 +59,18 @@ export function SignIn() {
         // extract email/phone number from username
         let password = passwordRef.current.value;
         let email, phone = '';
-        if (usernameRef.current.value.includes('@')) { email = usernameRef.current.value } else { phone =  usernameRef.current.value }
+        let username;
+        if (usernameRef.current.value.includes('@')) { 
+            email = usernameRef.current.value.toLowerCase() 
+            username = email;
+        } else { 
+            phone =  usernameRef.current.value 
+            username = phone;
+        }
         
         console.log(`COMPONENT SignIn: SignIn form Submission. Email: ${email}, Phone: ${phone}, Password: ${password}`);
 
-        dispatch(signIn({email, phone, password}));
+        dispatch(signIn({username, password}));
     }
     
     return (
@@ -86,6 +104,7 @@ export function SignIn() {
                                 {passwordError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
                             </div>
                             {passwordError ? <p className="text-sm text-red-600 mt-1">{passwordError}</p> : ""}
+                            {signInError ? <p className="text-sm text-red-600 mt-1">{signInError}</p> : ""}
                         </div>
 
                         <div className="flex items-center justify-between mb-6">

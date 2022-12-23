@@ -37,10 +37,10 @@ export function Promos() {
     }, [auth.isAuthenticated])
     
     return (
-        <div className=''>
+        <section className="bg-white bg-opacity-0 p-6 px-4 pb-6 min-h-[70vh]">
             <h1>
                 Promos
             </h1>
-        </div>
+        </section>
     );
 }

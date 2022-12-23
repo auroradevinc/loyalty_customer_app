@@ -8,7 +8,7 @@ import { authStore, fetchUserFromLocal, signUp } from '../app/authSlice';
 import { updateActiveNav } from '../app/appSlice';
 
 // Modules Imports
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 // Components Imports
 
@@ -21,6 +21,8 @@ import './SignUp.css';
 export function SignUp() {
     const auth = useSelector(authStore);
     const dispatch = useDispatch();
+
+    const navigate = useNavigate();
 
     const emailRef = useRef();
     const phoneRef = useRef();
@@ -42,6 +44,13 @@ export function SignUp() {
     }, [dispatch])
 
     useEffect(() => {
+        if(auth.isAuthenticated){ 
+          console.log("COMPONENT SignUp: User already logged in, Route to Promos");
+          navigate(ROUTES.PROMOS) 
+        }
+    }, [auth.isAuthenticated])
+
+    useEffect(() => {
         if(auth.error && auth.error.toLowerCase().includes('email')){ setEmailError(auth.error) }
         if(auth.error && auth.error.toLowerCase().includes('phone')){ setPhoneError(auth.error) }
         if(auth.error && auth.error.toLowerCase().includes('password')){ setPasswordError(auth.error) }
@@ -53,14 +62,17 @@ export function SignUp() {
 
         console.log(emailRef, phoneRef, passwordRef, nameRef);
 
-        let email = emailRef.current.value;
+        let email = emailRef.current.value.toLowerCase();
         let phone = phoneRef.current.value;
         let password = passwordRef.current.value;
-        let full_name = nameRef.current.value;
-        
-        console.log(`COMPONENT SignUp: SignUp form Submission. Email: ${email}, Phone: ${phone}, Password: ${password}, Name: ${full_name}`);
+        let name = nameRef.current.value;
 
-        // dispatch(signUp({email, phone, password, given_name, middle_name, family_name}));
+        // capitalize first letter of each word in the name
+        name = name.split(' ').map(elem => elem[0].toUpperCase()+ elem.slice(1)).join(' ');
+        
+        console.log(`COMPONENT SignUp: SignUp form Submission. Email: ${email}, Phone: ${phone}, Password: ${password}, Name: ${name}`);
+
+        dispatch(signUp({email, phone, password, name}));
     }
 
 
@@ -97,7 +109,7 @@ export function SignUp() {
                     <div className="mb-6">
                         <label className="block mb-2 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">Phone</label>
                         <div className='flex justify-between items-center relative'>
-                            <input ref={phoneRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="phone" type="tel" placeholder="Enter your phone number" pattern = "^([0-9]{10})$" onInvalid={(e) => {e.preventDefault(); setPhoneError("Please enter a valid phone");}}/>
+                            <input ref={phoneRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="phone" type="tel" placeholder="Enter your phone number" pattern = "^+1([0-9]{10})$" onInvalid={(e) => {e.preventDefault(); setPhoneError("Please enter a valid phone");}}/>
                             {phoneError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
                         </div>
                         {phoneError ? <p className="text-sm text-red-600 mt-1">{phoneError}</p> : ""}

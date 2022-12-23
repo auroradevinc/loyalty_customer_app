@@ -78,7 +78,7 @@ export function Navbar() {
     },[])
 
     useEffect(() => {
-        let active_link = 'text-loyaltyGold-200 border-b-2 border-loyaltyGold-200';
+        let active_link = '!text-loyaltyGold-200 !border-b-2 !border-loyaltyGold-200';
         let inactive_link = '';
         switch(app.nav.active_link){
             case ROUTES.HOME_PAGE:
@@ -116,8 +116,8 @@ export function Navbar() {
 
     useEffect(() => {
         if(!auth.isAuthenticated){ 
-          console.log("COMPONENT NavBar: User is not logged in, Route to Home")
-          navigate(ROUTES.HOME_PAGE); 
+          console.log("COMPONENT NavBar: User is not logged in");
+          //navigate(ROUTES.SIGN_IN); 
         }
     }, [auth.isAuthenticated])
 

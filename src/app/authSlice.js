@@ -33,10 +33,8 @@ export const signUp = createAsyncThunk(
       let email = param.email;
       let phone = param.phone;
       let password = param.password;
-      let given_name = param.given_name;
-      let middle_name = param.middle_name;
-      let family_name = param.family_name;
-      let attributes = {email, phone_number: phone, given_name, middle_name, family_name};
+      let name = param.name;
+      let attributes = {email, phone_number: phone, name};
       const signUpResponse = await Auth.signUp({username: email, password: password, attributes});
       return {message: "successfully signed up", type: "success", data: ((signUpResponse && signUpResponse.attributes) ? signUpResponse.attributes : signUpResponse)};
     }
@@ -51,7 +49,7 @@ export const signIn = createAsyncThunk(
   async (param) => {
     console.log("authSlice: signIn");
     try {
-      const signUpResponse = await Auth.signIn({username: param.email, password: param.password});
+      const signUpResponse = await Auth.signIn({username: param.username, password: param.password});
       console.log(signUpResponse);
       return {message: "successfully signed in", type: "success", data: ((signUpResponse && signUpResponse.attributes) ? signUpResponse.attributes : signUpResponse)};
     }

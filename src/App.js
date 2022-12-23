@@ -54,8 +54,8 @@ function App() {
 
   useEffect(() => {
     if(auth.isAuthenticated){ 
-      console.log("COMPONENT App: User already logged in, Route to Promos")
-      navigate(ROUTES.PROMOS) 
+      console.log("COMPONENT App: User already logged in")
+      //navigate(ROUTES.PROMOS) 
     }
   }, [auth.isAuthenticated])
 
