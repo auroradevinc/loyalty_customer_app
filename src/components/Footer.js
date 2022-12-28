@@ -11,10 +11,10 @@ import React from 'react';
 
 export function Footer() {
     return (
-        <div className=''>
+        <section className="bg-white bg-opacity-0 p-6 px-4 pb-6">
             <h3>
                 Footer
             </h3>
-        </div>
+        </section>
     );
 }

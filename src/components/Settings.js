@@ -159,7 +159,7 @@ export function Settings() {
                                 </form>
                             );
                         case 'INVITE_FRIEND':
-                            return <h1>Invite Friend</h1>;
+                            return <h1>TODO: Invite Friend</h1>;//TODO: ADD CODE FOR THESE FEATURES
                         case 'CHANGE_PASSWORD':
                             return <h1>TODO: Change Password</h1>;//TODO: ADD CODE FOR THESE FEATURES
                         case 'VERIFY_ACCOUNT':

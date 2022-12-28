@@ -8,7 +8,6 @@ import { authStore, fetchUserFromLocal } from './app/authSlice';
 
 // Modules Imports
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { Amplify } from 'aws-amplify';
 
 // Components Imports
 import { Navbar } from './components/Navbar';
@@ -28,15 +27,6 @@ import * as ROUTES from './constants/routes';
 // Styling Imports
 import './assets/loyalty.css';
 //import './assets/debug.css';
-
-Amplify.configure({
-  Auth: {
-      mandatorySignIn: true,
-      region: process.env.REACT_APP_AWS_COGNITO_REGION,
-      userPoolId: process.env.REACT_APP_AWS_COGNITO_USER_POOL_ID,
-      userPoolWebClientId: process.env.REACT_APP_AWS_COGNITO_USER_POOL_APP_CLIENT_ID
-  }
-});
 
 function App() {
   const auth = useSelector(authStore);
@@ -72,7 +62,7 @@ function App() {
           <Route exact path={ROUTES.PROMOS} element={<Promos/>}></Route>
           <Route exact path={ROUTES.SETTINGS} element={<Settings/>}></Route>
         </Routes>
-      
+
         <Footer/>
 
       </div>

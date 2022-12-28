@@ -2,35 +2,52 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isAuthenticated: false,
-  user: null
+  promos: [],
+  error: null
 };
 
-// Async Function
-export const async_func = createAsyncThunk(
-    'async_func',
-    async (param) => {
-      // const response = await axios.get(url/param);
-      // The value we return becomes the `fulfilled` action payload
-      // return response.data;
+// Async Functions
+export const getPromos = createAsyncThunk(
+  'getPromos',
+  async (param) => {
+    console.log("promoSlice: getPromos");
+    try {
+      setTimeout(() => {
+        return {message: "promos fetched", type: "success", data: []};
+      }, 3000)
     }
-  );
+    catch (err){
+      return {message: err, type: "error", data: null};
+    }
+  }
+);
 
 export const promoSlice = createSlice({
     name: 'promo',
     initialState,
-    reducers: {
-        log_func: (state, action) => { 
-            //change state, param in action.payload
-            console.log('Reducer Called');
-        }
-    },
+    reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(async_func.pending, (state) => {});
-        builder.addCase(async_func.fulfilled, (state, action) => {console.log(action.payload)});
-        builder.addCase(async_func.rejected, (state, action) => {console.log(action.payload)});
+        // getPromos
+        builder.addCase(getPromos.pending, (state, action) => {
+          console.log('\t Request Pending', action);
+        });
+        builder.addCase(getPromos.fulfilled, (state, action) => {
+          console.log('\t Request Fulfilled', action);
+          if(action.payload.type === 'error'){ 
+            state.error = action.payload.message;
+          } else { 
+            state.promos = action.payload.data;
+            state.error = null;
+          }
+          console.log(`\t Message: ${action.payload.message}, Data: ${action.payload.data}`);
+        });
+        builder.addCase(getPromos.rejected, (state, action) => {
+          console.log('\t Request Rejected', action);
+          console.log(`\t Message: ${action.payload.message}, Data: ${action.payload.data}`);
+        });
     }
   });
 
-export const { log_func } = promoSlice.actions;
+export const promoStore = (state) => state.promo;
+export const { } = promoSlice.actions;
 export default promoSlice.reducer;
