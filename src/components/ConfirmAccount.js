@@ -32,7 +32,6 @@ export function ConfirmAccount(props) {
 
     useEffect(() => {
         if(auth.hasConfirmed && (auth.isSignedIn || auth.isSignedUp)) {
-
             Hub.listen('auth', ({ payload }) => {
                 const { event } = payload;
                 if (event === 'autoSignIn') {
@@ -48,6 +47,7 @@ export function ConfirmAccount(props) {
 
     useEffect(() => {
         if(auth.autoSignInError){
+            console.log("COMPONENT signUp: autoSignInError occured, Route to SignIn");
             navigate(ROUTES.SIGN_IN);
         }
     }, [auth.autoSignInError])

@@ -71,7 +71,6 @@ export const signUp = createAsyncThunk(
           codeDeliveryDetails: signUpResponse.codeDeliveryDetails
         }
       }
-      console.log("signUpResponse: ", signUpResponse, signUpData);
       
       return {message: "successfully signed up", type: "success", data: signUpData};
 
@@ -197,6 +196,7 @@ export const authSlice = createSlice({
     extraReducers: (builder) => {
         // fetchUserFromLocal
         builder.addCase(fetchUserFromLocal.pending, (state, action) => {
+          console.log("authSlice: fetchUserFromLocal Requested");
           console.log('\t Request Pending', action);
         });
         builder.addCase(fetchUserFromLocal.fulfilled, (state, action) => {
@@ -218,6 +218,7 @@ export const authSlice = createSlice({
 
         // signUp
         builder.addCase(signUp.pending, (state, action) => {
+          console.log("authSlice: signUp Requested");
           console.log('\t Request Pending', action);
         });
         builder.addCase(signUp.fulfilled, (state, action) => {
@@ -238,6 +239,7 @@ export const authSlice = createSlice({
 
         // signIn
         builder.addCase(signIn.pending, (state, action) => {
+          console.log("authSlice: signIn Requested");
           console.log('\t Request Pending', action);
         });
         builder.addCase(signIn.fulfilled, (state, action) => {
@@ -261,6 +263,7 @@ export const authSlice = createSlice({
 
         // confirmAccount
         builder.addCase(confirmCode.pending, (state, action) => {
+          console.log("authSlice: confirmCode Requested");
           console.log('\t Request Pending', action);
         });
         builder.addCase(confirmCode.fulfilled, (state, action) => {
@@ -279,6 +282,7 @@ export const authSlice = createSlice({
 
         // resendConfirmCode
         builder.addCase(resendConfirmCode.pending, (state, action) => {
+          console.log("authSlice: resendConfirmCode Requested");
           console.log('\t Request Pending', action);
         });
         builder.addCase(resendConfirmCode.fulfilled, (state, action) => {
@@ -298,6 +302,7 @@ export const authSlice = createSlice({
 
         // signOut
         builder.addCase(signOut.pending, (state, action) => {
+          console.log("authSlice: signOut Requested");
           console.log('\t Request Pending', action);
         });
         builder.addCase(signOut.fulfilled, (state, action) => {

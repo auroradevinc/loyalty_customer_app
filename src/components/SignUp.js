@@ -55,24 +55,19 @@ export function SignUp() {
     },[auth.hasLocalFetched])
 
     useEffect(() => {
+        if(auth.isSignedUp && !auth.hasConfirmed){
+            console.log("COMPONENT SignUp: User signed up, User not confirmed, Toggle Verification");
+            setShowDetailsForm(false);
+            setShowVerificationForm(true);
+        }
+    }, [auth.isSignedUp, auth.hasConfirmed])
+
+    useEffect(() => {
         if(auth.isAuthenticated){ 
             console.log("COMPONENT SignUp: User already logged in, Route to Promos");
             navigate(ROUTES.PROMOS) 
         }
     }, [auth.isAuthenticated])
-
-    useEffect(() => {
-        if(auth.isSignedUp && !auth.isSignUpConfirmed){
-            console.log("COMPONENT SignUp: User already signed up, Toggle Verification");
-            setShowDetailsForm(false);
-            setShowVerificationForm(true);
-        }
-
-        if(auth.isSignedUp && auth.isSignUpConfirmed){
-            console.log("COMPONENT SignUp: User already confirmed, Route to SignIn");
-            navigate(ROUTES.SIGN_IN);
-        }
-    }, [auth.isSignedUp, auth.isSignUpConfirmed])
 
     useEffect(() => {
         if(auth.authError && auth.authError.toLowerCase().includes('email')){ setEmailError(auth.authError) }

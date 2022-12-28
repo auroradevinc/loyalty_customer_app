@@ -34,7 +34,7 @@ export function Promos() {
     }, [])
 
     useEffect(() => {
-        if(auth.isAuthenticated == false) { 
+        if(!auth.isAuthenticated) { 
             console.log("COMPONENT Promos: User NOT logged in, Route to Sign In Page")
             navigate(ROUTES.SIGN_IN) 
         }

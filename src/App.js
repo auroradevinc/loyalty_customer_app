@@ -1,9 +1,10 @@
 // React Imports
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
+import { appStore } from './app/appSlice';
 import { authStore, fetchUserFromLocal } from './app/authSlice';
 
 // Modules Imports
@@ -30,6 +31,7 @@ import './assets/loyalty.css';
 
 function App() {
   const auth = useSelector(authStore);
+  const app = useSelector(appStore);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -43,9 +45,11 @@ function App() {
   }, [dispatch])
 
   useEffect(() => {
-    if(auth.isAuthenticated){ 
-      console.log("COMPONENT App: User already logged in")
-      //navigate(ROUTES.PROMOS) 
+    // App.js controls rounting to promos only if the current page is the home page
+    // SignIn & SignUp page handles routing when authenticated successfully
+    if(auth.isAuthenticated && app.nav.active_link === ROUTES.HOME_PAGE) { 
+      console.log("COMPONENT App: User already logged in, Route to Promos");
+      navigate(ROUTES.PROMOS);
     }
   }, [auth.isAuthenticated])
 
