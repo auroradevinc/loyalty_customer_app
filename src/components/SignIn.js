@@ -47,6 +47,11 @@ export function SignIn() {
     useEffect(() => {
         if(auth.hasLocalFetched && !auth.isAuthenticated){
             dispatch(setUpAuthState());
+            setShowDetailsForm(true);
+            setShowVerificationForm(false);
+            setUsernameError("");
+            setPasswordError("");
+            setSignInError("");
         }
     },[auth.hasLocalFetched])
 

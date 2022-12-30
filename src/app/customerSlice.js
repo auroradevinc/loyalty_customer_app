@@ -1,18 +1,57 @@
 // Base Import for Actions & Reducers
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import axios from 'axios';
+
 const initialState = {
-  isAuthenticated: false,
-  user: null
+  isCustomerAddedToDB: false,
+  isCustomerExtractedFromDB: false,
+
+  addCustomerToDBError: null,
+  getCustomerFromDBError: null,
+
+  customer: null,
 };
 
 // Async Function
-export const async_func = createAsyncThunk(
-    'async_func',
+export const addCustomerToDB = createAsyncThunk(
+    'addCustomerToDB',
     async (param) => {
-      // const response = await axios.get(url/param);
-      // The value we return becomes the `fulfilled` action payload
-      // return response.data;
+      console.log("customerSlice: addCustomerToDB");
+      try{
+        let data = {
+          card: {
+            id: '00AUVC' // TODO: CONFIGURE TO HAVE THIS EXTRACTED FROM THE LINK OR CUSTOMER SPECIFIED
+          }, 
+          customer: {
+            id: param.id, 
+            full_name: param.name,
+            email: param.email, 
+            phone_number: param.phone,
+            address: null
+          }
+        };
+        const res = await axios.post(`${process.env.REACT_APP_AWS_API_GATEWAY}/signup`, data);
+        return {message: "customer added to db", type: "success", data: res.data};
+      }
+      catch(err){
+        return {message: err.message, type: "error", data: null};
+      }
+    }
+  );
+
+  export const getCustomerFromDB = createAsyncThunk(
+    'getCustomerFromDB',
+    async (param) => {
+      console.log("customerSlice: getCustomerFromDB");
+      try{
+        let id = param.id;
+        const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/get-customer-info?customer_id=${id}`);
+        return {message: "customer extracted from db", type: "success", data: res.data.data.customer};
+      }
+      catch(err){
+        return {message: err.message, type: "error", data: null};
+      }
     }
   );
 
@@ -26,11 +65,47 @@ export const customerSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(async_func.pending, (state) => {});
-        builder.addCase(async_func.fulfilled, (state, action) => {console.log(action.payload)});
-        builder.addCase(async_func.rejected, (state, action) => {console.log(action.payload)});
+        // addCustomerToDB
+        builder.addCase(addCustomerToDB.pending, (state, action) => {
+          console.log("customerSlice: addCustomerToDB Requested");
+          console.log('\t Request Pending', action);
+        });
+        builder.addCase(addCustomerToDB.fulfilled, (state, action) => {
+          console.log('\t Request Fulfilled', action);
+          if(action.payload.type === 'error'){ 
+            state.addCustomerToDBError = action.payload.message;
+          } else {
+            state.customer = action.payload.data;
+            state.isCustomerAddedToDB = true;
+            state.isCustomerExtractedFromDB = true;
+          }
+        });
+        builder.addCase(addCustomerToDB.rejected, (state, action) => {
+          console.log('\t Request Rejected', action);
+          state.addCustomerToDBError = action.payload.message;
+        });
+
+        // getCustomerFromDB
+        builder.addCase(getCustomerFromDB.pending, (state, action) => {
+          console.log("customerSlice: getCustomerFromDB Requested");
+          console.log('\t Request Pending', action);
+        });
+        builder.addCase(getCustomerFromDB.fulfilled, (state, action) => {
+          console.log('\t Request Fulfilled', action);
+          if(action.payload.type === 'error'){ 
+            state.getCustomerFromDBError = action.payload.message;
+          } else {
+            state.customer = action.payload.data;
+            state.isCustomerExtractedFromDB = true;
+          }
+        });
+        builder.addCase(getCustomerFromDB.rejected, (state, action) => {
+          console.log('\t Request Rejected', action);
+          state.getCustomerFromDBError = action.payload.message;
+        });
     }
   });
 
+export const customerStore = (state) => state.customer;
 export const { log_func } = customerSlice.actions;
 export default customerSlice.reducer;

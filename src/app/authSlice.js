@@ -1,7 +1,7 @@
 // Base Import for Actions & Reducers
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
 
+import axios from 'axios';
 import { Amplify, Auth, Hub } from 'aws-amplify';
 
 const initialState = {
@@ -73,23 +73,6 @@ export const signUp = createAsyncThunk(
       }
       
       return {message: "successfully signed up", type: "success", data: signUpData};
-
-      //TODO: AXIOS
-      // if (signUpResponse && signUpResponse.attributes) {
-      //   let data = {
-      //     card: {
-      //       id: '00AUVC'
-      //     }, 
-      //     customer: {
-      //       id: signUpResponse.attributes.userSub, 
-      //       full_name: name,
-      //       email: email, 
-      //       phone_number: phone
-      //     }
-      //   }
-      //   console.log("authSlice signUp: axios data", data);
-      //   const addUserToDB = await axios.post(`${process.env.REACT_APP_AWS_API_GATEWAY}/signup`, data);
-      // }
     }
     catch (err){
       return {message: err.message, type: "error", data: null};
@@ -160,6 +143,7 @@ export const authSlice = createSlice({
     reducers: {
         setUpAuthState: (state) => { 
           console.log("authSlice: setUpAuthState");
+          console.log('\t Request Fulfilled', {type: 'setUpAuthState/fulfilled', payload: null});
           state.isAuthenticated = false;
           
           state.isSignedIn = false;
@@ -182,13 +166,13 @@ export const authSlice = createSlice({
         autoSignIn: (state, action) => { 
           console.log("authSlice: autoSignIn");
           if(action.payload.type === 'success'){
-            console.log('\t Request fulfilled', {type: 'autoSignIn/fulfilled', payload: action.payload});
+            console.log('\t Request Fulfilled', {type: 'autoSignIn/fulfilled', payload: action.payload});
             state.isAuthenticated = true;
             state.user = action.payload.data;
             state.autoSignInError = null;
           }
           if(action.payload.type === 'error'){
-            console.log('\t Request fulfilled', {type: 'autoSignIn/fulfilled', payload: action.payload});
+            console.log('\t Request Fulfilled', {type: 'autoSignIn/fulfilled', payload: action.payload});
             state.autoSignInError = action.payload.message;
           }
         }

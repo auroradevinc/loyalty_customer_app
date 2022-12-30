@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
 import { appStore } from './app/appSlice';
+import { customerStore, getCustomerFromDB } from './app/customerSlice';
 import { authStore, fetchUserFromLocal } from './app/authSlice';
 
 // Modules Imports
@@ -32,6 +33,7 @@ import './assets/loyalty.css';
 function App() {
   const auth = useSelector(authStore);
   const app = useSelector(appStore);
+  const customer = useSelector(customerStore);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -41,8 +43,16 @@ function App() {
   }, [])
 
   useEffect(() => {
+    console.log("COMPONENT APP: Attempt Fetch User from Local");
     dispatch(fetchUserFromLocal());
   }, [dispatch])
+
+  useEffect(() => {
+    if(auth.hasLocalFetched && !customer.customer && (auth.user && auth.user.sub)) {
+      console.log("COMPONENT APP: User Fetched from Local, Customer Data from DB unavailable, Get Customer Data from DB");
+      dispatch(getCustomerFromDB({id: auth.user.sub}));
+    }
+  }, [auth.hasLocalFetched, customer.customer])
 
   useEffect(() => {
     // App.js controls rounting to promos only if the current page is the home page

@@ -104,7 +104,7 @@ export function Settings() {
         if(auth.isAuthenticated && auth.user) {
             nameRef.current.value = auth.user.name;
             emailRef.current.value = auth.user.email;
-            phoneRef.current.value = auth.user.phone_number;
+            phoneRef.current.value = (auth.user.phone_number) ? auth.user.phone_number : "";
         }
     }
 
@@ -153,8 +153,8 @@ export function Settings() {
                                         </div>
                                         {phoneError ? <p className="text-sm text-red-600 mt-1">{phoneError}</p> : ""}
                                     </div>
-                                    
-                            <button type='submit' className="inline-block py-3 px-7 mt-2 mb-1 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">Save Changes</button>
+                                    {/* TODO: ADD SUPPORT FOR SAVING CHANGES TO COGNITO USER */}
+                                    <button type='submit' className="inline-block py-3 px-7 mt-2 mb-1 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">TODO: Save Changes</button>
                                     <button className="inline-block py-3 px-7 mt-2 mb-1 w-full text-base text-white font-medium text-center leading-6 bg-gray-400 hover:bg-gray-500 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" onClick={() => {assignValuesToRef();}}>Discard Changes</button>
                                 </form>
                             );

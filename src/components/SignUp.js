@@ -3,8 +3,9 @@ import React from 'react';
 import { useEffect, useState, useRef } from 'react';
 
 // Redux Imports
-import { updateActiveNav } from '../app/appSlice';
 import { useSelector, useDispatch } from 'react-redux';
+import { appStore, updateActiveNav, saveSignUpDetails } from '../app/appSlice';
+import { customerStore, addCustomerToDB } from '../app/customerSlice';
 import { authStore, fetchUserFromLocal, setUpAuthState, signUp } from '../app/authSlice';
 
 // Modules Imports
@@ -21,6 +22,8 @@ import './SignUp.css';
 
 export function SignUp() {
     const auth = useSelector(authStore);
+    const app = useSelector(appStore);
+    const customer = useSelector(customerStore);
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
@@ -51,19 +54,39 @@ export function SignUp() {
     useEffect(() => {
         if(auth.hasLocalFetched && !auth.isAuthenticated){
             dispatch(setUpAuthState());
+            setShowDetailsForm(true);
+            setShowVerificationForm(false);
+            setEmailError("");
+            setPhoneError("");
+            setPasswordError("");
+            setNameError("");
+            setSignUpError("");
         }
     },[auth.hasLocalFetched])
 
     useEffect(() => {
-        if(auth.isSignedUp && !auth.hasConfirmed){
-            console.log("COMPONENT SignUp: User signed up, User not confirmed, Toggle Verification");
+        if(auth.isSignedUp && customer.isCustomerAddedToDB && !auth.hasConfirmed){
+            console.log("COMPONENT SignUp: User signed up, Customer added to DB, User not confirmed, Toggle Verification");
             setShowDetailsForm(false);
             setShowVerificationForm(true);
         }
-    }, [auth.isSignedUp, auth.hasConfirmed])
+    }, [auth.isSignedUp, auth.hasConfirmed, customer.isCustomerAddedToDB])
 
     useEffect(() => {
-        if(auth.isAuthenticated){ 
+        if(auth.isSignedUp && (auth.user && auth.user.userSub) && app.auth.signUp){
+            console.log("COMPONENT SignUp: User signed up, Add to Customer DB");
+            let customer_data = {
+                id: auth.user.userSub,
+                name: app.auth.signUp.name,
+                email: app.auth.signUp.email,
+                phone: app.auth.signUp.phone,
+            }
+            dispatch(addCustomerToDB(customer_data));
+        }
+    }, [auth.isSignedUp, auth.user, app.auth.signUp])
+
+    useEffect(() => {
+        if(auth.isAuthenticated){
             console.log("COMPONENT SignUp: User already logged in, Route to Promos");
             navigate(ROUTES.PROMOS) 
         }
@@ -87,9 +110,11 @@ export function SignUp() {
         // capitalize first letter of each word in the name
         name = name.split(' ').map(elem => elem[0].toUpperCase()+ elem.slice(1)).join(' ');
         
-        console.log(`COMPONENT SignUp: SignUp form Submission. Email: ${email}, Phone: ${phone}, Password: ${password}, Name: ${name}`);
+        console.log(`COMPONENT SignUp: SignUp form Submission`);
+        //console.log(`COMPONENT SignUp: SignUp form Submission. Email: ${email}, Phone: ${phone}, Password: ${password}, Name: ${name}`);
 
         dispatch(signUp({email, phone, password, name}));
+        dispatch(saveSignUpDetails({email, phone, name}));
     }
 
     return (
