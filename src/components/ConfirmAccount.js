@@ -27,7 +27,7 @@ export function ConfirmAccount(props) {
     const verificationCodeRef = useRef();
 
     useEffect(() => {
-        console.log("COMPONENT RENDERED: ConfirmAccount", props);
+        console.log("COMPONENT RENDERED: ConfirmAccount");
     }, [])
 
     useEffect(() => {
@@ -58,7 +58,7 @@ export function ConfirmAccount(props) {
         let code = verificationCodeRef.current.value;
         let username = auth.user.username;
         
-        console.log(`COMPONENT SignUp: Verification Form Submission. Username: ${username}, Code: ${code}`);
+        console.log(`COMPONENT ConfirmAccount: Verification Form Submission. Username: ${username}, Code: ${code}`);
 
         dispatch(confirmCode({'username': username, 'code': code}));
     }

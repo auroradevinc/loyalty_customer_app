@@ -21,13 +21,13 @@ export const addCustomerToDB = createAsyncThunk(
       try{
         let data = {
           card: {
-            id: '00AUVC' // TODO: CONFIGURE TO HAVE THIS EXTRACTED FROM THE LINK OR CUSTOMER SPECIFIED
+            id: param.card.id // TODO: CONFIGURE TO HAVE THIS EXTRACTED FROM THE LINK OR CUSTOMER SPECIFIED
           }, 
           customer: {
-            id: param.id, 
-            full_name: param.name,
-            email: param.email, 
-            phone_number: param.phone,
+            id: param.customer.id, 
+            full_name: param.customer.name,
+            email: param.customer.email, 
+            phone_number: param.customer.phone,
             address: null
           }
         };

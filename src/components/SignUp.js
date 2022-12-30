@@ -4,11 +4,12 @@ import { useEffect, useState, useRef } from 'react';
 
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
-import { appStore, updateActiveNav, saveSignUpDetails } from '../app/appSlice';
+import { appStore, updateActiveNav, saveSignUpDetails, saveCardDetails } from '../app/appSlice';
 import { customerStore, addCustomerToDB } from '../app/customerSlice';
 import { authStore, fetchUserFromLocal, setUpAuthState, signUp } from '../app/authSlice';
 
 // Modules Imports
+import { AddCard } from './AddCard';
 import { ConfirmAccount } from './ConfirmAccount';
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -33,7 +34,10 @@ export function SignUp() {
     const passwordRef = useRef();
     const nameRef = useRef();
 
+    const [cardDetails, setCardDetails] = useState(null);
+
     const [showDetailsForm, setShowDetailsForm] = useState(true);
+    const [showAddCardForm, setShowAddCardForm] = useState(true);
     const [showVerificationForm, setShowVerificationForm] = useState(false);
 
     const [emailError, setEmailError] = useState('');
@@ -45,11 +49,21 @@ export function SignUp() {
     useEffect(() => {
         console.log("COMPONENT RENDERED: SignUp");
         dispatch(updateActiveNav(ROUTES.SIGN_UP));
+        
+        let query = new URLSearchParams(window.location.search);
+        setCardDetails({
+            'id': query.get('card_id'),
+            'cvc': query.get('card_cvc')
+        });
     }, [])
 
     useEffect(() => {
         dispatch(fetchUserFromLocal());
     }, [dispatch])
+
+    useEffect(() => {
+        if(cardDetails){ dispatch(saveCardDetails(cardDetails)); }
+    }, [cardDetails])
 
     useEffect(() => {
         if(auth.hasLocalFetched && !auth.isAuthenticated){
@@ -65,25 +79,39 @@ export function SignUp() {
     },[auth.hasLocalFetched])
 
     useEffect(() => {
-        if(auth.isSignedUp && customer.isCustomerAddedToDB && !auth.hasConfirmed){
-            console.log("COMPONENT SignUp: User signed up, Customer added to DB, User not confirmed, Toggle Verification");
-            setShowDetailsForm(false);
-            setShowVerificationForm(true);
+        if(auth.isSignedUp && customer.isCustomerAddedToDB){ //#1 SignUp & Add to DB
+            if(!app.hasCardDetails){ //#2 Get Card ID
+                console.log("COMPONENT SignUp: User signed up, Customer added to DB, Card not saved, Toggle AddCard");
+                setShowDetailsForm(false);
+                setShowAddCardForm(true);
+                setShowVerificationForm(false);
+            }
+            if(app.hasCardDetails && !auth.hasConfirmed){ //#3 Confirm User
+                console.log("COMPONENT SignUp: User signed up, Customer added to DB, Card saved, User not confirmed, Toggle Verification");
+                setShowDetailsForm(false);
+                setShowAddCardForm(false);
+                setShowVerificationForm(true);
+            }
         }
-    }, [auth.isSignedUp, auth.hasConfirmed, customer.isCustomerAddedToDB])
+    }, [auth.isSignedUp, auth.hasConfirmed, customer.isCustomerAddedToDB, app.hasCardDetails])
 
     useEffect(() => {
-        if(auth.isSignedUp && (auth.user && auth.user.userSub) && app.auth.signUp){
+        if(auth.isSignedUp && (auth.user && auth.user.userSub) && app.hasCardDetails && app.hasSignUpDetails){
             console.log("COMPONENT SignUp: User signed up, Add to Customer DB");
-            let customer_data = {
-                id: auth.user.userSub,
-                name: app.auth.signUp.name,
-                email: app.auth.signUp.email,
-                phone: app.auth.signUp.phone,
+            let data = {
+                card: {
+                    id: app.card.id,
+                },
+                customer: {
+                    id: auth.user.userSub,
+                    name: app.auth.signUp.name,
+                    email: app.auth.signUp.email,
+                    phone: app.auth.signUp.phone,
+                }
             }
-            dispatch(addCustomerToDB(customer_data));
+            dispatch(addCustomerToDB(data));
         }
-    }, [auth.isSignedUp, auth.user, app.auth.signUp])
+    }, [auth.isSignedUp, auth.user, app.hasSignUpDetails, app.hasCardDetails])
 
     useEffect(() => {
         if(auth.isAuthenticated){
@@ -175,7 +203,7 @@ export function SignUp() {
                     </form>
                     : ""
                 }
-
+                {(showAddCardForm) ? <AddCard /> : ""}
                 {(showVerificationForm) ? <ConfirmAccount /> : ""}
             </div>
             </div>

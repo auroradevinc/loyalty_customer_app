@@ -80,7 +80,7 @@ export function Navbar() {
     useEffect(() => {
         let active_link = '!text-loyaltyGold-200 !border-b-2 !border-loyaltyGold-200';
         let inactive_link = '';
-        switch(app.nav.active_link){
+        switch(app.nav.activeLink){
             case ROUTES.HOME_PAGE:
                 setHomeNavOptionClassName(active_link);
                 setPromosNavOptionClassName(inactive_link);
