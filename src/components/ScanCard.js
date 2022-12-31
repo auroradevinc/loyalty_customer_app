@@ -21,7 +21,7 @@ export function ScanCard(props) {
 
     let { ref } = useZxing({
         onResult(result) {
-            console.log(result);
+            this.props.cardNumRef.current.value = result;
         },
         onError(err) {
             console.log(err);
@@ -30,7 +30,7 @@ export function ScanCard(props) {
 
     return (
         <div className=''>
-            <div className='' ref={ref} />
+            <video ref={ref}/>
         </div>
     );
 }

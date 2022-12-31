@@ -25,10 +25,9 @@ export function AddCard() {
 
     const navigate = useNavigate();
 
-    const cardIDRef = useRef();
-    const cvcCodeRef = useRef();
+    const cardNumRef = useRef();
+    const cardCVCRef = useRef();
 
-    const [result, setResult] = useState("");
     const [scanning, setScanning] = useState(false);
 
     useEffect(() => {
@@ -38,12 +37,12 @@ export function AddCard() {
     let formSubmitHandler = (event) => {
         event.preventDefault();
 
-        let cardID = cardIDRef.current.value;
-        let cvcCode = cvcCodeRef.current.value;
+        let cardNumber = cardNumRef.current.value;
+        let cardCVC = cardCVCRef.current.value;
         
-        console.log(`COMPONENT AddCard: Add Card Form Submission. Card ID: ${cardID}, CVC Code: ${cvcCode}`);
+        console.log(`COMPONENT AddCard: Add Card Form Submission. Card ID: ${cardNumber}, CVC Code: ${cardCVC}`);
 
-        dispatch(saveCardDetails({'id': cardID}));
+        dispatch(saveCardDetails({'id': cardNumber, 'cvc': cardCVC}));
     }
 
     let scanCardHandler = (event) => {
@@ -57,13 +56,13 @@ export function AddCard() {
             <p className="mb-2 text-[1.4rem] text-loyaltyGold-100 font-semibold">Add Card Details</p>
             <div className="mb-6">
                 <label className="block mb-1 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">Card Number</label>
-                <input ref={cardIDRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cardID" type="text" placeholder="Enter the Loyalty Card Number" required/>
+                <input ref={cardNumRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cardID" type="text" placeholder="Enter the Loyalty Card Number" required/>
             </div>
             <div className="mb-6">
                 <label className="block mb-1 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">CVC</label>
-                <input ref={cvcCodeRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cvcCode" type="text" placeholder="Enter the Loyalty CVC code" required/>
+                <input ref={cardCVCRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cvcCode" type="text" placeholder="Enter the Loyalty CVC code" required/>
             </div>
-            {(scanning) ? <ScanCard/> : ""}
+            {(scanning) ? <ScanCard cardNumRef={cardNumRef} cardCVCRef={cardCVCRef}/> : ""}
             <div className="mb-6 md:flex">
                 <button className="inline-block py-3 px-7 mt-2 mb-3 md:mr-2 w-full text-base text-white font-medium text-center leading-6 bg-gray-400 hover:bg-gray-500 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" onClick={(event) => scanCardHandler(event)}><i className="fa-solid fa-camera mr-2" />Scan Card</button>
                 <button type='submit' className="inline-block py-3 px-7 mt-2 mb-3 md:ml-2 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">Confirm</button>
