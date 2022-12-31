@@ -29,9 +29,22 @@ export function AddCard() {
     const cardCVCRef = useRef();
 
     const [scanning, setScanning] = useState(false);
+    const [hasCamera, setHasCamera] = useState(false);
 
     useEffect(() => {
         console.log("COMPONENT RENDERED: AddCard");
+
+        // Check if device hasCamera, Only if yes, Scan Card button is visible
+        navigator.mediaDevices.enumerateDevices().then(devices => {
+            const cameras = devices.filter(device => device.kind === 'videoinput');
+            if(cameras.length > 0){
+                console.log(`COMPONENT AddCard: Device has Camera`);
+                setHasCamera(true);
+            }
+            else {
+                console.log(`COMPONENT AddCard: Device does NOT Camera`);
+            }
+          });
     }, [])
 
     let formSubmitHandler = (event) => {
@@ -53,7 +66,7 @@ export function AddCard() {
 
     return (
         <form onSubmit={formSubmitHandler}>
-            <p className="mb-2 text-[1.4rem] text-loyaltyGold-100 font-semibold">Add Card Details</p>
+            {/* <p className="mb-2 text-[1.4rem] text-loyaltyGold-100 font-semibold">Add Loyalty Card Details</p> */}
             <div className="mb-6">
                 <label className="block mb-1 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">Card Number</label>
                 <input ref={cardNumRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cardID" type="text" placeholder="Enter the Loyalty Card Number" required/>
@@ -64,7 +77,11 @@ export function AddCard() {
             </div>
             {(scanning) ? <ScanCard cardNumRef={cardNumRef} cardCVCRef={cardCVCRef} setScanning={setScanning}/> : ""}
             <div className="mb-6 md:flex">
-                <button className="inline-block py-3 px-7 mt-2 mb-3 md:mr-2 w-full text-base text-white font-medium text-center leading-6 bg-gray-400 hover:bg-gray-500 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" onClick={(event) => scanCardHandler(event)}><i className="fa-solid fa-camera mr-2" />Scan Card</button>
+                {(hasCamera) ? 
+                    <button className="inline-block py-3 px-7 mt-2 mb-3 md:mr-2 w-full text-base text-white font-medium text-center leading-6 bg-gray-400 hover:bg-gray-500 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" onClick={(event) => scanCardHandler(event)}><i className="fa-solid fa-camera mr-2" />Scan Card</button>
+                    :
+                    ""
+                }
                 <button type='submit' className="inline-block py-3 px-7 mt-2 mb-3 md:ml-2 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">Confirm</button>
             </div>
             

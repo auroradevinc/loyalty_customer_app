@@ -162,7 +162,7 @@ export function SignUp() {
 
                 {(showDetailsForm) ? 
                     <form onSubmit={formSubmitHandler}>
-                        <p className="mb-2 text-[1.4rem] text-loyaltyGold-100 font-semibold">Add Account Details</p>
+                        {/* <p className="mb-2 text-[1.4rem] text-loyaltyGold-100 font-semibold">Add Account Details</p> */}
                         <div className="mb-6">
                             <label className="block mb-2 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">Full Name</label>
                             <div className='flex justify-between items-center relative'>

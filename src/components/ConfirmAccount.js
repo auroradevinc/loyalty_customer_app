@@ -70,7 +70,7 @@ export function ConfirmAccount(props) {
 
     return (
         <form onSubmit={formSubmitHandler}>
-            <p className="mb-2 text-[1.4rem] text-loyaltyGold-100 font-semibold">Confirm Account</p>
+            {/* <p className="mb-2 text-[1.4rem] text-loyaltyGold-100 font-semibold">Confirm Account</p> */}
             <div className="mb-6">
                 <label className="block mb-1 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">Verification Code</label>
                 <label className="block mb-4 text-coolGray-500 text-xxs" htmlFor="">

@@ -15,11 +15,12 @@ import { useZxing } from "react-zxing";
 //import './assets/bulma/css/bulma.min.css';
 
 export function ScanCard(props) {
+    const scanResult = useRef('');
+
     useEffect(() => {
         console.log("COMPONENT RENDERED: ScanCard");
     }, [])
 
-    const scanResult = useRef('');
 
     const { ref } = useZxing({
         onResult(result) {
@@ -34,7 +35,8 @@ export function ScanCard(props) {
     });
 
     return (
-        <div className='absolute w-full h-full'>
+        <div className=''>
+            <label className="block mb-4 text-coolGray-500 text-xxs" htmlFor="">Scan QR Code on Back of the Loyalty Card</label>
             <video ref={ref}/>
             <p>{scanResult}</p>
         </div>
