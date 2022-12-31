@@ -62,7 +62,7 @@ export function AddCard() {
                 <label className="block mb-1 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">CVC</label>
                 <input ref={cardCVCRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cvcCode" type="text" placeholder="Enter the Loyalty CVC code" required/>
             </div>
-            {(scanning) ? <ScanCard cardNumRef={cardNumRef} cardCVCRef={cardCVCRef}/> : ""}
+            {(scanning) ? <ScanCard cardNumRef={cardNumRef} cardCVCRef={cardCVCRef} setScanning={setScanning}/> : ""}
             <div className="mb-6 md:flex">
                 <button className="inline-block py-3 px-7 mt-2 mb-3 md:mr-2 w-full text-base text-white font-medium text-center leading-6 bg-gray-400 hover:bg-gray-500 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" onClick={(event) => scanCardHandler(event)}><i className="fa-solid fa-camera mr-2" />Scan Card</button>
                 <button type='submit' className="inline-block py-3 px-7 mt-2 mb-3 md:ml-2 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">Confirm</button>

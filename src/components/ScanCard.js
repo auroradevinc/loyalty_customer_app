@@ -1,6 +1,6 @@
 // React Imports
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 // Redux Imports
 
@@ -19,18 +19,24 @@ export function ScanCard(props) {
         console.log("COMPONENT RENDERED: ScanCard");
     }, [])
 
-    let { ref } = useZxing({
+    const scanResult = useRef('');
+
+    const { ref } = useZxing({
         onResult(result) {
             this.props.cardNumRef.current.value = result;
+            this.props.setScanning(false);
+            scanResult.current.value = result;
         },
         onError(err) {
             console.log(err);
+            this.props.setScanning(false);
         }
     });
 
     return (
-        <div className=''>
+        <div className='absolute w-full h-full'>
             <video ref={ref}/>
+            <p>{scanResult}</p>
         </div>
     );
 }
