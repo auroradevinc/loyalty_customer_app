@@ -151,13 +151,13 @@ export function SignUp() {
             <div className="container px-4 mx-auto">
             <div className="max-w-lg mx-auto">
 
-                <div className="mb-5 text-center">
+                <div className="mb-7 text-center">
                     <NavLink className="hidden mb-3 sm:inline-block" to={ROUTES.HOME_PAGE}>
                         <img className="h-24" src="./loyalty_logo.png" alt=""/>
                     </NavLink>
                     <h3 className="mb-1 text-2xl text-coolGray-900 md:text-3xl font-bold">Register your account</h3>
                     <p className="text-lg text-coolGray-500 font-medium">Jour our community</p>
-                    <hr className='mt-1 mb-2'/>
+                    <hr className='mt-2 mb-2'/>
                 </div>
 
                 {(showDetailsForm) ? 

@@ -100,6 +100,7 @@ export function SignIn() {
                         </NavLink>
                         <h3 className="mb-2 text-2xl text-coolGray-900 md:text-3xl font-bold">Sign in to your account</h3>
                         <p className="text-lg text-coolGray-500 font-medium">Welcome back!</p>
+                        <hr className='mt-2 mb-2'/>
                     </div>
 
                     {(showDetailsForm) ?
