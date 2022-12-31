@@ -49,6 +49,13 @@ export function AddCard() {
           });
     }, [])
 
+    useEffect(() => {
+        if(scanningError === "Invalid QR Code, Try Entering Manually"){
+            //Remove Scanning
+            setHasCamera(false);
+        }
+    }, [scanningError])
+
     let formSubmitHandler = (event) => {
         event.preventDefault();
 
@@ -83,18 +90,18 @@ export function AddCard() {
             {(scanning) ? <ScanCard cardNumRef={cardNumRef} cardCVCRef={cardCVCRef} setScanning={setScanning} setScanningError={setScanningError}/> : ""}
 
             {(hasCamera) ? 
-                <div className="mb-6 md:flex">
+                <div className="mb-3 md:flex">
                     <button className="inline-block py-3 px-7 mt-2 mb-3 md:mr-3 w-full text-base text-white font-medium text-center leading-6 bg-gray-400 hover:bg-gray-500 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" onClick={(event) => scanCardHandler(event)}><i className="fa-solid fa-camera mr-2" />Scan Card</button>
                     <button type='submit' className="inline-block py-3 px-7 mt-2 mb-3 md:ml-3 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">Confirm</button>
                 </div>
                 :
-                <div className="mb-6 md:flex">
+                <div className="mb-3 md:flex">
                     <button type='submit' className="inline-block py-3 px-7 mt-2 mb-3 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">Confirm</button>
                 </div>
             }
 
-            <p className="text-center">
-                <button className="inline-block text-xs text-underline ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all">I don't have a Loyalty Card</button>
+            <p className="text-center mb-6">
+                <button className="inline-block text-xs underline ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all">I don't have a Loyalty Card</button>
             </p>
             
             <p className="text-center">
