@@ -1,6 +1,6 @@
 // React Imports
 import React from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 // Redux Imports
 
@@ -15,7 +15,7 @@ import { useZxing } from "react-zxing";
 //import './assets/bulma/css/bulma.min.css';
 
 export function ScanCard(props) {
-    const scanResult = useRef('');
+    const [barcode, setBarcode] = useState(null);
 
     useEffect(() => {
         console.log("COMPONENT RENDERED: ScanCard");
@@ -24,21 +24,21 @@ export function ScanCard(props) {
 
     const { ref } = useZxing({
         onResult(result) {
-            this.props.cardNumRef.current.value = result;
-            this.props.setScanning(false);
-            scanResult.current.value = result;
+            // this.props.cardNumRef.current.value = result;
+            // this.props.setScanning(false);
+            setBarcode(result);
         },
         onError(err) {
             console.log(err);
-            this.props.setScanning(false);
+            // this.props.setScanning(false);
         }
     });
 
     return (
-        <div className=''>
+        <div className='border-2 border-red-300'>
             <label className="block mb-4 text-coolGray-500 text-xxs" htmlFor="">Scan QR Code on Back of the Loyalty Card</label>
             <video ref={ref}/>
-            <p>{scanResult}</p>
+            <p>Result: {barcode}</p>
         </div>
     );
 }
