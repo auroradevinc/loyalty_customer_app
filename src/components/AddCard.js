@@ -100,7 +100,7 @@ export function AddCard() {
                 <input ref={cardCVCRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cvcCode" type="text" placeholder="Enter the Loyalty Card CVC" required/>
                 <p className="text-sm text-red-600 mt-1">{scanningError}</p>
             </div>
-            {(scanning) ? <ScanCard setScannedURL={setScannedURL} setScanningError={setScanningError}/> : ""}
+            {(scanning) ? <ScanCard setScannedURL={setScannedURL} setScanningError={setScanningError} setScanning={setScanning}/> : ""}
 
             {(hasCamera) ? 
                 <div className="mb-3 md:flex">
