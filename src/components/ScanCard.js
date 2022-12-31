@@ -22,11 +22,7 @@ export function ScanCard(props) {
             try {
                 let url = result.getText(); // www.url.com/signUp?card_id=cardNum&card_cvc=cardCVC
                 setResultText(url);
-                let query_param = url.split('?');
-                query_param = query_param[1].split('&');
-    
-                props.cardNumRef.current.value = query_param[0].split('=')[1]
-                props.cardCVCRef.current.value = query_param[1].split('=')[1]
+                props.setScannedURL(url);
                 props.setScanning(false);
             }
             catch(err) {

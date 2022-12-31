@@ -29,6 +29,7 @@ export function AddCard() {
     const cardCVCRef = useRef();
 
     const [scanning, setScanning] = useState(false);
+    const [scannedURL, setScannedURL] = useState('');
     const [scanningError, setScanningError] = useState('');
     const [hasCamera, setHasCamera] = useState(false);
 
@@ -48,6 +49,18 @@ export function AddCard() {
             }
           });
     }, [])
+
+    useEffect(() => {
+        try {
+            let query_param = scannedURL.split('?');
+            query_param = query_param[1].split('&');
+    
+            cardNumRef.current.value = query_param[0].split('=')[1];
+            cardCVCRef.current.value = query_param[1].split('=')[1];
+        } catch(e) {
+            console.log("COMPONENT AddCard: Invalid URL");
+        }
+    }, [scannedURL])
 
     useEffect(() => {
         if(scanningError === "Invalid QR Code, Try Entering Manually"){
@@ -87,7 +100,7 @@ export function AddCard() {
                 <input ref={cardCVCRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cvcCode" type="text" placeholder="Enter the Loyalty Card CVC" required/>
                 <p className="text-sm text-red-600 mt-1">{scanningError}</p>
             </div>
-            {(scanning) ? <ScanCard cardNumRef={cardNumRef} cardCVCRef={cardCVCRef} setScanning={setScanning} setScanningError={setScanningError}/> : ""}
+            {(scanning) ? <ScanCard setScannedURL={setScannedURL} setScanningError={setScanningError}/> : ""}
 
             {(hasCamera) ? 
                 <div className="mb-3 md:flex">
