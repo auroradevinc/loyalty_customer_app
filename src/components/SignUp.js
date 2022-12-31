@@ -36,8 +36,8 @@ export function SignUp() {
 
     const [cardDetails, setCardDetails] = useState(null);
 
-    const [showDetailsForm, setShowDetailsForm] = useState(true);
     const [showAddCardForm, setShowAddCardForm] = useState(true);
+    const [showDetailsForm, setShowDetailsForm] = useState(false);
     const [showVerificationForm, setShowVerificationForm] = useState(false);
 
     const [emailError, setEmailError] = useState('');
@@ -68,7 +68,8 @@ export function SignUp() {
     useEffect(() => {
         if(auth.hasLocalFetched && !auth.isAuthenticated){
             dispatch(setUpAuthState());
-            setShowDetailsForm(true);
+            setShowAddCardForm(true);
+            setShowDetailsForm(false);
             setShowVerificationForm(false);
             setEmailError("");
             setPhoneError("");
@@ -150,16 +151,18 @@ export function SignUp() {
             <div className="container px-4 mx-auto">
             <div className="max-w-lg mx-auto">
 
-                <div className="mb-7 text-center">
+                <div className="mb-5 text-center">
                     <NavLink className="hidden mb-3 sm:inline-block" to={ROUTES.HOME_PAGE}>
                         <img className="h-24" src="./loyalty_logo.png" alt=""/>
                     </NavLink>
-                    <h3 className="mb-2 text-2xl text-coolGray-900 md:text-3xl font-bold">Register your account</h3>
+                    <h3 className="mb-1 text-2xl text-coolGray-900 md:text-3xl font-bold">Register your account</h3>
                     <p className="text-lg text-coolGray-500 font-medium">Jour our community</p>
+                    <hr className='mt-1 mb-2'/>
                 </div>
 
                 {(showDetailsForm) ? 
                     <form onSubmit={formSubmitHandler}>
+                        <p className="mb-2 text-[1.4rem] text-loyaltyGold-100 font-semibold">Add Account Details</p>
                         <div className="mb-6">
                             <label className="block mb-2 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">Full Name</label>
                             <div className='flex justify-between items-center relative'>

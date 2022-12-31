@@ -26,6 +26,9 @@ export const saveCardDetails = createAsyncThunk(
   async (param) => {
     console.log("appSlice: saveCardDetails");
       try{
+        if(!(param.id && param.cvc)){ 
+          return {message: 'card details not present', type: "error", data: null};
+        }
         const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/verify-card?card_id=${param.id}&card_cvc=${param.cvc}`);
         if(res.data.type === "success"){ return {message: "card verified", type: "success", data: {id: param.id, cvc: param.cvc}}; }
         if(res.data.type === "error"){ return {message: "card not verified", type: "error", data: null}; }

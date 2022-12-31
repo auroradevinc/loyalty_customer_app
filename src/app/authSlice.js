@@ -22,6 +22,9 @@ const initialState = {
   confirmationCodeError: null,
   confirmationCodeSentError: null,
   
+  userSession: {
+    jwtToken: null
+  },
   user: null
 };
 
@@ -41,8 +44,12 @@ export const fetchUserFromLocal = createAsyncThunk(
     console.log("authSlice: fetchUserFromLocal");
     try {
       const session = await Auth.currentSession();
-      const user = await Auth.currentAuthenticatedUser();
-      return {message: "user fetched", type: "success", data: ((user && user.attributes) ? user.attributes : user)};
+      let user = await Auth.currentAuthenticatedUser();
+      user = ((user && user.attributes) ? user.attributes : user);
+
+      let jwtToken = (session) ? session.accessToken.jwtToken : null;
+
+      return {message: "user fetched", type: "success", data: {user: user, jwtToken: jwtToken}};
     }
     catch (err){
       return {message: err, type: "error", data: null};
@@ -86,7 +93,12 @@ export const signIn = createAsyncThunk(
     console.log("authSlice: signIn");
     try {
       const signInResponse = await Auth.signIn({username: param.username, password: param.password});
-      return {message: "successfully signed in", type: "success", data: ((signInResponse && signInResponse.attributes) ? signInResponse.attributes : signInResponse)};
+      let user = ((signInResponse && signInResponse.attributes) ? signInResponse.attributes : signInResponse);
+
+      let userSession  = ((signInResponse && signInResponse.signInUserSession) ? signInResponse.signInUserSession : null);
+      let jwtToken = (userSession) ? userSession.accessToken.jwtToken : null;
+
+      return {message: "successfully signed in", type: "success", data: {user: user, jwtToken: jwtToken}};
     }
     catch (err){
       return {message: err.message, type: "error", data: null};
@@ -168,7 +180,8 @@ export const authSlice = createSlice({
           if(action.payload.type === 'success'){
             console.log('\t Request Fulfilled', {type: 'autoSignIn/fulfilled', payload: action.payload});
             state.isAuthenticated = true;
-            state.user = action.payload.data;
+            state.user = action.payload.data.user;
+            state.userSession.jwtToken = action.payload.data.jwtToken;
             state.autoSignInError = null;
           }
           if(action.payload.type === 'error'){
@@ -190,7 +203,8 @@ export const authSlice = createSlice({
           } else {
             state.isAuthenticated = true; 
             state.hasLocalFetched = true;
-            state.user = action.payload.data;
+            state.user = action.payload.data.user;
+            state.userSession.jwtToken = action.payload.data.jwtToken;
           }
           console.log(`\t Message: ${action.payload.message}, Data: ${action.payload.data}`);
         });
@@ -236,7 +250,8 @@ export const authSlice = createSlice({
           } else { 
             state.isSignedIn = true;
             state.isAuthenticated = true; // no "User not confirmed error" implies user is confirmed and hence authenticated
-            state.user = action.payload.data;
+            state.user = action.payload.data.user;
+            state.userSession.jwtToken = action.payload.data.jwtToken;
           }
         });
         builder.addCase(signIn.rejected, (state, action) => {
