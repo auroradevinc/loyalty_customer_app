@@ -54,24 +54,26 @@ export function AddCard() {
     }, [])
 
     useEffect(() => {
-        try {
-            setScanningError("");
-            let query_param = scannedURL.split('?');
-            query_param = query_param[1].split('&');
-
-            let card = {
-                'id': query_param[0].split('=')[1],
-                'cvc': query_param[1].split('=')[1]
-            }
+        if(scannedURL.length > 0){
+            try {
+                setScanningError("");
+                let query_param = scannedURL.split('?');
+                query_param = query_param[1].split('&');
     
-            cardNumRef.current.value = card.id;
-            cardCVCRef.current.value = card.cvc;
-            console.log("COMPONENT AddCard: Scanned, Save Card Details");
-            dispatch(saveCardDetails(card));
-            setHasScannedOnce(true);
-        } catch(e) {
-            console.log("COMPONENT AddCard: Invalid URL");
-            setScanningError("Error Scanning Code, Try Entering Details Manually");
+                let card = {
+                    'id': query_param[0].split('=')[1],
+                    'cvc': query_param[1].split('=')[1]
+                }
+        
+                cardNumRef.current.value = card.id;
+                cardCVCRef.current.value = card.cvc;
+                console.log("COMPONENT AddCard: Scanned, Save Card Details");
+                dispatch(saveCardDetails(card));
+                setHasScannedOnce(true);
+            } catch(e) {
+                console.log("COMPONENT AddCard: Invalid URL");
+                setScanningError("Error Scanning Code, Try Entering Details Manually");
+            }
         }
     }, [scannedURL])
 
