@@ -91,15 +91,13 @@ export function AddCard() {
             if(app.hasCardDetails && app.isCardDetailsVerified){
                 console.log("COMPONENT AddCard: Has Card Details, Card Details Verified, Close Scanning");
                 //Remove Scanning
-                setHasCamera(true);
                 setScanning(false);
                 setScanningSuccess('Card Details Valid');
                 setScanningError('');
             }
             else {
                 console.log("COMPONENT AddCard: Card Details not saved and/or invalid, Open Scanning");
-                setHasCamera(true);
-                setScanning(true);
+                setScanning(false);
                 setScanningSuccess('');
                 setScanningError('Card Details InValid, Try Again');
             }
