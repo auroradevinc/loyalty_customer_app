@@ -22,21 +22,21 @@ export function ScanCard(props) {
             try {
                 let url = result.getText(); // www.url.com/signUp?card_id=cardNum&card_cvc=cardCVC
                 setResultText(url);
-                // let query_param = url.split('?');
-                // query_param = query_param[1].split('&');
+                let query_param = url.split('?');
+                query_param = query_param[1].split('&');
     
-                // this.props.cardNumRef.current.value = query_param[0].split('=')[1]
-                // this.props.cardCVCRef.current.value = query_param[1].split('=')[1]
-                this.props.setScanning(false);
+                props.cardNumRef.current.value = query_param[0].split('=')[1]
+                props.cardCVCRef.current.value = query_param[1].split('=')[1]
+                props.setScanning(false);
             }
             catch(err) {
-                //this.props.setScanningError("Invalid QR Code, Try Entering Manually");
-                this.props.setScanning(false);
+                props.setScanningError("Invalid QR Code, Try Entering Manually");
+                props.setScanning(false);
             }
         },
         onError(err) {
-            //this.props.setScanningError(err.message);
-            this.props.setScanning(false);
+            props.setScanningError(err.message);
+            props.setScanning(false);
         }
     });
 
