@@ -29,7 +29,9 @@ export function AddCard() {
 
     const [hasCamera, setHasCamera] = useState(false);
 
+
     const [scanning, setScanning] = useState(false);
+    const [hasScannedOnce, setHasScannedOnce] = useState(false);
     const [scannedURL, setScannedURL] = useState('');
     const [scanningError, setScanningError] = useState('');
     const [scanningSuccess, setScanningSuccess] = useState('');
@@ -66,6 +68,7 @@ export function AddCard() {
             cardCVCRef.current.value = card.cvc;
             console.log("COMPONENT AddCard: Scanned, Save Card Details");
             dispatch(saveCardDetails(card));
+            setHasScannedOnce(true);
         } catch(e) {
             console.log("COMPONENT AddCard: Invalid URL");
             setScanningError("Error Scanning Code, Try Entering Details Manually");
@@ -82,22 +85,24 @@ export function AddCard() {
     }, [scanningError])
 
     useEffect(() => {
-        if(app.hasCardDetails && app.isCardDetailsVerified){
-            console.log("COMPONENT AddCard: Has Card Details, Card Details Verified, Close Scanning");
-            //Remove Scanning
-            setHasCamera(true);
-            setScanning(false);
-            setScanningSuccess('Card Details Valid');
-            setScanningError('');
+        if(hasScannedOnce){
+            if(app.hasCardDetails && app.isCardDetailsVerified){
+                console.log("COMPONENT AddCard: Has Card Details, Card Details Verified, Close Scanning");
+                //Remove Scanning
+                setHasCamera(true);
+                setScanning(false);
+                setScanningSuccess('Card Details Valid');
+                setScanningError('');
+            }
+            else {
+                console.log("COMPONENT AddCard: Card Details not saved and/or invalid, Open Scanning");
+                setHasCamera(true);
+                setScanning(true);
+                setScanningSuccess('');
+                setScanningError('Card Details InValid, Try Again');
+            }
         }
-        // else {
-        //     console.log("COMPONENT AddCard: Card Details not saved and/or invalid, Open Scanning");
-        //     setHasCamera(true);
-        //     setScanning(true);
-        //     setScanningSuccess('');
-        //     setScanningError('Card Details InValid, Try Again');
-        // }
-    }, [app.hasCardDetails, app.isCardDetailsVerified])
+    }, [app.hasCardDetails, app.isCardDetailsVerified, hasScannedOnce])
 
     let formSubmitHandler = (event) => {
         event.preventDefault();
@@ -108,6 +113,7 @@ export function AddCard() {
         console.log(`COMPONENT AddCard: Add Card Form Submission. Card ID: ${cardNumber}, CVC Code: ${cardCVC}`);
 
         dispatch(saveCardDetails({'id': cardNumber, 'cvc': cardCVC}));
+        setHasScannedOnce(true);
     }
 
     let scanCardHandler = (event) => {
