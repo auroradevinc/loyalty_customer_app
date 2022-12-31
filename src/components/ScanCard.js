@@ -31,7 +31,7 @@ export function ScanCard(props) {
             }
         },
         onError(err) {
-            props.setScanningError(err.message);
+            props.setScanningError("Error Scanning Code, Try Entering Manually");
             props.setScanning(false);
         }
     });
