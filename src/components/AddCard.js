@@ -76,7 +76,7 @@ export function AddCard() {
         if(scanningError){
             console.log("COMPONENT AddCard: Scanning Error, Remove Scanning");
             //Remove Scanning
-            setHasCamera(false);
+            setHasCamera(true);
             setScanning(false);
         }
     }, [scanningError])
