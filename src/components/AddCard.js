@@ -33,6 +33,7 @@ export function AddCard() {
     const [scanning, setScanning] = useState(false);
     const [scannedURL, setScannedURL] = useState('');
     const [scanningError, setScanningError] = useState('');
+    const [scanningSuccess, setScanningSuccess] = useState('');
 
     useEffect(() => {
         console.log("COMPONENT RENDERED: AddCard");
@@ -55,9 +56,16 @@ export function AddCard() {
         try {
             let query_param = scannedURL.split('?');
             query_param = query_param[1].split('&');
+
+            let card = {
+                'id': query_param[0].split('=')[1],
+                'cvc': query_param[1].split('=')[1]
+            }
     
-            cardNumRef.current.value = query_param[0].split('=')[1];
-            cardCVCRef.current.value = query_param[1].split('=')[1];
+            cardNumRef.current.value = card.id;
+            cardCVCRef.current.value = card.cvc;
+            console.log("COMPONENT AddCard: Scanned, Save Card Details");
+            dispatch(saveCardDetails(card));
         } catch(e) {
             console.log("COMPONENT AddCard: Invalid URL");
         }
@@ -65,10 +73,29 @@ export function AddCard() {
 
     useEffect(() => {
         if(scanningError){
+            console.log("COMPONENT AddCard: Scanning Error, Remove Scanning");
             //Remove Scanning
             setHasCamera(false);
         }
     }, [scanningError])
+
+    useEffect(() => {
+        if(app.hasCardDetails && app.isCardDetailsVerified){
+            console.log("COMPONENT AddCard: Has Card Details, Card Details Verified, Close Scanning");
+            //Remove Scanning
+            setHasCamera(false);
+            setScanning(false);
+            setScanningSuccess('Card Details Valid');
+            setScanningError('');
+        }
+        else {
+            onsole.log("COMPONENT AddCard: Card Details not saved and/or invalid, Open Scanning");
+            setHasCamera(true);
+            setScanning(true);
+            setScanningSuccess('');
+            setScanningError('Card Details InValid, Try Again');
+        }
+    }, [app.hasCardDetails, app.isCardDetailsVerified])
 
     let formSubmitHandler = (event) => {
         event.preventDefault();
@@ -106,7 +133,9 @@ export function AddCard() {
 
                 </div>
                 <p className="text-sm text-red-600 mt-1">{scanningError}</p>
+                <p className="text-sm text-green-600 mt-1">{scanningSuccess}</p>
             </div>
+            
             {(scanning) ? <ScanCard setScannedURL={setScannedURL} setScanningError={setScanningError} setScanning={setScanning}/> : ""}
 
             {(hasCamera) ? 

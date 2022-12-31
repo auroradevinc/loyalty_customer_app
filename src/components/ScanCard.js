@@ -15,19 +15,20 @@ import { useZxing } from "react-zxing";
 //import './assets/bulma/css/bulma.min.css';
 
 export function ScanCard(props) {
-    const [resultText, setResultText] = useState('');
+    // const [resultText, setResultText] = useState('');
 
     const { ref } = useZxing({
         onResult(result) {
             let url = result.getText(); // www.url.com/signUp?card_id=cardNum&card_cvc=cardCVC
-            //setResultText(url);
+            
+            // ---------|
+            // IMPORTANT: React Zxing can only update one state variable, more than one will cause errors
+            // ---------|
+            //setResultText(url); 
             props.setScannedURL(url);
-            // props.setScanning(false);
         },
         onError(err) {
-            //props.setScanningError(err);
-            //props.setScanningError("Error Scanning Code, Try Entering Details Manually");
-            //props.setScanning(false);
+            props.setScanningError("Error Scanning Code, Try Entering Details Manually");
         }
     });
 
@@ -39,7 +40,7 @@ export function ScanCard(props) {
         <div className='border-2 border-red-300'>
             <label className="block mb-4 text-coolGray-500 text-xxs" htmlFor="">Scan QR Code on Back of the Loyalty Card</label>
             <video ref={ref}/>
-            <p>Result: {resultText}</p>
+            {/* <p>Result: {resultText}</p> */}
         </div>
     );
 }
