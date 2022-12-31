@@ -170,7 +170,11 @@ export function Navbar() {
                             <ul className="py-6">
                                 <li><NavLink className={`block mx-auto py-3 px-4 w-fit text-coolGray-500 hover:text-loyaltyGold-100 font-medium hover:bg-coolGray-50 transition-all ${homeNavOptionClassName}`} to={ROUTES.HOME_PAGE}><i className="fa-solid fa-house mr-3"></i>Home</NavLink></li>
                                 <li><NavLink className={`block mx-auto py-3 px-4 w-fit text-coolGray-500 hover:text-loyaltyGold-100 font-medium hover:bg-coolGray-50 transition-all ${promosNavOptionClassName}`} to={ROUTES.PROMOS}><i className="fa-solid fa-tags mr-3"></i>Promos</NavLink></li>
-                                <li><NavLink className={`block mx-auto py-3 px-4 w-fit text-coolGray-500 hover:text-loyaltyGold-100 font-medium hover:bg-coolGray-50 transition-all ${settingsNavOptionClassName}`} to={ROUTES.SETTINGS}><i className="fa-solid fa-gear mr-3"></i>Settings</NavLink></li>
+                                {!(auth.isAuthenticated) ? 
+                                    <li><NavLink className={`block mx-auto py-3 px-4 w-fit text-coolGray-500 hover:text-loyaltyGold-100 font-medium hover:bg-coolGray-50 transition-all ${settingsNavOptionClassName}`} to={ROUTES.SETTINGS}><i className="fa-solid fa-gear mr-3"></i>Settings</NavLink></li>
+                                    : 
+                                    ""
+                                }
                             </ul>
                             <div className="flex flex-wrap">
                                 <div className="w-full mb-2">

@@ -26,7 +26,7 @@ export function ScanCard(props) {
         onResult(result) {
             // this.props.cardNumRef.current.value = result;
             // this.props.setScanning(false);
-            setBarcode(result);
+            setBarcode(result.getText());
         },
         onError(err) {
             console.log(err);
