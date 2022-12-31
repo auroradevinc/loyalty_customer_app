@@ -90,13 +90,13 @@ export function AddCard() {
             setScanningSuccess('Card Details Valid');
             setScanningError('');
         }
-        else {
-            console.log("COMPONENT AddCard: Card Details not saved and/or invalid, Open Scanning");
-            setHasCamera(true);
-            setScanning(true);
-            setScanningSuccess('');
-            setScanningError('Card Details InValid, Try Again');
-        }
+        // else {
+        //     console.log("COMPONENT AddCard: Card Details not saved and/or invalid, Open Scanning");
+        //     setHasCamera(true);
+        //     setScanning(true);
+        //     setScanningSuccess('');
+        //     setScanningError('Card Details InValid, Try Again');
+        // }
     }, [app.hasCardDetails, app.isCardDetailsVerified])
 
     let formSubmitHandler = (event) => {
@@ -125,6 +125,7 @@ export function AddCard() {
                 <div className='flex justify-between items-center relative'>
                     <input ref={cardNumRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cardID" type="text" placeholder="Enter the Loyalty Card Number" required/>
                     {scanningSuccess ? <span className='absolute right-4'><i className="fa-solid fa-check" style={{color: '#48C774'}}></i></span> : ""}
+                    {scanningError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
                 </div>
             </div>
             <div className="mb-6">
@@ -133,6 +134,7 @@ export function AddCard() {
                 <div className='flex justify-between items-center relative'>
                     <input ref={cardCVCRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cvcCode" type="text" placeholder="Enter the Loyalty Card CVC" required/>
                     {scanningSuccess ? <span className='absolute right-4'><i className="fa-solid fa-check" style={{color: '#48C774'}}></i></span> : ""}
+                    {scanningError ? <exclamation className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></exclamation> : ""}
                 </div>
                 <p className="text-sm text-red-600 mt-1">{scanningError}</p>
                 <p className="text-sm text-green-600 mt-1">{scanningSuccess}</p>
