@@ -54,6 +54,7 @@ export function AddCard() {
 
     useEffect(() => {
         try {
+            setScanningError("");
             let query_param = scannedURL.split('?');
             query_param = query_param[1].split('&');
 
@@ -68,6 +69,7 @@ export function AddCard() {
             dispatch(saveCardDetails(card));
         } catch(e) {
             console.log("COMPONENT AddCard: Invalid URL");
+            setScanningError("Error Scanning Code, Try Entering Details Manually");
         }
     }, [scannedURL])
 
@@ -76,6 +78,7 @@ export function AddCard() {
             console.log("COMPONENT AddCard: Scanning Error, Remove Scanning");
             //Remove Scanning
             setHasCamera(false);
+            setScanning(false);
         }
     }, [scanningError])
 
