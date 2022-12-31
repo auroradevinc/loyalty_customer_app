@@ -15,22 +15,23 @@ import { useZxing } from "react-zxing";
 //import './assets/bulma/css/bulma.min.css';
 
 export function ScanCard(props) {
-    const [barcode, setBarcode] = useState(null);
-
     useEffect(() => {
         console.log("COMPONENT RENDERED: ScanCard");
     }, [])
 
-
     const { ref } = useZxing({
         onResult(result) {
-            // this.props.cardNumRef.current.value = result;
-            // this.props.setScanning(false);
-            setBarcode(result.getText());
+            let url = result.getText(); // www.url.com/signUp?card_id=cardNum&card_cvc=cardCVC
+            let query_param = url.split('?');
+            query_param = query_param.split('&');
+
+            this.props.cardNumRef.current.value = query_param[0].split('=')[1]
+            this.props.cardCVCRef.current.value = query_param[1].split('=')[1]
+            this.props.setScanning(false);
         },
         onError(err) {
-            console.log(err);
-            // this.props.setScanning(false);
+            this.props.setScanningError(err.message);
+            this.props.setScanning(false);
         }
     });
 
@@ -38,7 +39,6 @@ export function ScanCard(props) {
         <div className='border-2 border-red-300'>
             <label className="block mb-4 text-coolGray-500 text-xxs" htmlFor="">Scan QR Code on Back of the Loyalty Card</label>
             <video ref={ref}/>
-            <p>Result: {barcode}</p>
         </div>
     );
 }

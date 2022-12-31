@@ -29,6 +29,7 @@ export function AddCard() {
     const cardCVCRef = useRef();
 
     const [scanning, setScanning] = useState(false);
+    const [scanningError, setScanningError] = useState('');
     const [hasCamera, setHasCamera] = useState(false);
 
     useEffect(() => {
@@ -77,8 +78,9 @@ export function AddCard() {
                 <label className="block mb-1 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">CVC</label>
                 {/* <label className="block mb-2 text-coolGray-500 text-xxs" htmlFor="">Located back of Loyalty Card</label> */}
                 <input ref={cardCVCRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cvcCode" type="text" placeholder="Enter the Loyalty Card CVC" required/>
+                <p className="text-sm text-red-600 mt-1">{scanningError}</p>
             </div>
-            {(scanning) ? <ScanCard /> : ""}
+            {(scanning) ? <ScanCard cardNumRef={cardNumRef} cardCVCRef={cardCVCRef} setScanning={setScanning} setScanningError={setScanningError}/> : ""}
 
             {(hasCamera) ? 
                 <div className="mb-6 md:flex">
