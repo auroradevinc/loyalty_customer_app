@@ -23,7 +23,7 @@ export function ScanCard(props) {
         onResult(result) {
             let url = result.getText(); // www.url.com/signUp?card_id=cardNum&card_cvc=cardCVC
             let query_param = url.split('?');
-            query_param = query_param.split('&');
+            query_param = query_param[1].split('&');
 
             this.props.cardNumRef.current.value = query_param[0].split('=')[1]
             this.props.cardCVCRef.current.value = query_param[1].split('=')[1]
