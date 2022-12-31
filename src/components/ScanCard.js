@@ -19,21 +19,21 @@ export function ScanCard(props) {
 
     const { ref } = useZxing({
         onResult(result) {
-            try {
-                let url = result.getText(); // www.url.com/signUp?card_id=cardNum&card_cvc=cardCVC
-                setResultText(url);
-                // props.setScannedURL(url);
-                // props.setScanning(false);
-            }
-            catch(err) {
-                props.setScanningError("Invalid QR Code, Try Entering Details Manually");
-                props.setScanning(false);
-            }
+            let url = result.getText(); // www.url.com/signUp?card_id=cardNum&card_cvc=cardCVC
+            setResultText(url);
+            // try {
+            //     // props.setScannedURL(url);
+            //     // props.setScanning(false);
+            // }
+            // catch(err) {
+            //     props.setScanningError("Invalid QR Code, Try Entering Details Manually");
+            //     props.setScanning(false);
+            // }
         },
         onError(err) {
-            props.setScanningError(err);
+            //props.setScanningError(err);
             //props.setScanningError("Error Scanning Code, Try Entering Details Manually");
-            props.setScanning(false);
+            //props.setScanning(false);
         }
     });
 
