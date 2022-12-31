@@ -28,10 +28,11 @@ export function AddCard() {
     const cardNumRef = useRef();
     const cardCVCRef = useRef();
 
+    const [hasCamera, setHasCamera] = useState(false);
+
     const [scanning, setScanning] = useState(false);
     const [scannedURL, setScannedURL] = useState('');
     const [scanningError, setScanningError] = useState('');
-    const [hasCamera, setHasCamera] = useState(false);
 
     useEffect(() => {
         console.log("COMPONENT RENDERED: AddCard");
@@ -63,7 +64,7 @@ export function AddCard() {
     }, [scannedURL])
 
     useEffect(() => {
-        if(scanningError === "Invalid QR Code, Try Entering Manually"){
+        if(scanningError){
             //Remove Scanning
             setHasCamera(false);
         }
@@ -92,12 +93,18 @@ export function AddCard() {
             <div className="mb-6">
                 <label className="block mb-1 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">Card Number</label>
                 {/* <label className="block mb-2 text-coolGray-500 text-xxs" htmlFor="">Located back of Loyalty Card</label> */}
-                <input ref={cardNumRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cardID" type="text" placeholder="Enter the Loyalty Card Number" required/>
+                <div className='flex justify-between items-center relative'>
+                    <input ref={cardNumRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cardID" type="text" placeholder="Enter the Loyalty Card Number" required/>
+
+                </div>
             </div>
             <div className="mb-6">
                 <label className="block mb-1 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">CVC</label>
                 {/* <label className="block mb-2 text-coolGray-500 text-xxs" htmlFor="">Located back of Loyalty Card</label> */}
-                <input ref={cardCVCRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cvcCode" type="text" placeholder="Enter the Loyalty Card CVC" required/>
+                <div className='flex justify-between items-center relative'>
+                    <input ref={cardCVCRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cvcCode" type="text" placeholder="Enter the Loyalty Card CVC" required/>
+
+                </div>
                 <p className="text-sm text-red-600 mt-1">{scanningError}</p>
             </div>
             {(scanning) ? <ScanCard setScannedURL={setScannedURL} setScanningError={setScanningError} setScanning={setScanning}/> : ""}
