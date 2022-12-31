@@ -39,6 +39,21 @@ export const saveCardDetails = createAsyncThunk(
   }
 );
 
+export const assignNewCard = createAsyncThunk(
+  'assignNewCard',
+  async (param) => {
+    console.log("appSlice: assignNewCard");
+      try{
+        const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/assign-new-card`);
+        if(res.data.type === "success"){ return {message: "card assigned", type: "success", data: res.data.data.card}; }
+        if(res.data.type === "error"){ return {message: "card not assigned", type: "error", data: null}; }
+      }
+      catch(err){
+        return {message: err.message, type: "error", data: null};
+      }
+  }
+);
+
 export const appSlice = createSlice({
     name: 'app',
     initialState,
@@ -73,6 +88,27 @@ export const appSlice = createSlice({
           }
         });
         builder.addCase(saveCardDetails.rejected, (state, action) => {
+          console.log('\t Request Rejected', action);
+          state.verifyCardDetailsError = action.payload.message;
+        });
+
+        //assignNewCard
+        builder.addCase(assignNewCard.pending, (state, action) => {
+          console.log("appSlice: assignNewCard Requested");
+          console.log('\t Request Pending', action);
+        });
+        builder.addCase(assignNewCard.fulfilled, (state, action) => {
+          console.log('\t Request Fulfilled', action);
+          if(action.payload.type === 'error'){ 
+            state.verifyCardDetailsError = action.payload.message;
+          } else {
+            state.card.id = action.payload.data.id;
+            state.card.cvc = action.payload.data.cvc;
+            state.hasCardDetails = true;
+            state.isCardDetailsVerified = true;
+          }
+        });
+        builder.addCase(assignNewCard.rejected, (state, action) => {
           console.log('\t Request Rejected', action);
           state.verifyCardDetailsError = action.payload.message;
         });

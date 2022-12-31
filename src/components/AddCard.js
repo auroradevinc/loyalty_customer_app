@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
-import { appStore, saveCardDetails } from '../app/appSlice';
+import { appStore, saveCardDetails, assignNewCard } from '../app/appSlice';
 
 // Modules Imports
 import { NavLink, useNavigate } from "react-router-dom";
@@ -94,6 +94,11 @@ export function AddCard() {
                 setScanning(false);
                 setScanningSuccess('Card Details Valid');
                 setScanningError('');
+
+                if(app.hasAssignedNewCard){
+                    cardNumRef.current.value = app.card.id;
+                    cardCVCRef.current.value = app.card.cvc;
+                }
             }
             else {
                 console.log("COMPONENT AddCard: Card Details not saved and/or invalid, Open Scanning");
@@ -102,7 +107,7 @@ export function AddCard() {
                 setScanningError('Card Details InValid, Try Again');
             }
         }
-    }, [app.hasCardDetails, app.isCardDetailsVerified, hasScannedOnce])
+    }, [app.hasCardDetails, app.isCardDetailsVerified, app.hasAssignedNewCard, hasScannedOnce])
 
     let formSubmitHandler = (event) => {
         event.preventDefault();
@@ -118,8 +123,14 @@ export function AddCard() {
 
     let scanCardHandler = (event) => {
         event.preventDefault();
-        console.log("COMPONENT AddCard: Scan Card Button Clicked");
+        console.log("COMPONENT AddCard: Scan Card  Clicked");
         setScanning(true);
+    }
+
+    let assignNewCardHandler = (event) => {
+        event.preventDefault();
+        console.log("COMPONENT AddCard: Assign New Card Clicked");
+        dispatch(assignNewCard());
     }
 
     return (
@@ -160,7 +171,7 @@ export function AddCard() {
             }
 
             <p className="text-center mb-6">
-                <button className="inline-block text-xs underline ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all">I don't have a Loyalty Card</button>
+                <button className="inline-block text-xs underline ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all" onClick={(event) => {}}>I don't have a Loyalty Card</button>
             </p>
             
             <hr className='mb-2 mb-2'/>
