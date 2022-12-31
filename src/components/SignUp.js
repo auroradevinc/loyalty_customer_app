@@ -147,7 +147,7 @@ export function SignUp() {
     }
 
     return (
-        <section className="bg-white bg-opacity-0">
+        <section className="bg-white bg-opacity-0 min-h-[70vh]">
             <div className="container px-4 mx-auto">
             <div className="max-w-lg mx-auto">
 
@@ -199,8 +199,8 @@ export function SignUp() {
 
                         <button type='submit' className="inline-block py-3 px-7 mt-2 mb-6 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">Sign Up</button>
                         
+                        <hr className='mb-2 mb-2'/>
                         <p className="text-center">
-                            <hr className='mb-2 mb-2'/>
                             <span className="text-xs font-medium text-coolGray-800">Already have an account?</span>
                             <NavLink className="inline-block text-xs ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all" to={ROUTES.SIGN_IN}>Sign In</NavLink>
                         </p>

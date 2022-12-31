@@ -43,8 +43,8 @@ export function AddCard() {
                 setHasCamera(true);
             }
             else {
-                console.log(`COMPONENT AddCard: Device does NOT Camera`);
-                setHasCamera(true);
+                console.log(`COMPONENT AddCard: Device does NOT have Camera`);
+                setHasCamera(false);
             }
           });
     }, [])
@@ -104,8 +104,8 @@ export function AddCard() {
                 <button className="inline-block text-xs underline ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all">I don't have a Loyalty Card</button>
             </p>
             
+            <hr className='mb-2 mb-2'/>
             <p className="text-center">
-                <hr className='mb-2 mb-2'/>
                 <span className="text-xs font-medium text-coolGray-800">Already have an account?</span>
                 <NavLink className="inline-block text-xs ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all" to={ROUTES.SIGN_IN}>Sign In</NavLink>
             </p>
