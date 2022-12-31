@@ -89,7 +89,7 @@ export function AddCard() {
             setScanningError('');
         }
         else {
-            onsole.log("COMPONENT AddCard: Card Details not saved and/or invalid, Open Scanning");
+            console.log("COMPONENT AddCard: Card Details not saved and/or invalid, Open Scanning");
             setHasCamera(true);
             setScanning(true);
             setScanningSuccess('');
