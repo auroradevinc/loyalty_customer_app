@@ -105,7 +105,7 @@ export function AddCard() {
             setScanningSuccess("");
             setScanningError(app.cardDetailsSavingError);
         }
-    }, [app.hasCardDetailsSaved, app.hasCardDetailsSavingError, app.cardDetailsSavingError, app.card])
+    }, [app.isCardDetailsSaving, app.hasCardDetailsSaved, app.hasCardDetailsSavingError, app.cardDetailsSavingError, app.card])
 
     useEffect(() => {
         if(app.hasCardDetailsVerified){
@@ -119,7 +119,7 @@ export function AddCard() {
             setScanningSuccess("");
             setScanningError(app.verifyCardDetailsError);
         }
-    }, [app.hasCardDetailsVerified, app.hasCardDetailsVerifyingError, app.verifyCardDetailsError])
+    }, [app.isCardDetailsVerifying, app.hasCardDetailsVerified, app.hasCardDetailsVerifyingError, app.verifyCardDetailsError])
 
     useEffect(() => {
         if(app.hasNewCardDetailsAssigned){
@@ -134,19 +134,19 @@ export function AddCard() {
             setScanningSuccess("");
             setScanningError(app.newCardDetailsAssigningError);
         }
-    }, [app.hasNewCardDetailsAssigned, app.hasNewCardDetailsAssigningError, app.newCardDetailsAssigningError, app.card])
+    }, [app.isCardDetailsAssigning, app.hasNewCardDetailsAssigned, app.hasNewCardDetailsAssigningError, app.newCardDetailsAssigningError])
 
     let formSubmitHandler = (event) => {
         event.preventDefault();
 
         if(scanningSuccess === 'Verified'){
-
+            console.log(`COMPONENT AddCard: Next Card Form Submission`);
         }
         else {
             let cardNumber = cardNumRef.current.value;
             let cardCVC = cardCVCRef.current.value;
             
-            console.log(`COMPONENT AddCard: Add Card Form Submission. Card ID: ${cardNumber}, CVC Code: ${cardCVC}`);
+            console.log(`COMPONENT AddCard: Verify Card Form Submission. Card ID: ${cardNumber}, CVC Code: ${cardCVC}`);
     
             dispatch(saveCardDetails({'id': cardNumber, 'cvc': cardCVC}));
         }
@@ -171,7 +171,7 @@ export function AddCard() {
                 <label className="block mb-1 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">Card Number</label>
                 {/* <label className="block mb-2 text-coolGray-500 text-xxs" htmlFor="">Located back of Loyalty Card</label> */}
                 <div className='flex justify-between items-center relative'>
-                    <input ref={cardNumRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cardID" type="text" placeholder="Enter the Loyalty Card Number" required/>
+                    <input ref={cardNumRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cardID" type="text" placeholder="Enter the Loyalty Card Number" required onChange={() => {setScanningSuccess(''); setAddCardButton('Verify');}}/>
                     {scanningSuccess ? <span className='absolute right-4'><i className="fa-solid fa-check" style={{color: '#48C774'}}></i></span> : ""}
                     {scanningError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
                 </div>
@@ -180,7 +180,7 @@ export function AddCard() {
                 <label className="block mb-1 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">CVC</label>
                 {/* <label className="block mb-2 text-coolGray-500 text-xxs" htmlFor="">Located back of Loyalty Card</label> */}
                 <div className='flex justify-between items-center relative'>
-                    <input ref={cardCVCRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cvcCode" type="text" placeholder="Enter the Loyalty Card CVC" required/>
+                    <input ref={cardCVCRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cvcCode" type="text" placeholder="Enter the Loyalty Card CVC" required onChange={() => {setScanningSuccess(''); setAddCardButton('Verify');}}/>
                     {scanningSuccess ? <span className='absolute right-4'><i className="fa-solid fa-check" style={{color: '#48C774'}}></i></span> : ""}
                     {scanningError ? <exclamation className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></exclamation> : ""}
                 </div>

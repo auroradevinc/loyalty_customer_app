@@ -91,7 +91,7 @@ export const appSlice = createSlice({
           state.hasSignUpDetails = true;
         },
         saveCardDetails: (state, action) => {
-          console.log("appSlice: saveCardDetails", state, action);
+          console.log("appSlice: saveCardDetails");
           console.log('\t Request Fulfilled', {type: 'saveCardDetails/fulfilled', payload: action.payload});
           
           state.card = action.payload;
