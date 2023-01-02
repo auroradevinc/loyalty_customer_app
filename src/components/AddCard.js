@@ -24,33 +24,20 @@ export function AddCard() {
 
     const navigate = useNavigate();
 
-    const cardNumRef = useRef();
-    const cardCVCRef = useRef();
+    const cardNumRef = useRef();                                 // Reference to store card id
+    const cardCVCRef = useRef();                                 // Reference to store card cvc/security code
 
-    const [hasCamera, setHasCamera] = useState(false);
+    const [hasCamera, setHasCamera] = useState(false);           // Toggles if device camera is available
 
-
-    const [scanning, setScanning] = useState(false);
-    const [hasScannedOnce, setHasScannedOnce] = useState(false);
-    const [scannedURL, setScannedURL] = useState('');
-    const [scanningError, setScanningError] = useState('');
-    const [scanningSuccess, setScanningSuccess] = useState('');
+    const [scanning, setScanning] = useState(false);             // Toggles Scan component when scan button clicked
+    const [hasScannedOnce, setHasScannedOnce] = useState(false); // Toggles when scanning performed atleast once
+    const [scannedURL, setScannedURL] = useState('');            // Stores scanned URL
+    const [scanningError, setScanningError] = useState('');      // Stores scanned error
+    const [scanningSuccess, setScanningSuccess] = useState('');  // Stores scanned success
 
     useEffect(() => {
         console.log("COMPONENT RENDERED: AddCard");
-
-        // Check if device hasCamera, Only if yes, Scan Card button is visible
-        navigator.mediaDevices.enumerateDevices().then(devices => {
-            const cameras = devices.filter(device => device.kind === 'videoinput');
-            if(cameras.length > 0){
-                console.log(`COMPONENT AddCard: Device has Camera`);
-                setHasCamera(true);
-            }
-            else {
-                console.log(`COMPONENT AddCard: Device does NOT have Camera`);
-                setHasCamera(false);
-            }
-          });
+        setHasCamera(checkDeviceCamera());
     }, [])
 
     useEffect(() => {
@@ -80,34 +67,57 @@ export function AddCard() {
     useEffect(() => {
         if(scanningError){
             console.log("COMPONENT AddCard: Scanning Error, Remove Scanning");
-            //Remove Scanning
-            setHasCamera(true);
+            // Reset Camera Button, Remove Scanning
+            // User can enter detials manually or try scanning again
+            setHasCamera(checkDeviceCamera());
             setScanning(false);
         }
     }, [scanningError])
 
     useEffect(() => {
-        if(hasScannedOnce){
+        if(hasScannedOnce && !app.isCardDetailsSaving){
             if(app.hasCardDetails && app.isCardDetailsVerified){
                 console.log("COMPONENT AddCard: Has Card Details, Card Details Verified, Close Scanning");
                 //Remove Scanning
                 setScanning(false);
                 setScanningSuccess('Card Details Valid');
                 setScanningError('');
-
-                if(app.hasAssignedNewCard){
-                    cardNumRef.current.value = app.card.id;
-                    cardCVCRef.current.value = app.card.cvc;
-                }
             }
             else {
                 console.log("COMPONENT AddCard: Card Details not saved and/or invalid, Open Scanning");
                 setScanning(false);
                 setScanningSuccess('');
                 setScanningError('Card Details InValid, Try Again');
+                
+                // Remove details
+                cardNumRef.current.value = null;
+                cardCVCRef.current.value = null;
             }
         }
-    }, [app.hasCardDetails, app.isCardDetailsVerified, app.hasAssignedNewCard, hasScannedOnce])
+
+        if(!app.isCardDetailsAssigning && app.hasAssignedNewCard){
+            console.log("COMPONENT AddCard: Card Details Assigned, Close Scanning");
+            //Remove Scanning
+            setScanning(false);
+            setScanningSuccess('Card Details Valid');
+            setScanningError('');
+        }
+    }, [app.hasCardDetails, app.isCardDetailsVerified, app.hasAssignedNewCard, app.isCardDetailsSaving, app.isCardDetailsAssigning, hasScannedOnce])
+
+    let checkDeviceCamera = () => {
+        // Check if device hasCamera, Only if yes, Scan Card button is visible
+        navigator.mediaDevices.enumerateDevices().then(devices => {
+            const cameras = devices.filter(device => device.kind === 'videoinput');
+            if(cameras.length > 0){
+                console.log(`COMPONENT AddCard: Device has Camera`);
+                return true;
+            }
+            else {
+                console.log(`COMPONENT AddCard: Device does NOT have Camera`);
+                return false;
+            }
+          });
+    }
 
     let formSubmitHandler = (event) => {
         event.preventDefault();

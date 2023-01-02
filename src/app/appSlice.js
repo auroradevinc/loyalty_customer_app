@@ -11,7 +11,11 @@ const initialState = {
   auth: {
     signUp: null,
   },
+  
+  isCardDetailsSaving: false, //Loading variable for save card details etc.
+  isCardDetailsAssigning: false, //Loading variable for new assign card details
   hasCardDetails: false,
+  hasAssignedNewCard: false,
   isCardDetailsVerified: false,
   verifyCardDetailsError: null,
   card: {
@@ -75,42 +79,51 @@ export const appSlice = createSlice({
         builder.addCase(saveCardDetails.pending, (state, action) => {
           console.log("appSlice: saveCardDetails Requested");
           console.log('\t Request Pending', action);
+          state.isCardDetailsSaving = true;
         });
         builder.addCase(saveCardDetails.fulfilled, (state, action) => {
           console.log('\t Request Fulfilled', action);
           if(action.payload.type === 'error'){ 
             state.verifyCardDetailsError = action.payload.message;
+            state.isCardDetailsSaving = false;
           } else {
             state.card.id = action.payload.data.id;
             state.card.cvc = action.payload.data.cvc;
             state.hasCardDetails = true;
             state.isCardDetailsVerified = true;
+            state.isCardDetailsSaving = false;
           }
         });
         builder.addCase(saveCardDetails.rejected, (state, action) => {
           console.log('\t Request Rejected', action);
           state.verifyCardDetailsError = action.payload.message;
+          state.isCardDetailsSaving = false;
         });
 
         //assignNewCard
         builder.addCase(assignNewCard.pending, (state, action) => {
           console.log("appSlice: assignNewCard Requested");
           console.log('\t Request Pending', action);
+          state.isCardDetailsAssigning = true;
         });
         builder.addCase(assignNewCard.fulfilled, (state, action) => {
           console.log('\t Request Fulfilled', action);
           if(action.payload.type === 'error'){ 
             state.verifyCardDetailsError = action.payload.message;
+            state.isCardDetailsAssigning = false;
           } else {
             state.card.id = action.payload.data.id;
             state.card.cvc = action.payload.data.cvc;
             state.hasCardDetails = true;
             state.isCardDetailsVerified = true;
+            state.hasAssignedNewCard = true;
+            state.isCardDetailsAssigning = false;
           }
         });
         builder.addCase(assignNewCard.rejected, (state, action) => {
           console.log('\t Request Rejected', action);
           state.verifyCardDetailsError = action.payload.message;
+          state.isCardDetailsAssigning = false;
         });
     }
   });
