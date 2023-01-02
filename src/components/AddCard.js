@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
-import { appStore, saveCardDetails, assignNewCard } from '../app/appSlice';
+import { appStore, saveCardDetails, verifyCardDetails, assignNewCardDetails } from '../app/appSlice';
 
 // Modules Imports
 import { NavLink, useNavigate } from "react-router-dom";
@@ -28,12 +28,27 @@ export function AddCard() {
     const cardCVCRef = useRef();                                 // Reference to store card cvc/security code
 
     const [hasCamera, setHasCamera] = useState(false);           // Toggles if device camera is available
-
+    const [addCardButton, setAddCardButton] = useState('Verify');// Stores state of card button(Possible values: 'verify' and 'next')
     const [scanning, setScanning] = useState(false);             // Toggles Scan component when scan button clicked
     const [hasScannedOnce, setHasScannedOnce] = useState(false); // Toggles when scanning performed atleast once
     const [scannedURL, setScannedURL] = useState('');            // Stores scanned URL
     const [scanningError, setScanningError] = useState('');      // Stores scanned error
     const [scanningSuccess, setScanningSuccess] = useState('');  // Stores scanned success
+
+    let checkDeviceCamera = () => {
+        // Check if device hasCamera, Only if yes, Scan Card button is visible
+        navigator.mediaDevices.enumerateDevices().then(devices => {
+            const cameras = devices.filter(device => device.kind === 'videoinput');
+            if(cameras.length > 0){
+                console.log(`COMPONENT AddCard: Device has Camera`);
+                return true;
+            }
+            else {
+                console.log(`COMPONENT AddCard: Device does NOT have Camera`);
+                return false;
+            }
+          });
+    }
 
     useEffect(() => {
         console.log("COMPONENT RENDERED: AddCard");
@@ -42,6 +57,7 @@ export function AddCard() {
 
     useEffect(() => {
         if(scannedURL.length > 0){
+            console.log(`COMPONENT AddCard: Scanned URL: ${scannedURL}`);
             try {
                 setScanningError("");
                 let query_param = scannedURL.split('?');
@@ -54,7 +70,7 @@ export function AddCard() {
         
                 cardNumRef.current.value = card.id;
                 cardCVCRef.current.value = card.cvc;
-                console.log("COMPONENT AddCard: Scanned, Save Card Details");
+                console.log("COMPONENT AddCard: Saving Card Details");
                 dispatch(saveCardDetails(card));
                 setHasScannedOnce(true);
             } catch(e) {
@@ -75,49 +91,43 @@ export function AddCard() {
     }, [scanningError])
 
     useEffect(() => {
-        if(hasScannedOnce && !app.isCardDetailsSaving){
-            if(app.hasCardDetails && app.isCardDetailsVerified){
-                console.log("COMPONENT AddCard: Has Card Details, Card Details Verified, Close Scanning");
-                //Remove Scanning
-                setScanning(false);
-                setScanningSuccess('Card Details Valid');
-                setScanningError('');
-            }
-            else {
-                console.log("COMPONENT AddCard: Card Details not saved and/or invalid, Open Scanning");
-                setScanning(false);
-                setScanningSuccess('');
-                setScanningError('Card Details InValid, Try Again');
-                
-                // Remove details
-                cardNumRef.current.value = null;
-                cardCVCRef.current.value = null;
-            }
+        if(app.hasCardDetailsSaved){
+            console.log("COMPONENT AddCard: Verify Card Details");
+            dispatch(verifyCardDetails(app.card));
         }
 
-        if(!app.isCardDetailsAssigning && app.hasAssignedNewCard){
-            console.log("COMPONENT AddCard: Card Details Assigned, Close Scanning");
-            //Remove Scanning
-            setScanning(false);
-            setScanningSuccess('Card Details Valid');
-            setScanningError('');
+        if(app.hasCardDetailsSavingError){
+            console.log("COMPONENT AddCard: Card Details Saving Error");
+            setScanningSuccess("");
+            setScanningError(app.cardDetailsSavingError);
         }
-    }, [app.hasCardDetails, app.isCardDetailsVerified, app.hasAssignedNewCard, app.isCardDetailsSaving, app.isCardDetailsAssigning, hasScannedOnce])
+    }, [app.hasCardDetailsSaved, app.hasCardDetailsSavingError, app.cardDetailsSavingError, app.card])
 
-    let checkDeviceCamera = () => {
-        // Check if device hasCamera, Only if yes, Scan Card button is visible
-        navigator.mediaDevices.enumerateDevices().then(devices => {
-            const cameras = devices.filter(device => device.kind === 'videoinput');
-            if(cameras.length > 0){
-                console.log(`COMPONENT AddCard: Device has Camera`);
-                return true;
-            }
-            else {
-                console.log(`COMPONENT AddCard: Device does NOT have Camera`);
-                return false;
-            }
-          });
-    }
+    useEffect(() => {
+        if(app.hasCardDetailsVerified){
+            console.log("COMPONENT AddCard: Card Details Verified");
+            setScanningSuccess("Verified");
+            setAddCardButton("Next");
+        }
+
+        if(app.hasCardDetailsVerifyingError){
+            console.log("COMPONENT AddCard: Card Details Verifying Error");
+            setScanningSuccess("");
+            setScanningError(app.verifyCardDetailsError);
+        }
+    }, [app.hasCardDetailsVerified, app.hasCardDetailsVerifyingError, app.verifyCardDetailsError])
+
+    useEffect(() => {
+        if(app.hasNewCardDetailsAssigned){
+            console.log("COMPONENT AddCard: New Card Details Assigned");
+        }
+
+        if(app.hasNewCardDetailsAssigningError){
+            console.log("COMPONENT AddCard: New Card Details Assigning Error");
+            setScanningSuccess("");
+            setScanningError(app.newCardDetailsAssigningError);
+        }
+    }, [app.hasNewCardDetailsAssigned, app.hasNewCardDetailsAssigningError, app.newCardDetailsAssigningError])
 
     let formSubmitHandler = (event) => {
         event.preventDefault();
@@ -133,14 +143,14 @@ export function AddCard() {
 
     let scanCardHandler = (event) => {
         event.preventDefault();
-        console.log("COMPONENT AddCard: Scan Card  Clicked");
+        console.log("COMPONENT AddCard: Scan Card Button Clicked");
         setScanning(true);
     }
 
     let assignNewCardHandler = (event) => {
         event.preventDefault();
-        console.log("COMPONENT AddCard: Assign New Card Clicked");
-        dispatch(assignNewCard());
+        console.log("COMPONENT AddCard: Assign New Card Button Clicked");
+        dispatch(assignNewCardDetails());
     }
 
     return (
@@ -167,7 +177,7 @@ export function AddCard() {
                 <p className="text-sm text-green-600 mt-1">{scanningSuccess}</p>
             </div>
             
-            {(scanning) ? <ScanCard setScannedURL={setScannedURL} setScanningError={setScanningError} setScanning={setScanning}/> : ""}
+            {(scanning) ? <ScanCard setScannedURL={setScannedURL} setScanningError={setScanningError}/> : ""}
 
             {(hasCamera) ? 
                 <div className="mb-3 md:flex">
@@ -176,7 +186,7 @@ export function AddCard() {
                 </div>
                 :
                 <div className="mb-3 md:flex">
-                    <button type='submit' className="inline-block py-3 px-7 mt-2 mb-3 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">Confirm</button>
+                    <button type='submit' className="inline-block py-3 px-7 mt-2 mb-3 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">{addCardButton}</button>
                 </div>
             }
 

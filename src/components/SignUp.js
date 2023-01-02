@@ -34,8 +34,6 @@ export function SignUp() {
     const passwordRef = useRef();
     const nameRef = useRef();
 
-    const [cardDetails, setCardDetails] = useState(null);
-
     const [showAddCardForm, setShowAddCardForm] = useState(true);
     const [showDetailsForm, setShowDetailsForm] = useState(false);
     const [showVerificationForm, setShowVerificationForm] = useState(false);
@@ -51,19 +49,18 @@ export function SignUp() {
         dispatch(updateActiveNav(ROUTES.SIGN_UP));
         
         let query = new URLSearchParams(window.location.search);
-        setCardDetails({
-            'id': query.get('card_id'),
-            'cvc': query.get('card_cvc')
-        });
+        if (('card_id' in query) && ('card_cvc' in query)){
+            console.log("COMPONENT SignUp: Card details present in URLquery, Saving Card Details");
+            saveCardDetails({
+                'id': query.get('card_id'),
+                'cvc': query.get('card_cvc')
+            });
+        }
     }, [])
 
     useEffect(() => {
         dispatch(fetchUserFromLocal());
     }, [dispatch])
-
-    useEffect(() => {
-        if(cardDetails){ dispatch(saveCardDetails(cardDetails)); }
-    }, [cardDetails])
 
     useEffect(() => {
         if(auth.hasLocalFetched && !auth.isAuthenticated){

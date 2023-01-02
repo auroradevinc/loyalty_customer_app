@@ -28,12 +28,13 @@ export function ScanCard(props) {
             props.setScannedURL(url);
         },
         onError(err) {
-            //props.setScanningError("Error Scanning Code, Try Entering Details Manually");
+            props.setScanningError("Error Scanning Code, Try Entering Details Manually");
         }
     });
 
     useEffect(() => {
         console.log("COMPONENT RENDERED: ScanCard");
+        props.setScanningError("");
     }, [])
 
     return (

@@ -7,17 +7,29 @@ const initialState = {
   nav: {
     activeLink: ''
   },
+
+  // SignUp Details
   hasSignUpDetails: false,
   auth: {
     signUp: null,
   },
   
-  isCardDetailsSaving: false, //Loading variable for save card details etc.
-  isCardDetailsAssigning: false, //Loading variable for new assign card details
-  hasCardDetails: false,
-  hasAssignedNewCard: false,
-  isCardDetailsVerified: false,
-  verifyCardDetailsError: null,
+  // Card Details
+  isCardDetailsSaving: false,       // Loading variable for save card details etc.
+  hasCardDetailsSaved: false,       //  True when operation is successful
+  hasCardDetailsSavingError: false, // True when operation is unsuccessful(produces error)
+  cardDetailsSavingError: null,     // Store the error of the operation
+  
+  isCardDetailsAssigning: false,          // Loading variable for new assign card details
+  hasNewCardDetailsAssigned: false,       // True when opteraion is successful
+  hasNewCardDetailsAssigningError: false, // True when operation unsuccessful(produces error)
+  newCardDetailsAssigningError: null,     // Store the error of the operation
+  
+  isCardDetailsVerifying: false,        // Loading variable for verify card details
+  hasCardDetailsVerified: false,        // True when opteraion is successful
+  hasCardDetailsVerifyingError: false,  // True when operation unsuccessful(produces error)
+  verifyCardDetailsError: null,         // Store the error of the operation
+
   card: {
     id: null,
     cvc: null,
@@ -25,32 +37,37 @@ const initialState = {
 };
 
 // Async Functions
-export const saveCardDetails = createAsyncThunk(
-  'saveCardDetails',
+export const verifyCardDetails = createAsyncThunk(
+  'verifyCardDetails',
   async (param) => {
-    console.log("appSlice: saveCardDetails");
-      try{
-        if(!(param.id && param.cvc)){ 
-          return {message: 'card details not present', type: "error", data: null};
-        }
-        const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/verify-card?card_id=${param.id}&card_cvc=${param.cvc}`);
-        if(res.data.type === "success"){ return {message: "card valid", type: "success", data: {id: param.id, cvc: param.cvc}}; }
-        if(res.data.type === "error"){ return {message: "card not valid", type: "error", data: null}; }
+    console.log("appSlice: verifyCardDetails");
+    try{
+      const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/verify-card?card_id=${param.id}&card_cvc=${param.cvc}`);
+      if(res.data.type === "success"){ 
+        return {message: "card valid", type: "success", data: null}; 
       }
-      catch(err){
-        return {message: err.message, type: "error", data: null};
+      if(res.data.type === "error"){ 
+        return {message: "card not valid", type: "error", data: null}; 
       }
+    }
+    catch(err){
+      return {message: err.message, type: "error", data: null};
+    }
   }
 );
 
-export const assignNewCard = createAsyncThunk(
-  'assignNewCard',
+export const assignNewCardDetails = createAsyncThunk(
+  'assignNewCardDetails',
   async (param) => {
-    console.log("appSlice: assignNewCard");
+    console.log("appSlice: assignNewCardDetails");
       try{
         const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/assign-new-card`);
-        if(res.data.type === "success"){ return {message: "card assigned", type: "success", data: res.data.data.card}; }
-        if(res.data.type === "error"){ return {message: "card not assigned", type: "error", data: null}; }
+        if(res.data.type === "success"){ 
+          return {message: "card assigned", type: "success", data: res.data.data.card}; 
+        }
+        if(res.data.type === "error"){ 
+          return {message: "card not assigned", type: "error", data: null}; 
+        }
       }
       catch(err){
         return {message: err.message, type: "error", data: null};
@@ -72,62 +89,85 @@ export const appSlice = createSlice({
           console.log('\t Request Fulfilled', {type: 'saveSignUpDetails/fulfilled', payload: action.payload});
           state.auth.signUp = action.payload;
           state.hasSignUpDetails = true;
+        },
+        saveCardDetails: (state, action) => {
+          console.log("appSlice: saveCardDetails", state, action);
+          console.log('\t Request Fulfilled', {type: 'saveCardDetails/fulfilled', payload: action.payload});
+          
+          state.card = action.payload;
+          
+          state.isCardDetailsSaving = false;
+          state.hasCardDetailsSaved = true;
+          state.hasCardDetailsSavingError = false;
+          state.cardDetailsSavingError = null;
         }
     },
     extraReducers: (builder) => {
-        // saveCardDetails
-        builder.addCase(saveCardDetails.pending, (state, action) => {
-          console.log("appSlice: saveCardDetails Requested");
+        // verifyCardDetails
+        builder.addCase(verifyCardDetails.pending, (state, action) => {
+          console.log("appSlice: verifyCardDetails Requested");
           console.log('\t Request Pending', action);
-          state.isCardDetailsSaving = true;
+          state.isCardDetailsVerifying = true;
         });
-        builder.addCase(saveCardDetails.fulfilled, (state, action) => {
+        builder.addCase(verifyCardDetails.fulfilled, (state, action) => {
           console.log('\t Request Fulfilled', action);
           if(action.payload.type === 'error'){ 
+            state.isCardDetailsVerifying = false;
+            state.hasCardDetailsVerified = false;
+            state.hasCardDetailsVerifyingError = true;
             state.verifyCardDetailsError = action.payload.message;
-            state.isCardDetailsSaving = false;
           } else {
-            state.card.id = action.payload.data.id;
-            state.card.cvc = action.payload.data.cvc;
-            state.hasCardDetails = true;
-            state.isCardDetailsVerified = true;
-            state.isCardDetailsSaving = false;
+            state.isCardDetailsVerifying = false;
+            state.hasCardDetailsVerified = true;
+            state.hasCardDetailsVerifyingError = false;
+            state.verifyCardDetailsError = null;
           }
         });
-        builder.addCase(saveCardDetails.rejected, (state, action) => {
+        builder.addCase(verifyCardDetails.rejected, (state, action) => {
           console.log('\t Request Rejected', action);
+          state.isCardDetailsVerifying = false;
+          state.hasCardDetailsVerified = false;
+          state.hasCardDetailsVerifyingError = true;
           state.verifyCardDetailsError = action.payload.message;
-          state.isCardDetailsSaving = false;
         });
 
-        //assignNewCard
-        builder.addCase(assignNewCard.pending, (state, action) => {
+        //assignNewCardDetails
+        builder.addCase(assignNewCardDetails.pending, (state, action) => {
           console.log("appSlice: assignNewCard Requested");
           console.log('\t Request Pending', action);
           state.isCardDetailsAssigning = true;
         });
-        builder.addCase(assignNewCard.fulfilled, (state, action) => {
+        builder.addCase(assignNewCardDetails.fulfilled, (state, action) => {
           console.log('\t Request Fulfilled', action);
           if(action.payload.type === 'error'){ 
-            state.verifyCardDetailsError = action.payload.message;
             state.isCardDetailsAssigning = false;
+            state.hasNewCardDetailsAssigned = false;
+            state.hasNewCardDetailsAssigningError = true;
+            state.newCardDetailsAssigningError = action.payload.message;
           } else {
-            state.card.id = action.payload.data.id;
-            state.card.cvc = action.payload.data.cvc;
-            state.hasCardDetails = true;
-            state.isCardDetailsVerified = true;
-            state.hasAssignedNewCard = true;
+            state.card = action.payload.data
+            
+            state.isCardDetailsSaving = false;
+            state.hasCardDetailsSaved = true;
+            state.hasCardDetailsSavingError = false;
+            state.cardDetailsSavingError = null;
+
             state.isCardDetailsAssigning = false;
+            state.hasNewCardDetailsAssigned = true;
+            state.hasNewCardDetailsAssigningError = false;
+            state.newCardDetailsAssigningError = null;
           }
         });
-        builder.addCase(assignNewCard.rejected, (state, action) => {
+        builder.addCase(assignNewCardDetails.rejected, (state, action) => {
           console.log('\t Request Rejected', action);
-          state.verifyCardDetailsError = action.payload.message;
           state.isCardDetailsAssigning = false;
+          state.hasNewCardDetailsAssigned = false;
+          state.hasNewCardDetailsAssigningError = true;
+          state.newCardDetailsAssigningError = action.payload.message;
         });
     }
   });
 
 export const appStore = (state) => state.app;
-export const { updateActiveNav, saveSignUpDetails } = appSlice.actions;
+export const { updateActiveNav, saveSignUpDetails, saveCardDetails } = appSlice.actions;
 export default appSlice.reducer;
