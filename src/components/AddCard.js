@@ -43,18 +43,18 @@ export function AddCard() {
             const cameras = devices.filter(device => device.kind === 'videoinput');
             if(cameras.length > 0){
                 console.log(`COMPONENT AddCard: Device has Camera`);
-                return true;
+                setHasCamera(true);
             }
             else {
                 console.log(`COMPONENT AddCard: Device does NOT have Camera`);
-                return false;
+                setHasCamera(false);
             }
-          });
+        });
     }
 
     useEffect(() => {
         console.log("COMPONENT RENDERED: AddCard");
-        setHasCamera(checkDeviceCamera());
+        checkDeviceCamera();
     }, [])
 
     useEffect(() => {
@@ -89,7 +89,7 @@ export function AddCard() {
             console.log("COMPONENT AddCard: Scanning Error, Remove Scanning");
             // Reset Camera Button, Remove Scanning
             // User can enter detials manually or try scanning again
-            setHasCamera(checkDeviceCamera());
+            checkDeviceCamera();
             setScanning(false);
         }
     }, [scanningError])
