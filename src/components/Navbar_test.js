@@ -252,3 +252,34 @@ export function Navbar_test() {
         //   </section>
     );
 }
+
+// useEffect(() => {
+//     if(auth.hasLocalFetched && !auth.isAuthenticated){
+//         dispatch(setUpAuthState());
+//         setShowAddCardForm(true);
+//         setShowAddAccountDetailsForm(false);
+//         setShowVerificationForm(false);
+//         // setEmailError("");
+//         // setPhoneError("");
+//         // setPasswordError("");
+//         // setNameError("");
+//         // setSignUpError("");
+//     }
+// },[auth.hasLocalFetched])
+
+    // useEffect(() => {
+    //     if(auth.isSignedUp && customer.isCustomerAddedToDB){ //#1 SignUp & Add to DB
+    //         if(!app.hasCardDetailsSaved){ //#2 Get Card ID
+    //             console.log("COMPONENT SignUp: User signed up, Customer added to DB, Card not saved, Toggle AddCard");
+    //             setShowAddAccountDetailsForm(false);
+    //             setShowAddCardForm(true);
+    //             setShowVerificationForm(false);
+    //         }
+    //         if(app.hasCardDetailsSaved && !auth.hasConfirmed){ //#3 Confirm User
+    //             console.log("COMPONENT SignUp: User signed up, Customer added to DB, Card saved, User not confirmed, Toggle Verification");
+    //             setShowAddAccountDetailsForm(false);
+    //             setShowAddCardForm(false);
+    //             setShowVerificationForm(true);
+    //         }
+    //     }
+    // }, [auth.isSignedUp, auth.hasConfirmed, customer.isCustomerAddedToDB, app.hasCardDetailsSaved])

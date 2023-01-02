@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { appStore, saveCardDetails, verifyCardDetails, assignNewCardDetails } from '../../../app/appSlice';
 
 // Modules Imports
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // Components Imports
 import { ScanCard } from './ScanCard';
@@ -18,7 +18,7 @@ import * as ROUTES from '../../../constants/routes';
 // Styling Imports
 import './AddCard.css';
 
-export function AddCard() {
+export function AddCard(props) {
     const app = useSelector(appStore);
     const dispatch = useDispatch();
 
@@ -85,12 +85,15 @@ export function AddCard() {
     }, [scannedURL])
 
     useEffect(() => {
-        if(scanningError){
+        if(scanningError && hasScannedOnce){
             console.log("COMPONENT AddCard: Scanning Error, Remove Scanning");
             // Reset Camera Button, Remove Scanning
             // User can enter detials manually or try scanning again
             checkDeviceCamera();
             setScanning(false);
+        }
+        if(scanningError && !hasScannedOnce) { // ReactZxing error on initial render is ignored
+            setScanningError('');
         }
     }, [scanningError])
 
@@ -141,6 +144,7 @@ export function AddCard() {
 
         if(scanningSuccess === 'Verified'){
             console.log(`COMPONENT AddCard: Next Card Form Submission`);
+            props.setAddCardComplete(true);
         }
         else {
             let cardNumber = cardNumRef.current.value;
@@ -162,6 +166,7 @@ export function AddCard() {
         event.preventDefault();
         console.log("COMPONENT AddCard: Assign New Card Button Clicked");
         dispatch(assignNewCardDetails());
+        props.setAddCardComplete(true);
     }
 
     return (
@@ -203,12 +208,6 @@ export function AddCard() {
 
             <p className="text-center mb-6">
                 <button className={`inline-block ${assignCardButtonDisplay} text-xs underline ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all`} onClick={assignNewCardHandler}>I don't have a Loyalty Card</button>
-            </p>
-            
-            <hr className='mb-2 mb-2'/>
-            <p className="text-center">
-                <span className="text-xs font-medium text-coolGray-800">Already have an account?</span>
-                <NavLink className="inline-block text-xs ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all" to={ROUTES.SIGN_IN}>Sign In</NavLink>
             </p>
         </form>
     );

@@ -4,11 +4,15 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const initialState = {
-  isCustomerAddedToDB: false,
-  isCustomerExtractedFromDB: false,
+  isCustomerAddingToDB: false,       // Loading variable for adding customer info. to db
+  hasCustomerAddedToDB: false,       // True when operation is successful
+  hasCustomerAddingToDBError: false, // True when operation is unsuccessful
+  addCustomerToDBError: null,        // Store the error of the operation
 
-  addCustomerToDBError: null,
-  getCustomerFromDBError: null,
+  isCustomerExtractingFromDB: false,       // Loading variable for extracting/getting customer info. from db
+  hasCustomerExtractedFromDB: false,       // True when operation is successful
+  hasCustomerExtractingFromDBError: false, // True when operation is unsuccessful
+  extractingCustomerFromDBError: null,     // Store the error of the operation
 
   customer: null,
 };
@@ -69,19 +73,29 @@ export const customerSlice = createSlice({
         builder.addCase(addCustomerToDB.pending, (state, action) => {
           console.log("customerSlice: addCustomerToDB Requested");
           console.log('\t Request Pending', action);
+          state.isCustomerAddingToDB = true;
         });
         builder.addCase(addCustomerToDB.fulfilled, (state, action) => {
           console.log('\t Request Fulfilled', action);
           if(action.payload.type === 'error'){ 
-            state.addCustomerToDBError = action.payload.message;
+            state.isCustomerAddingToDB = false;       
+            state.hasCustomerAddedToDB = false;       
+            state.hasCustomerAddingToDBError = true; 
+            state.addCustomerToDBError = action.payload.message;       
           } else {
             state.customer = action.payload.data;
-            state.isCustomerAddedToDB = true;
-            state.isCustomerExtractedFromDB = true;
+
+            state.isCustomerAddingToDB = false;       
+            state.hasCustomerAddedToDB = true;       
+            state.hasCustomerAddingToDBError = false; 
+            state.addCustomerToDBError = null;
           }
         });
         builder.addCase(addCustomerToDB.rejected, (state, action) => {
           console.log('\t Request Rejected', action);
+          state.isCustomerAddingToDB = false;       
+          state.hasCustomerAddedToDB = false;       
+          state.hasCustomerAddingToDBError = true; 
           state.addCustomerToDBError = action.payload.message;
         });
 
@@ -89,19 +103,28 @@ export const customerSlice = createSlice({
         builder.addCase(getCustomerFromDB.pending, (state, action) => {
           console.log("customerSlice: getCustomerFromDB Requested");
           console.log('\t Request Pending', action);
+          state.isCustomerExtractingFromDB = true;
         });
         builder.addCase(getCustomerFromDB.fulfilled, (state, action) => {
           console.log('\t Request Fulfilled', action);
           if(action.payload.type === 'error'){ 
-            state.getCustomerFromDBError = action.payload.message;
+            state.isCustomerExtractingFromDB = false;       
+            state.hasCustomerExtractedFromDB = false;       
+            state.hasCustomerExtractingFromDBError = true; 
+            state.extractingCustomerFromDBError = action.payload.message;    
           } else {
-            state.customer = action.payload.data;
-            state.isCustomerExtractedFromDB = true;
+            state.isCustomerExtractingFromDB = false;       
+            state.hasCustomerExtractedFromDB = true;       
+            state.hasCustomerExtractingFromDBError = false; 
+            state.extractingCustomerFromDBError = null;
           }
         });
         builder.addCase(getCustomerFromDB.rejected, (state, action) => {
           console.log('\t Request Rejected', action);
-          state.getCustomerFromDBError = action.payload.message;
+          state.isCustomerExtractingFromDB = false;       
+          state.hasCustomerExtractedFromDB = false;       
+          state.hasCustomerExtractingFromDBError = true; 
+          state.extractingCustomerFromDBError = action.payload.message;
         });
     }
   });

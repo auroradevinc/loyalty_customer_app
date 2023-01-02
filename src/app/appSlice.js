@@ -9,7 +9,7 @@ const initialState = {
   },
 
   // SignUp Details
-  hasSignUpDetails: false,
+  hasSignUpDetailsSaved: false,
   auth: {
     signUp: null,
   },
@@ -17,6 +17,7 @@ const initialState = {
   // Card Details
   isCardDetailsSaving: false,       // Loading variable for save card details etc.
   hasCardDetailsSaved: false,       //  True when operation is successful
+  hasCardDetailsSavedFromURL: false,// True when card information is sourced from URL(via a scan to signup)
   hasCardDetailsSavingError: false, // True when operation is unsuccessful(produces error)
   cardDetailsSavingError: null,     // Store the error of the operation
   
@@ -88,16 +89,18 @@ export const appSlice = createSlice({
           console.log("appSlice: saveSignUpDetails");
           console.log('\t Request Fulfilled', {type: 'saveSignUpDetails/fulfilled', payload: action.payload});
           state.auth.signUp = action.payload;
-          state.hasSignUpDetails = true;
+          state.hasSignUpDetailsSaved = true;
         },
         saveCardDetails: (state, action) => {
           console.log("appSlice: saveCardDetails");
           console.log('\t Request Fulfilled', {type: 'saveCardDetails/fulfilled', payload: action.payload});
           
-          state.card = action.payload;
+          state.card.id = action.payload.id;
+          state.card.cvc = action.payload.cvc;
           
           state.isCardDetailsSaving = false;
           state.hasCardDetailsSaved = true;
+          state.hasCardDetailsSavedFromURL = (action.payload.fromURL) ? true : false;
           state.hasCardDetailsSavingError = false;
           state.cardDetailsSavingError = null;
         }

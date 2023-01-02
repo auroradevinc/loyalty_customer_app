@@ -163,9 +163,9 @@ export const authSlice = createSlice({
 
           state.hasConfirmed = false;
   
-          state.hasLocalFetched = false;
+          state.hasLocalFetched = state.hasLocalFetched;
           
-          state.localFetchError = null;
+          state.localFetchError = state.localFetchError;
           state.autoSignInError = null;
           state.authError = null;
 
@@ -329,7 +329,6 @@ export const authSlice = createSlice({
           state.authError = action.payload.message;
           console.log(`\t Message: ${action.payload.message}, Data: ${action.payload.data}`);
         });
-
     }
   });
 
