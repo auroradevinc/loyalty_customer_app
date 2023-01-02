@@ -29,6 +29,8 @@ export function AddCard() {
 
     const [hasCamera, setHasCamera] = useState(false);           // Toggles if device camera is available
     const [addCardButton, setAddCardButton] = useState('Verify');// Stores state of card button(Possible values: 'verify' and 'next')
+    const [assignCardButtonDisplay, setAssignCardButtonDisplay] = useState('');// Stores state of assign card button, gets hidden after a new card is assigned
+
     const [scanning, setScanning] = useState(false);             // Toggles Scan component when scan button clicked
     const [hasScannedOnce, setHasScannedOnce] = useState(false); // Toggles when scanning performed atleast once
     const [scannedURL, setScannedURL] = useState('');            // Stores scanned URL
@@ -72,6 +74,8 @@ export function AddCard() {
                 cardCVCRef.current.value = card.cvc;
                 console.log("COMPONENT AddCard: Saving Card Details");
                 dispatch(saveCardDetails(card));
+                setScanningSuccess("");
+                setScanningError("");
                 setHasScannedOnce(true);
             } catch(e) {
                 console.log("COMPONENT AddCard: Invalid URL");
@@ -120,6 +124,9 @@ export function AddCard() {
     useEffect(() => {
         if(app.hasNewCardDetailsAssigned){
             console.log("COMPONENT AddCard: New Card Details Assigned");
+            cardNumRef.current.value = app.card.id;
+            cardCVCRef.current.value = app.card.cvc;
+            setAssignCardButtonDisplay('!hidden');
         }
 
         if(app.hasNewCardDetailsAssigningError){
@@ -127,18 +134,22 @@ export function AddCard() {
             setScanningSuccess("");
             setScanningError(app.newCardDetailsAssigningError);
         }
-    }, [app.hasNewCardDetailsAssigned, app.hasNewCardDetailsAssigningError, app.newCardDetailsAssigningError])
+    }, [app.hasNewCardDetailsAssigned, app.hasNewCardDetailsAssigningError, app.newCardDetailsAssigningError, app.card])
 
     let formSubmitHandler = (event) => {
         event.preventDefault();
 
-        let cardNumber = cardNumRef.current.value;
-        let cardCVC = cardCVCRef.current.value;
-        
-        console.log(`COMPONENT AddCard: Add Card Form Submission. Card ID: ${cardNumber}, CVC Code: ${cardCVC}`);
+        if(scanningSuccess === 'Verified'){
 
-        dispatch(saveCardDetails({'id': cardNumber, 'cvc': cardCVC}));
-        setHasScannedOnce(true);
+        }
+        else {
+            let cardNumber = cardNumRef.current.value;
+            let cardCVC = cardCVCRef.current.value;
+            
+            console.log(`COMPONENT AddCard: Add Card Form Submission. Card ID: ${cardNumber}, CVC Code: ${cardCVC}`);
+    
+            dispatch(saveCardDetails({'id': cardNumber, 'cvc': cardCVC}));
+        }
     }
 
     let scanCardHandler = (event) => {
@@ -191,7 +202,7 @@ export function AddCard() {
             }
 
             <p className="text-center mb-6">
-                <button className="inline-block text-xs underline ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all" onClick={(event) => {}}>I don't have a Loyalty Card</button>
+                <button className={`inline-block ${assignCardButtonDisplay} text-xs underline ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all`} onClick={assignNewCardHandler}>I don't have a Loyalty Card</button>
             </p>
             
             <hr className='mb-2 mb-2'/>
