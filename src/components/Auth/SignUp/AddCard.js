@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
-import { appStore, saveCardDetails, verifyCardDetails, assignNewCardDetails } from '../app/appSlice';
+import { appStore, saveCardDetails, verifyCardDetails, assignNewCardDetails } from '../../../app/appSlice';
 
 // Modules Imports
 import { NavLink, useNavigate } from "react-router-dom";
@@ -13,7 +13,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { ScanCard } from './ScanCard';
 
 // Other Files Imports
-import * as ROUTES from '../constants/routes';
+import * as ROUTES from '../../../constants/routes';
 
 // Styling Imports
 import './AddCard.css';

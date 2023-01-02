@@ -10,9 +10,10 @@ import { useZxing } from "react-zxing";
 // Components Imports
 
 // Other Files Imports
+import * as ROUTES from '../../../constants/routes';
 
 // Styling Imports
-//import './assets/bulma/css/bulma.min.css';
+import './ScanCard.css';
 
 export function ScanCard(props) {
     // const [resultText, setResultText] = useState('');

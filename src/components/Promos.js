@@ -30,8 +30,11 @@ export function Promos() {
 
     useEffect(() => {
         console.log("COMPONENT RENDERED: Promos");
-        dispatch(updateActiveNav(ROUTES.PROMOS));
     }, [])
+
+    useEffect(() => {
+        dispatch(updateActiveNav(ROUTES.PROMOS));
+    }, [dispatch])
 
     useEffect(() => {
         if(!auth.isAuthenticated) { 

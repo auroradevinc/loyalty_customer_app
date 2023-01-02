@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
-import { authStore, autoSignIn, confirmCode } from '../app/authSlice';
+import { authStore, autoSignIn, confirmCode } from '../../app/authSlice';
 
 // Modules Imports
 import { NavLink, useNavigate } from "react-router-dom";
@@ -13,7 +13,7 @@ import { Hub } from 'aws-amplify';
 // Components Imports
 
 // Other Files Imports
-import * as ROUTES from '../constants/routes';
+import * as ROUTES from '../../constants/routes';
 
 // Styling Imports
 import './ConfirmAccount.css';

@@ -40,8 +40,11 @@ export function Settings() {
 
     useEffect(() => {
         console.log("COMPONENT RENDERED: Settings");
-        dispatch(updateActiveNav(ROUTES.SETTINGS));
     }, [])
+
+    useEffect(() => {
+        dispatch(updateActiveNav(ROUTES.SETTINGS));
+    }, [dispatch])
 
     useEffect(() => {
         if(auth.isAuthenticated == false) { 

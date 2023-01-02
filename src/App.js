@@ -16,8 +16,8 @@ import { Navbar } from './components/Navbar';
 import { Navbar_test } from './components/Navbar_test';
 import { Footer } from './components/Footer';
 import { HomePage } from './components/HomePage';
-import { SignIn } from './components/SignIn';
-import { SignUp } from './components/SignUp';
+import { SignIn } from './components/Auth/SignIn/SignIn';
+import { SignUp } from './components/Auth/SignUp/SignUp';
 import { Promos } from './components/Promos';
 import { Settings } from './components/Settings';
 

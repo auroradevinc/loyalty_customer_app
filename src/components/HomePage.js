@@ -41,8 +41,11 @@ export function HomePage() {
 
     useEffect(() => {
         console.log("COMPONENT RENDERED: HomePage");
-        dispatch(updateActiveNav(ROUTES.HOME_PAGE));
     }, []);
+
+    useEffect(() => {
+        dispatch(updateActiveNav(ROUTES.HOME_PAGE));
+    }, [dispatch]);
 
     return (
         <section className="bg-white bg-opacity-0 p-6 px-4 pb-6 min-h-[70vh]">

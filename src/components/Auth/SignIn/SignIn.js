@@ -4,17 +4,17 @@ import { useEffect, useState, useRef } from 'react';
 
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
-import { authStore, fetchUserFromLocal, setUpAuthState, signIn, resendConfirmCode } from '../app/authSlice';
-import { updateActiveNav } from '../app/appSlice';
+import { authStore, fetchUserFromLocal, setUpAuthState, signIn, resendConfirmCode } from '../../../app/authSlice';
+import { updateActiveNav } from '../../../app/appSlice';
 
 // Modules Imports
-import { ConfirmAccount } from './ConfirmAccount';
+import { ConfirmAccount } from '../ConfirmAccount';
 import { NavLink, useNavigate } from "react-router-dom";
 
 // Components Imports
 
 // Other Files Imports
-import * as ROUTES from '../constants/routes';
+import * as ROUTES from '../../../constants/routes';
 
 // Styling Imports
 import './SignIn.css';
@@ -37,10 +37,10 @@ export function SignIn() {
 
     useEffect(() => {
         console.log("COMPONENT RENDERED: SignIn");
-        dispatch(updateActiveNav(ROUTES.SIGN_IN));
     }, [])
 
     useEffect(() => {
+        dispatch(updateActiveNav(ROUTES.SIGN_IN));
         dispatch(fetchUserFromLocal());
     }, [dispatch])
 
