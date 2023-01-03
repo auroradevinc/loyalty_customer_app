@@ -92,7 +92,7 @@ export const signIn = createAsyncThunk(
   async (param) => {
     console.log("authSlice: signIn");
     try {
-      const signInResponse = await Auth.signIn({username: param.username, password: param.password});
+      const signInResponse = await Auth.signIn({username: param.username, password: param.password, autoSignIn: {enabled : true}});
       let user = ((signInResponse && signInResponse.attributes) ? signInResponse.attributes : signInResponse);
 
       let userSession  = ((signInResponse && signInResponse.signInUserSession) ? signInResponse.signInUserSession : null);
@@ -321,6 +321,7 @@ export const authSlice = createSlice({
             state.confirmationCodeDetails = null;
             state.confirmationCodeError = null;
             state.confirmationCodeSentError = null;
+            state.userSession.jwtToken = null;
             state.user = null;
           }
         });

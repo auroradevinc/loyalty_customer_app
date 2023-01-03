@@ -113,6 +113,8 @@ export const customerSlice = createSlice({
             state.hasCustomerExtractingFromDBError = true; 
             state.extractingCustomerFromDBError = action.payload.message;    
           } else {
+            state.customer = action.payload.data;
+
             state.isCustomerExtractingFromDB = false;       
             state.hasCustomerExtractedFromDB = true;       
             state.hasCustomerExtractingFromDBError = false; 

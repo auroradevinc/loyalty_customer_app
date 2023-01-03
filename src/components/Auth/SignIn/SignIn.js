@@ -28,6 +28,8 @@ export function SignIn() {
     const usernameRef = useRef();
     const passwordRef = useRef();
 
+    const [alert, setAlert] = useState();
+
     const [showDetailsForm, setShowDetailsForm] = useState(true);
     const [showVerificationForm, setShowVerificationForm] = useState(false);
 
@@ -60,7 +62,7 @@ export function SignIn() {
           console.log("COMPONENT SignIn: User already logged in, Route to Promos");
           navigate(ROUTES.PROMOS) 
         }
-      }, [auth.isAuthenticated])
+    }, [auth.isAuthenticated])
 
     useEffect(() => {
     if(auth.authError === "User is not confirmed."){ 
@@ -77,6 +79,14 @@ export function SignIn() {
         if(auth.authError && auth.authError.toLowerCase().includes('password')){ setPasswordError(auth.authError) }
         if(auth.authError && !auth.authError.toLowerCase().includes('no current user')) { setSignInError(auth.authError) } // No Current User: Error when fetchUserFromLocal does not return a user
     }, [auth.authError])
+
+    useEffect(() => {
+        if(alert && alert.message === "Account Successfully Confirmed, SignIn Again"){
+            setShowDetailsForm(true);
+            setShowVerificationForm(false);
+            setSignInError(''); // Removing: User not confirmed error
+        }
+    }, [alert])
 
     let formSubmitHandler = (event) => {
         event.preventDefault();
@@ -102,6 +112,22 @@ export function SignIn() {
                         <p className="text-lg text-coolGray-500 font-medium">Welcome back!</p>
                         <hr className='mt-2 mb-2'/>
                     </div>
+                    
+                    {(alert && alert.type && alert.type === 'success') ? 
+                        <div className='flex items-center my-2 mb-4 p-2 leading-5 border-[0.5px] border-[#257953] bg-[#effaf5] rounded-lg shadow-sm'>
+                            <i className="fa-solid fa-check mr-1 text-[#257953]"/>
+                            <p className='text-[#257953] font-medium'>{alert.message}</p>
+                        </div>
+                        : ""
+                    }
+
+                    {(alert && alert.type && alert.type === 'error') ? 
+                        <div className='flex items-center my-2 mb-4 p-2 leading-5 border-[0.5px] border-[#cc0f35] bg-[#feecf0] rounded-lg shadow-sm'>
+                            <i className="fa-solid fa-exclamation mr-1 ml-1 text-[#cc0f35]"/>
+                            <p className='text-[#cc0f35] font-medium'>{alert.message}</p>
+                        </div>
+                        : ""
+                    }
 
                     {(showDetailsForm) ?
                         <form onSubmit={formSubmitHandler}>
@@ -140,7 +166,7 @@ export function SignIn() {
                         : ""
                     }
 
-                    {(showVerificationForm) ? <ConfirmAccount/> : ""}
+                    {(showVerificationForm) ? <ConfirmAccount setSignInPageAlert={setAlert}/> : ""}
 
                     <hr className='mb-2 mb-2'/>
                     <p className="text-center">

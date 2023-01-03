@@ -31,7 +31,11 @@ export function ConfirmAccount(props) {
     }, [])
 
     useEffect(() => {
-        if(auth.hasConfirmed && (auth.isSignedIn || auth.isSignedUp)) {
+        //Autosign in is only triggered when Auth.signUp AND NOT by Auth.signIn. 
+        // Therefore, after verifying(during signUp) the user is automatically signed in.
+        /// While confirming during sign in(implies the user closed the confirmation/verification process during signUp) the user will have to sign in again after confirmation.
+        if(auth.hasConfirmed && auth.isSignedUp) { 
+            console.log("COMPONENT ConfirmAccount: Account Confirmed, User Signed Up, Listeing for AutoSignIn");
             Hub.listen('auth', ({ payload }) => {
                 const { event } = payload;
                 if (event === 'autoSignIn') {
@@ -40,7 +44,7 @@ export function ConfirmAccount(props) {
                     user = ((user && user.attributes) ? user.attributes : user);
                     
                     let useSession = ((user && user.signInUserSession)) ? user.signInUserSession : null; 
-                    let jwtToken = (useSession)? useSession.accessToken.jwtToken : null;
+                    let jwtToken = (useSession) ? useSession.accessToken.jwtToken : null;
                     dispatch(autoSignIn({message: "user auto signing success", type: "success", data: {user: user, jwtToken: jwtToken}}));
                 }
                 if (event === 'autoSignIn_failure') {
@@ -48,7 +52,12 @@ export function ConfirmAccount(props) {
                 }
             });
         }
-    }, [auth.hasConfirmed])
+
+        if(auth.hasConfirmed && auth.isSignedIn) {
+            console.log("COMPONENT ConfirmAccount: Account Confirmed, User Signed In, Routing to Sign In Page");
+            props.setSignInPageAlert({ message: 'Account Successfully Confirmed, SignIn Again', type: 'success'});
+        }
+    }, [auth.hasConfirmed, auth.isSignedIn, auth.isSignedUp])
 
     useEffect(() => {
         if(auth.autoSignInError){
