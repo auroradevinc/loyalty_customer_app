@@ -1,8 +1,7 @@
 // Base Import for Actions & Reducers
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import axios from 'axios';
-import { Amplify, Auth, Hub } from 'aws-amplify';
+import { Amplify, Auth } from 'aws-amplify';
 
 const initialState = {
   isAuthenticated: false, // True when all steps of authentication are complete. SignUp/SignIn & Confirmation/Verification.
@@ -67,6 +66,9 @@ export const signUp = createAsyncThunk(
       let password = param.password;
       let name = param.name;
       let attributes = {email, phone_number: phone, name};
+
+      // TODO: Review this
+      // let username = (phone && phone.length >= 10) ? phone : email; // >= 10 since, +1 is attached to the phone prefix
 
       const signUpResponse = await Auth.signUp({username: email, password: password, attributes, autoSignIn: {enabled : true}});
       let signUpData;
@@ -162,10 +164,10 @@ export const authSlice = createSlice({
           state.isSignedUp = false;
 
           state.hasConfirmed = false;
-  
-          state.hasLocalFetched = state.hasLocalFetched;
           
-          state.localFetchError = state.localFetchError;
+          // Will not be reset
+          // state.hasLocalFetched = state.hasLocalFetched;
+          // state.localFetchError = state.localFetchError;
           state.autoSignInError = null;
           state.authError = null;
 

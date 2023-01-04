@@ -49,7 +49,7 @@ export const addCustomerToDB = createAsyncThunk(
     async (param) => {
       console.log("customerSlice: getCustomerFromDB");
       try{
-        let id = param.id;
+        let id = param.customer.id;
         const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/get-customer-info?customer_id=${id}`);
         return {message: "customer extracted from db", type: "success", data: res.data.data.customer};
       }
@@ -63,71 +63,71 @@ export const customerSlice = createSlice({
     name: 'customer',
     initialState,
     reducers: {
-        log_func: (state, action) => { 
-            //change state, param in action.payload
-            console.log('Reducer Called');
-        }
+      log_func: (state, action) => { 
+          //change state, param in action.payload
+          console.log('Reducer Called');
+      }
     },
     extraReducers: (builder) => {
-        // addCustomerToDB
-        builder.addCase(addCustomerToDB.pending, (state, action) => {
-          console.log("customerSlice: addCustomerToDB Requested");
-          console.log('\t Request Pending', action);
-          state.isCustomerAddingToDB = true;
-        });
-        builder.addCase(addCustomerToDB.fulfilled, (state, action) => {
-          console.log('\t Request Fulfilled', action);
-          if(action.payload.type === 'error'){ 
-            state.isCustomerAddingToDB = false;       
-            state.hasCustomerAddedToDB = false;       
-            state.hasCustomerAddingToDBError = true; 
-            state.addCustomerToDBError = action.payload.message;       
-          } else {
-            state.customer = action.payload.data;
-
-            state.isCustomerAddingToDB = false;       
-            state.hasCustomerAddedToDB = true;       
-            state.hasCustomerAddingToDBError = false; 
-            state.addCustomerToDBError = null;
-          }
-        });
-        builder.addCase(addCustomerToDB.rejected, (state, action) => {
-          console.log('\t Request Rejected', action);
+      // addCustomerToDB
+      builder.addCase(addCustomerToDB.pending, (state, action) => {
+        console.log("customerSlice: addCustomerToDB Requested");
+        console.log('\t Request Pending', action);
+        state.isCustomerAddingToDB = true;
+      });
+      builder.addCase(addCustomerToDB.fulfilled, (state, action) => {
+        console.log('\t Request Fulfilled', action);
+        if(action.payload.type === 'error'){ 
           state.isCustomerAddingToDB = false;       
           state.hasCustomerAddedToDB = false;       
           state.hasCustomerAddingToDBError = true; 
-          state.addCustomerToDBError = action.payload.message;
-        });
+          state.addCustomerToDBError = action.payload.message;       
+        } else {
+          state.customer = action.payload.data;
 
-        // getCustomerFromDB
-        builder.addCase(getCustomerFromDB.pending, (state, action) => {
-          console.log("customerSlice: getCustomerFromDB Requested");
-          console.log('\t Request Pending', action);
-          state.isCustomerExtractingFromDB = true;
-        });
-        builder.addCase(getCustomerFromDB.fulfilled, (state, action) => {
-          console.log('\t Request Fulfilled', action);
-          if(action.payload.type === 'error'){ 
-            state.isCustomerExtractingFromDB = false;       
-            state.hasCustomerExtractedFromDB = false;       
-            state.hasCustomerExtractingFromDBError = true; 
-            state.extractingCustomerFromDBError = action.payload.message;    
-          } else {
-            state.customer = action.payload.data;
+          state.isCustomerAddingToDB = false;       
+          state.hasCustomerAddedToDB = true;       
+          state.hasCustomerAddingToDBError = false; 
+          state.addCustomerToDBError = null;
+        }
+      });
+      builder.addCase(addCustomerToDB.rejected, (state, action) => {
+        console.log('\t Request Rejected', action);
+        state.isCustomerAddingToDB = false;       
+        state.hasCustomerAddedToDB = false;       
+        state.hasCustomerAddingToDBError = true; 
+        state.addCustomerToDBError = action.payload.message;
+      });
 
-            state.isCustomerExtractingFromDB = false;       
-            state.hasCustomerExtractedFromDB = true;       
-            state.hasCustomerExtractingFromDBError = false; 
-            state.extractingCustomerFromDBError = null;
-          }
-        });
-        builder.addCase(getCustomerFromDB.rejected, (state, action) => {
-          console.log('\t Request Rejected', action);
+      // getCustomerFromDB
+      builder.addCase(getCustomerFromDB.pending, (state, action) => {
+        console.log("customerSlice: getCustomerFromDB Requested");
+        console.log('\t Request Pending', action);
+        state.isCustomerExtractingFromDB = true;
+      });
+      builder.addCase(getCustomerFromDB.fulfilled, (state, action) => {
+        console.log('\t Request Fulfilled', action);
+        if(action.payload.type === 'error'){ 
           state.isCustomerExtractingFromDB = false;       
           state.hasCustomerExtractedFromDB = false;       
           state.hasCustomerExtractingFromDBError = true; 
-          state.extractingCustomerFromDBError = action.payload.message;
-        });
+          state.extractingCustomerFromDBError = action.payload.message;    
+        } else {
+          state.customer = action.payload.data;
+
+          state.isCustomerExtractingFromDB = false;       
+          state.hasCustomerExtractedFromDB = true;       
+          state.hasCustomerExtractingFromDBError = false; 
+          state.extractingCustomerFromDBError = null;
+        }
+      });
+      builder.addCase(getCustomerFromDB.rejected, (state, action) => {
+        console.log('\t Request Rejected', action);
+        state.isCustomerExtractingFromDB = false;       
+        state.hasCustomerExtractedFromDB = false;       
+        state.hasCustomerExtractingFromDBError = true; 
+        state.extractingCustomerFromDBError = action.payload.message;
+      });
     }
   });
 

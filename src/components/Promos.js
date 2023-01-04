@@ -4,8 +4,11 @@ import { useEffect, useState } from 'react';
 
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
-import { authStore } from '../app/authSlice';
 import { updateActiveNav } from '../app/appSlice';
+import { authStore } from '../app/authSlice';
+import { customerStore, getCustomerFromDB } from '../app/customerSlice';
+import { cardStore, getCardFromDB } from '../app/cardSlice';
+import { promoStore, getPromoFromDB } from '../app/promoSlice';
 
 // Modules Imports
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +23,9 @@ import './Promos.css';
 
 export function Promos() {
     const auth = useSelector(authStore);
+    const customer = useSelector(customerStore);
+    const card  = useSelector(cardStore);
+    const promo = useSelector(promoStore);
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
@@ -38,10 +44,41 @@ export function Promos() {
 
     useEffect(() => {
         if(!auth.isAuthenticated) { 
-            console.log("COMPONENT Promos: User NOT logged in, Route to Sign In Page")
-            navigate(ROUTES.SIGN_IN) 
+            console.log("COMPONENT Promos: User NOT logged in, Route to Sign In Page");
+            navigate(ROUTES.SIGN_IN);
         }
-    }, [auth.isAuthenticated])
+
+        if(auth.isAuthenticated && !customer.hasCustomerExtractedFromDB) { 
+            console.log("COMPONENT Promos: Customer Data from DB unavailable, Get Customer Data from DB");
+            let data = {
+                customer: {
+                    id: auth.user.sub
+                }
+            };
+            dispatch(getCustomerFromDB(data));
+        }
+
+        if(customer.hasCustomerExtractedFromDB && !card.hasCardExtractedFromDB) { 
+            console.log("COMPONENT Promos: Customer Data from DB available, Card Data from db unavailable, Get Card Data from DB");
+            let data = {
+                customer: {
+                    id: customer.customer.customer_id,
+                }
+            };
+            dispatch(getCardFromDB(data));
+        }
+
+        if(card.hasCardExtractedFromDB && !promo.hasExtractedPromoFromDB) {
+            console.log("COMPONENT Promos: Card Data from db available, Get Promo Data from DB");
+            let data = {
+                card: {
+                    id: card.card.card_id,
+                }
+            };
+            dispatch(getPromoFromDB(data));
+        }
+
+    }, [auth.hasLocalFetched, auth.isAuthenticated, customer.hasCustomerExtractedFromDB, card.hasCardExtractedFromDB])
 
     useEffect(() => {
         let active_option = '!text-loyaltyGold-200 !border-b-2 !border-loyaltyGold-200';
