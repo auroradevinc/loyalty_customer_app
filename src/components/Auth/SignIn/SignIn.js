@@ -9,7 +9,7 @@ import { updateActiveNav } from '../../../app/appSlice';
 
 // Modules Imports
 import { ConfirmAccount } from '../ConfirmAccount';
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
 // Components Imports
 
@@ -19,11 +19,12 @@ import * as ROUTES from '../../../constants/routes';
 // Styling Imports
 import './SignIn.css';
 
-export function SignIn() {
+export function SignIn(props) {
     const auth = useSelector(authStore);
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
+    const location  = useLocation();
 
     const usernameRef = useRef();
     const passwordRef = useRef();
@@ -49,6 +50,7 @@ export function SignIn() {
 
     useEffect(() => {
         if(auth.hasLocalFetched && !auth.isAuthenticated){
+            console.log("COMPONENT SignIn: Has local fetched, Not logged in, Set up sign in page");
             dispatch(setUpAuthState());
             setShowDetailsForm(true);
             setShowVerificationForm(false);
@@ -68,7 +70,6 @@ export function SignIn() {
     useEffect(() => {
     if(auth.authError === "User is not confirmed."){ 
         console.log("COMPONENT SignIn: User not confirmed, Toggle Verification");
-
         dispatch(resendConfirmCode({'username': usernameRef.current.value}));
         setShowDetailsForm(false);
         setShowVerificationForm(true); 
@@ -76,6 +77,7 @@ export function SignIn() {
     }, [auth.authError])
 
     useEffect(() => {
+        console.log("COMPONENT SignIn: Auth error triggered");
         if(auth.authError && auth.authError.toLowerCase().includes('username')){ setUsernameError(auth.authError) }
         if(auth.authError && auth.authError.toLowerCase().includes('password')){ setPasswordError(auth.authError) }
         if(auth.authError && !auth.authError.toLowerCase().includes('no current user')) { setSignInError(auth.authError) } // No Current User: Error when fetchUserFromLocal does not return a user

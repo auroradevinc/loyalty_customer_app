@@ -5,6 +5,8 @@ import { useEffect, useState, useRef } from 'react';
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
 import { authStore } from '../app/authSlice';
+import { customerStore } from '../app/customerSlice';
+import { cardStore } from '../app/cardSlice';
 import { updateActiveNav } from '../app/appSlice';
 
 // Modules Imports
@@ -20,6 +22,8 @@ import './Promos.css';
 
 export function Settings() {
     const auth = useSelector(authStore);
+    const customer = useSelector(customerStore);
+    const card  = useSelector(cardStore);
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
@@ -47,17 +51,40 @@ export function Settings() {
     }, [dispatch])
 
     useEffect(() => {
-        if(auth.isAuthenticated == false) { 
-            console.log("COMPONENT Settings: User NOT logged in, Route to Sign In page")
-            navigate(ROUTES.SIGN_IN) 
-        }
+        // if(!auth.isAuthenticated) { 
+        //     console.log("COMPONENT Settings: User NOT logged in, Route to Sign In page");
+        //     navigate(ROUTES.SIGN_IN);
+        // }
+
+        // if(auth.isAuthenticated && !customer.hasCustomerExtractedFromDB) { 
+        //     console.log("COMPONENT Settings: Customer Data from DB unavailable, Get Customer Data from DB");
+        //     let data = {
+        //         customer: {
+        //             id: auth.user.sub
+        //         }
+        //     };
+        //     dispatch(getCustomerFromDB(data));
+        // }
+
+        // if(customer.hasCustomerExtractedFromDB && !card.hasCardExtractedFromDB) { 
+        //     console.log("COMPONENT Settings: Customer Data from DB available, Card Data from db unavailable, Get Card Data from DB");
+        //     let data = {
+        //         customer: {
+        //             id: customer.customer.customer_id,
+        //         }
+        //     };
+        //     dispatch(getCardFromDB(data));
+        // }
+
+        // if(customer.hasCustomerExtractedFromDB && !card.hasCardExtractedFromDB) { 
+
+        // }
         
-        assignValuesToRef();
-    }, [auth.isAuthenticated])
+    }, [auth.isAuthenticated, customer.hasCustomerExtractedFromDB, card.hasCardExtractedFromDB])
 
     useEffect(() => {
         let active_option = '!text-loyaltyGold-200 !border-b-2 !border-loyaltyGold-200';
-        let inactive_option = '';
+        let inactive_option = '!border-b-2 !border-transparent';
         switch (settingOption) {
             case 'ACCOUNT':
                 console.log("COMPONENT Settings: ACCOUNT Option Selected");

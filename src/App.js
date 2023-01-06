@@ -52,15 +52,49 @@ function App() {
   useEffect(() => {
     // App.js controls rounting to promos only if the current page is the home page
     // SignIn & SignUp page handles routing when authenticated successfully
-    if(auth.isAuthenticated && app.nav.active_link === ROUTES.HOME_PAGE) { 
-      console.log("COMPONENT App: User already logged in, Route to Promos");
-      navigate(ROUTES.PROMOS);
-    }
-  }, [auth.isAuthenticated])
+    // if(auth.isAuthenticated && app.nav.active_link === ROUTES.HOME_PAGE) { 
+    //   console.log("COMPONENT App: User already logged in, Route to Promos");
+    //   navigate(ROUTES.PROMOS);
+    // }
+    // if(!auth.isAuthenticated && (app.nav.active_link === ROUTES.PROMOS || app.nav.active_link === ROUTES.SETTINGS)){
+    //   console.log("COMPONENT App: User Not logged in, Trying to access protected routes, Routing to SignIn page");
+    //   navigateTo(ROUTES.SIGN_IN);
+    // }
+
+    // if(auth.isAuthenticated && !customer.hasCustomerExtractedFromDB) { 
+    //   console.log("COMPONENT Promos: Customer Data from DB unavailable, Get Customer Data from DB");
+    //   let data = {
+    //       customer: {
+    //           id: auth.user.sub
+    //       }
+    //   };
+    //   dispatch(getCustomerFromDB(data));
+    // }
+
+    // if(customer.hasCustomerExtractedFromDB && !card.hasCardExtractedFromDB) { 
+    //     console.log("COMPONENT Promos: Customer Data from DB available, Card Data from db unavailable, Get Card Data from DB");
+    //     let data = {
+    //         customer: {
+    //             id: customer.customer.customer_id,
+    //         }
+    //     };
+    //     dispatch(getCardFromDB(data));
+    // }
+
+    // if(card.hasCardExtractedFromDB && !promo.hasExtractedPromoFromDB) {
+    //     console.log("COMPONENT Promos: Card Data from db available, Get Promo Data from DB");
+    //     let data = {
+    //         card: {
+    //             id: card.card.card_id,
+    //         }
+    //     };
+    //     dispatch(getPromoFromDB(data));
+    // }
+  }, [app.nav.active_link, auth.isAuthenticated, customer.hasCustomerExtractedFromDB, card.hasCardExtractedFromDB])
 
   return (
-    <div id='wrapper' style={{ backgroundImage: "url('./pattern-white.svg')", backgroundPosition: "center" }}>
-      <div id='app' className='w-11/12 sm:w-10/12 lg:9/12 max-w-7xl mx-auto'>
+    <div id='wrapper' style={{ backgroundImage: "url('./pattern-white.svg')", backgroundPosition: "center", backgroundRepeat: "repeat" }}>
+      <div id='app' className='w-11/12 sm:w-10/12 lg:9/12 max-w-7xl mx-auto scroll-smooth hover:scroll-auto transition-all'>
 
         <Navbar/>
 
