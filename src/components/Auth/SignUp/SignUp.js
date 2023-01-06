@@ -42,6 +42,7 @@ export function SignUp() {
     }, [])
 
     useEffect(() => {
+        console.log("COMPONENT SignUp: Updating Active Nav");
         dispatch(updateActiveNav(ROUTES.SIGN_UP));
         dispatch(setUpAuthState());
         dispatch(fetchUserFromLocal());

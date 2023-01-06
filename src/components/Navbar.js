@@ -185,7 +185,7 @@ export function Navbar() {
                                 <div className="w-full">
                                     {!(auth.isAuthenticated) ? 
                                         <NavLink className="inline-block py-2 px-4 w-full text-md leading-5 text-white bg-loyaltyGold-100 hover:bg-loyaltyGold-200 font-medium text-center focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" to={ROUTES.SIGN_UP}>Sign Up</NavLink> 
-                                        : 
+                                        :
                                         <button className="inline-block py-2 px-4 w-full text-md leading-5 text-white bg-loyaltyGold-100 hover:bg-loyaltyGold-200 font-medium text-center focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" onClick={() => dispatch(signOut())}>Sign Out</button>  
                                     }
                                 </div>

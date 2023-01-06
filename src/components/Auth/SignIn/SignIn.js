@@ -43,8 +43,9 @@ export function SignIn(props) {
     }, [])
 
     useEffect(() => {
-        console.log("COMPONENT SignIn: Attempt Fetch User from Local");
+        console.log("COMPONENT SignIn: Updating Active Nav");
         dispatch(updateActiveNav(ROUTES.SIGN_IN));
+        console.log("COMPONENT SignIn: Attempt Fetch User from Local");
         dispatch(fetchUserFromLocal());
     }, [dispatch])
 

@@ -51,6 +51,12 @@ export const addCustomerToDB = createAsyncThunk(
       try{
         let id = param.customer.id;
         const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/get-customer-info?customer_id=${id}`);
+        
+        let customer = res.data.data.customer;
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        let date = customer.member_since.split('-')
+        customer['member_since_simplified'] = `${monthNames[date[1]-1]} ${date[0]}`;
+        
         return {message: "customer extracted from db", type: "success", data: res.data.data.customer};
       }
       catch(err){

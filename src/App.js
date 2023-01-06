@@ -8,6 +8,7 @@ import { appStore } from './app/appSlice';
 import { cardStore, getCardFromDB } from './app/cardSlice';
 import { customerStore, getCustomerFromDB } from './app/customerSlice';
 import { authStore, fetchUserFromLocal } from './app/authSlice';
+import { promoStore, getPromoFromDB } from './app/promoSlice';
 
 // Modules Imports
 import { Route, Routes, useNavigate } from 'react-router-dom';
@@ -20,8 +21,9 @@ import { HomePage } from './components/HomePage';
 import { SignIn } from './components/Auth/SignIn/SignIn';
 import { SignUp } from './components/Auth/SignUp/SignUp';
 import { Promos } from './components/Promos';
+import { Card } from './components/Card';
+import { InviteFriend } from './components/InviteFriend';
 import { Settings } from './components/Settings';
-
 
 // Other Files Imports
 import { BoilerPlateComponent } from './BoilerPlateComponent';
@@ -36,6 +38,7 @@ function App() {
   const app = useSelector(appStore);
   const card = useSelector(cardStore);
   const customer = useSelector(customerStore);
+  const promo = useSelector(promoStore);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -56,40 +59,40 @@ function App() {
     //   console.log("COMPONENT App: User already logged in, Route to Promos");
     //   navigate(ROUTES.PROMOS);
     // }
-    // if(!auth.isAuthenticated && (app.nav.active_link === ROUTES.PROMOS || app.nav.active_link === ROUTES.SETTINGS)){
-    //   console.log("COMPONENT App: User Not logged in, Trying to access protected routes, Routing to SignIn page");
-    //   navigateTo(ROUTES.SIGN_IN);
-    // }
+    if(!auth.isAuthenticated && (app.nav.active_link !== ROUTES.SIGN_IN || app.nav.active_link !== ROUTES.SIGN_UP)){
+      console.log("COMPONENT App: User Not logged in, Trying to access protected routes, Routing to SignIn page");
+      navigate(ROUTES.SIGN_IN);
+    }
 
-    // if(auth.isAuthenticated && !customer.hasCustomerExtractedFromDB) { 
-    //   console.log("COMPONENT Promos: Customer Data from DB unavailable, Get Customer Data from DB");
-    //   let data = {
-    //       customer: {
-    //           id: auth.user.sub
-    //       }
-    //   };
-    //   dispatch(getCustomerFromDB(data));
-    // }
+    if(auth.isAuthenticated && !customer.hasCustomerExtractedFromDB) { 
+      console.log("COMPONENT App: Customer Data from DB unavailable, Get Customer Data from DB");
+      let data = {
+          customer: {
+              id: auth.user.sub
+          }
+      };
+      dispatch(getCustomerFromDB(data));
+    }
 
-    // if(customer.hasCustomerExtractedFromDB && !card.hasCardExtractedFromDB) { 
-    //     console.log("COMPONENT Promos: Customer Data from DB available, Card Data from db unavailable, Get Card Data from DB");
-    //     let data = {
-    //         customer: {
-    //             id: customer.customer.customer_id,
-    //         }
-    //     };
-    //     dispatch(getCardFromDB(data));
-    // }
+    if(customer.hasCustomerExtractedFromDB && !card.hasCardExtractedFromDB) { 
+        console.log("COMPONENT App: Customer Data from DB available, Card Data from db unavailable, Get Card Data from DB");
+        let data = {
+            customer: {
+                id: customer.customer.customer_id,
+            }
+        };
+        dispatch(getCardFromDB(data));
+    }
 
-    // if(card.hasCardExtractedFromDB && !promo.hasExtractedPromoFromDB) {
-    //     console.log("COMPONENT Promos: Card Data from db available, Get Promo Data from DB");
-    //     let data = {
-    //         card: {
-    //             id: card.card.card_id,
-    //         }
-    //     };
-    //     dispatch(getPromoFromDB(data));
-    // }
+    if(card.hasCardExtractedFromDB && !promo.hasExtractedPromoFromDB) {
+        console.log("COMPONENT App: Card Data from db available, Get Promo Data from DB");
+        let data = {
+            card: {
+                id: card.card.card_id,
+            }
+        };
+        dispatch(getPromoFromDB(data));
+    }
   }, [app.nav.active_link, auth.isAuthenticated, customer.hasCustomerExtractedFromDB, card.hasCardExtractedFromDB])
 
   return (
@@ -103,6 +106,8 @@ function App() {
           <Route exact path={ROUTES.SIGN_IN} element={<SignIn/>}></Route>
           <Route exact path={ROUTES.SIGN_UP} element={<SignUp/>}></Route>
           <Route exact path={ROUTES.PROMOS} element={<Promos/>}></Route>
+          <Route exact path={ROUTES.CARD} element={<Card/>}></Route>
+          <Route exact path={ROUTES.INVITE_FRIEND} element={<InviteFriend/>}></Route>
           <Route exact path={ROUTES.SETTINGS} element={<Settings/>}></Route>
         </Routes>
 

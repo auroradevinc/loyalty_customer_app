@@ -22,6 +22,15 @@ module.exports = {
           100: '#C9A36B',
           200: '#BC871E'
         },
+        loyaltyGoldFaded: {
+            100: '#F8E7CD',
+        },
+        loyaltyPlatinum: {
+            100: '#9ca3af',
+        },
+        loyaltyTitanium: {
+            100: '#9ca3af',
+        },
         darkCoolGray: {
             50: '#F5F6F7',
             100: '#EBEDEF',

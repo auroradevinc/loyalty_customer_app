@@ -4,15 +4,16 @@ import { useEffect, useState, useRef } from 'react';
 
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
+import { appStore, updateActiveNav } from '../app/appSlice';
 import { authStore } from '../app/authSlice';
 import { customerStore } from '../app/customerSlice';
 import { cardStore } from '../app/cardSlice';
-import { updateActiveNav } from '../app/appSlice';
 
 // Modules Imports
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 // Components Imports
+import { BottomNavbar } from './BottomNavbar';
 
 // Other Files Imports
 import * as ROUTES from '../constants/routes';
@@ -21,6 +22,7 @@ import * as ROUTES from '../constants/routes';
 import './Promos.css';
 
 export function Settings() {
+    const app = useSelector(appStore);
     const auth = useSelector(authStore);
     const customer = useSelector(customerStore);
     const card  = useSelector(cardStore);
@@ -47,6 +49,7 @@ export function Settings() {
     }, [])
 
     useEffect(() => {
+        console.log("COMPONENT Settings: Updating Active Nav");
         dispatch(updateActiveNav(ROUTES.SETTINGS));
     }, [dispatch])
 
@@ -199,6 +202,8 @@ export function Settings() {
                     }
                 })()}
             </div>
+
+            <BottomNavbar/>
         </section>
     );
 }

@@ -44,6 +44,7 @@ export function HomePage() {
     }, []);
 
     useEffect(() => {
+        console.log("COMPONENT HomePage: Updating Active Nav");
         dispatch(updateActiveNav(ROUTES.HOME_PAGE));
     }, [dispatch]);
 
