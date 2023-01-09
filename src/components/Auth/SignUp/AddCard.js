@@ -170,45 +170,47 @@ export function AddCard(props) {
     }
 
     return (
-        <form onSubmit={formSubmitHandler}>
-            {/* <p className="mb-2 text-[1.4rem] text-loyaltyGold-100 font-semibold">Add Loyalty Card Details</p> */}
-            <div className="mb-6">
-                <label className="block mb-1 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">Card Number</label>
-                {/* <label className="block mb-2 text-coolGray-500 text-xxs" htmlFor="">Located back of Loyalty Card</label> */}
-                <div className='flex justify-between items-center relative'>
-                    <input ref={cardNumRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cardID" type="text" placeholder="Enter the Loyalty Card Number" required onChange={() => {setScanningSuccess(''); setAddCardButton('Verify');}}/>
-                    {scanningSuccess ? <span className='absolute right-4'><i className="fa-solid fa-check" style={{color: '#48C774'}}></i></span> : ""}
-                    {scanningError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+        <div className="mb-7">
+            <form onSubmit={formSubmitHandler}>
+                {/* <p className="mb-2 text-[1.4rem] text-loyaltyGold-100 font-semibold">Add Loyalty Card Details</p> */}
+                <div className="mb-6">
+                    <label className="block mb-1 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">Card Number</label>
+                    {/* <label className="block mb-2 text-coolGray-500 text-xxs" htmlFor="">Located back of Loyalty Card</label> */}
+                    <div className='flex justify-between items-center relative'>
+                        <input ref={cardNumRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cardID" type="text" placeholder="Enter the Loyalty Card Number" required onChange={() => {setScanningSuccess(''); setAddCardButton('Verify');}}/>
+                        {scanningSuccess ? <span className='absolute right-4'><i className="fa-solid fa-check" style={{color: '#48C774'}}></i></span> : ""}
+                        {scanningError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                    </div>
                 </div>
-            </div>
-            <div className="mb-6">
-                <label className="block mb-1 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">CVC</label>
-                {/* <label className="block mb-2 text-coolGray-500 text-xxs" htmlFor="">Located back of Loyalty Card</label> */}
-                <div className='flex justify-between items-center relative'>
-                    <input ref={cardCVCRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cvcCode" type="text" placeholder="Enter the Loyalty Card CVC" required onChange={() => {setScanningSuccess(''); setAddCardButton('Verify');}}/>
-                    {scanningSuccess ? <span className='absolute right-4'><i className="fa-solid fa-check" style={{color: '#48C774'}}></i></span> : ""}
-                    {scanningError ? <exclamation className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></exclamation> : ""}
+                <div className="mb-6">
+                    <label className="block mb-1 text-coolGray-600 font-medium after:content-['*'] after:ml-0.5 after:text-red-500" htmlFor="">CVC</label>
+                    {/* <label className="block mb-2 text-coolGray-500 text-xxs" htmlFor="">Located back of Loyalty Card</label> */}
+                    <div className='flex justify-between items-center relative'>
+                        <input ref={cardCVCRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="cvcCode" type="text" placeholder="Enter the Loyalty Card CVC" required onChange={() => {setScanningSuccess(''); setAddCardButton('Verify');}}/>
+                        {scanningSuccess ? <span className='absolute right-4'><i className="fa-solid fa-check" style={{color: '#48C774'}}></i></span> : ""}
+                        {scanningError ? <exclamation className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></exclamation> : ""}
+                    </div>
+                    <p className="text-sm text-red-600 mt-1">{scanningError}</p>
+                    <p className="text-sm text-green-600 mt-1">{scanningSuccess}</p>
                 </div>
-                <p className="text-sm text-red-600 mt-1">{scanningError}</p>
-                <p className="text-sm text-green-600 mt-1">{scanningSuccess}</p>
-            </div>
-            
-            {(scanning) ? <ScanCard setScannedURL={setScannedURL} setScanningError={setScanningError}/> : ""}
+                
+                {(scanning) ? <ScanCard setScannedURL={setScannedURL} setScanningError={setScanningError}/> : ""}
 
-            {(hasCamera) ? 
-                <div className="mb-3 md:flex">
-                    <button className="inline-block py-3 px-7 mt-2 mb-3 md:mr-3 w-full text-base text-white font-medium text-center leading-6 bg-gray-400 hover:bg-gray-500 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" onClick={(event) => scanCardHandler(event)}><i className="fa-solid fa-camera mr-2" />Scan Card</button>
-                    <button type='submit' className="inline-block py-3 px-7 mt-2 mb-3 md:ml-3 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">Confirm</button>
-                </div>
-                :
-                <div className="mb-3 md:flex">
-                    <button type='submit' className="inline-block py-3 px-7 mt-2 mb-3 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">{addCardButton}</button>
-                </div>
-            }
+                {(hasCamera) ? 
+                    <div className="mb-3 md:flex">
+                        <button className="inline-block py-3 px-7 mt-2 mb-3 md:mr-3 w-full text-base text-white font-medium text-center leading-6 bg-gray-400 hover:bg-gray-500 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" onClick={(event) => scanCardHandler(event)}><i className="fa-solid fa-camera mr-2" />Scan Card</button>
+                        <button type='submit' className="inline-block py-3 px-7 mt-2 mb-3 md:ml-3 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">Confirm</button>
+                    </div>
+                    :
+                    <div className="mb-3 md:flex">
+                        <button type='submit' className="inline-block py-3 px-7 mt-2 mb-3 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">{addCardButton}</button>
+                    </div>
+                }
 
-            <p className="text-center mb-6">
-                <button className={`inline-block ${assignCardButtonDisplay} text-xs underline ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all`} onClick={assignNewCardHandler}>I don't have a Loyalty Card</button>
-            </p>
-        </form>
+                <p className="text-center mb-6">
+                    <button className={`inline-block ${assignCardButtonDisplay} text-xs underline ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all`} onClick={assignNewCardHandler}>I don't have a Loyalty Card</button>
+                </p>
+            </form>
+        </div>
     );
 }

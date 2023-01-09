@@ -134,39 +134,41 @@ export function SignIn(props) {
                     }
 
                     {(showDetailsForm) ?
-                        <form onSubmit={formSubmitHandler}>
-                            <div className="mb-6">
-                                <label className="block mb-2 text-coolGray-600 font-medium" htmlFor="">Email or Phone</label>
-                                <div className='flex justify-between items-center relative'>
-                                    <input ref={usernameRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="email" type="email" placeholder="Enter your email" required autoComplete="username" onInvalid={(e) => {e.preventDefault(); setUsernameError("Please enter a valid email");}}/>
-                                    {usernameError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                        <div className="mb-7">
+                            <form onSubmit={formSubmitHandler}>
+                                <div className="mb-6">
+                                    <label className="block mb-2 text-coolGray-600 font-medium" htmlFor="">Email or Phone</label>
+                                    <div className='flex justify-between items-center relative'>
+                                        <input ref={usernameRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="email" type="email" placeholder="Enter your email" required autoComplete="username" onInvalid={(e) => {e.preventDefault(); setUsernameError("Please enter a valid email");}}/>
+                                        {usernameError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                                    </div>
+                                    {usernameError ? <p className="text-sm text-red-600 mt-1">{usernameError}</p> : ""}
                                 </div>
-                                {usernameError ? <p className="text-sm text-red-600 mt-1">{usernameError}</p> : ""}
-                            </div>
-                            <div className="mb-4">
-                                <label className="block mb-2 text-coolGray-600 font-medium" htmlFor="">Password</label>
-                                <div className='flex justify-between items-center relative'>
-                                    <input ref={passwordRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="password" type="password" placeholder="Enter your password" required autoComplete="current-password" onInvalid={(e) => {e.preventDefault(); setPasswordError("Please enter a valid passoword");}}/>
-                                    {passwordError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                                <div className="mb-4">
+                                    <label className="block mb-2 text-coolGray-600 font-medium" htmlFor="">Password</label>
+                                    <div className='flex justify-between items-center relative'>
+                                        <input ref={passwordRef} className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 transition-all" name="password" type="password" placeholder="Enter your password" required autoComplete="current-password" onInvalid={(e) => {e.preventDefault(); setPasswordError("Please enter a valid passoword");}}/>
+                                        {passwordError ? <span className='absolute right-4'><i className="fa-solid fa-exclamation" style={{color: '#F14668'}}></i></span> : ""}
+                                    </div>
+                                    {passwordError ? <p className="text-sm text-red-600 mt-1">{passwordError}</p> : ""}
+                                    {signInError ? <p className="text-sm text-red-600 mt-1">{signInError}</p> : ""}
                                 </div>
-                                {passwordError ? <p className="text-sm text-red-600 mt-1">{passwordError}</p> : ""}
-                                {signInError ? <p className="text-sm text-red-600 mt-1">{signInError}</p> : ""}
-                            </div>
 
-                            <div className="flex items-center justify-between mb-6">
-                                <div className="w-full md:w-1/2 flex items-center justify-start">
-                                    <label className="relative inline-flex items-center">
-                                        <input className="form-checkbox accent-loyaltyGold-200" type="checkbox" />
-                                        <span className="ml-2 text-xs text-coolGray-800 font-medium">Remember me</span>
-                                    </label>
+                                <div className="flex items-center justify-between mb-6">
+                                    <div className="w-full md:w-1/2 flex items-center justify-start">
+                                        <label className="relative inline-flex items-center">
+                                            <input className="form-checkbox accent-loyaltyGold-200" type="checkbox" />
+                                            <span className="ml-2 text-xs text-coolGray-800 font-medium">Remember me</span>
+                                        </label>
+                                    </div>
+                                    <div className="w-full md:w-auto flex justify-end">
+                                        <NavLink className="inline-block text-xs font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200" to={ROUTES.HOME_PAGE}>Forgot your password?</NavLink>
+                                    </div>
                                 </div>
-                                <div className="w-full md:w-auto flex justify-end">
-                                    <NavLink className="inline-block text-xs font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200" to={ROUTES.HOME_PAGE}>Forgot your password?</NavLink>
-                                </div>
-                            </div>
 
-                            <button type='submit' className="inline-block py-3 px-7 mb-6 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">Sign In</button>
-                        </form>
+                                <button type='submit' className="inline-block py-3 px-7 mb-6 w-full text-base text-white font-medium text-center leading-6 bg-loyaltyGold-100 hover:bg-loyaltyGold-200 focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all">Sign In</button>
+                            </form>
+                        </div>
                         : ""
                     }
 

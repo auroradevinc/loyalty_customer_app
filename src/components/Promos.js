@@ -139,37 +139,55 @@ export function Promos() {
         })
         setPromos(promo_list);
     }
+
+    // let handleShareButton = async () => {
+    //     await navigator.share({
+    //         title: 'My App',
+    //         url: 'https://myapp.com',
+    //     });
+    // }
     
     return (
-        <section className="bg-white bg-opacity-0 p-2 md:p-6 px-4 pb-6 min-h-[70vh]">
-            <div className="pb-6">
+        <section className="bg-white bg-opacity-0 p-4 pb-6 min-h-[70vh]">
+            <div className="container px-0 mx-auto">
                 <div className="w-auto px-0">
-                    <div className='flex justify-between'>
-                        <h2 className="text-2xl font-semibold text-loyaltyGold-100">Promos</h2>
-                        <NavLink className="hidden sm:block py-2 px-4 ml-4 w-fit text-md leading-5 text-loyaltyGold-100 border-[1.5px] border-loyaltyGold-100 bg-white font-medium text-center focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" to={ROUTES.CARD}>My Card</NavLink> 
+
+                    <div className='mb-5'>
+                        <div className='flex justify-between items-center'>
+                            <h2 className="text-2xl md:text-3xl font-bold text-loyaltyGold-100">Promos</h2>
+                            <div className='flex items-center'>
+                                <NavLink className="hidden sm:block py-1 px-2 ml-4 text-md text-coolGray-500 hover:text-loyaltyGold-100 border-[1.5px] border-loyaltyGold-100 bg-white font-medium text-center focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" to={ROUTES.INVITE_FRIEND}><i className={"fa-solid fa-user-plus mr-2"}></i>Invite</NavLink> 
+                                <NavLink className="hidden sm:block py-1 px-2 ml-4 text-md text-coolGray-500 hover:text-loyaltyGold-100 border-[1.5px] border-loyaltyGold-100 bg-white font-medium text-center focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all" to={ROUTES.CARD}><i className={"fa-solid fa-credit-card mr-2"}></i>My Card</NavLink> 
+                            </div>
+                        </div>
                     </div>
+
+                    <div className='mb-5'>
+                        <ul className="flex flex-nowrap overflow-x-auto whitespace-nowrap border-b border-coolGray-200">
+                            <li><button className={`block px-4 pb-4 text-sm font-medium text-coolGray-600 hover:text-loyaltyGold-100 hover:border-loyaltyGold-100 transition-all ${allOptionClassName}`} onClick={() => {setPromoOption('ALL')}}>All</button></li>
+                            {(promo.hasExtractedPromoFromDB && promo.promo.custom_promo.length > 0) ?
+                                <li><button className={`block px-4 pb-4 text-sm font-medium text-coolGray-600 hover:text-loyaltyGold-100 hover:border-loyaltyGold-100 transition-all ${onlyForYouOptionClassName}`} onClick={() => {setPromoOption('ONLY_FOR_YOU')}}>Your Specials</button></li>
+                                : ""
+                            }
+                            {/* TODO: AFTER MVP */}
+                            {/* <li><button className={`block px-4 pb-4 text-sm font-medium text-coolGray-600 hover:text-loyaltyGold-100 hover:border-loyaltyGold-100 transition-all ${todaysTopOptionClassName}`} onClick={() => {setPromoOption('TODAYS_TOP')}}>Today's Top</button></li> */}
+                            {/* <li><button className={`block px-4 pb-4 text-sm font-medium text-coolGray-600 hover:text-loyaltyGold-100 hover:border-loyaltyGold-100 transition-all ${bestDealOptionClassName}`} onClick={() => {setPromoOption('BEST_DEAL')}}>Best Deal</button></li> */}
+                        </ul>
+                    </div>
+
+                    <div className='mb-5'>
+                        <div className='my-6 mt-8 flex flex-wrap justify-center md:justify-start'>
+                            {(promoOption && promo.hasExtractedPromoFromDB && promos) ? 
+                                promos 
+                                : "Loading..."
+                            }
+                        </div>
+                    </div>
+
+                    <BottomNavbar/>
+
                 </div>                
             </div>
-
-            <ul className="flex flex-nowrap overflow-x-auto whitespace-nowrap border-b border-coolGray-200">
-                {(promo.hasExtractedPromoFromDB && promo.promo.custom_promo.length > 0) ?
-                    <li><button className={`block px-4 pb-4 text-sm font-medium text-coolGray-600 hover:text-loyaltyGold-100 hover:border-loyaltyGold-100 transition-all ${onlyForYouOptionClassName}`} onClick={() => {setPromoOption('ONLY_FOR_YOU')}}>Your Specials</button></li>
-                    : ""
-                }
-                <li><button className={`block px-4 pb-4 text-sm font-medium text-coolGray-600 hover:text-loyaltyGold-100 hover:border-loyaltyGold-100 transition-all ${allOptionClassName}`} onClick={() => {setPromoOption('ALL')}}>All</button></li>
-                {/* TODO: AFTER MVP */}
-                {/* <li><button className={`block px-4 pb-4 text-sm font-medium text-coolGray-600 hover:text-loyaltyGold-100 hover:border-loyaltyGold-100 transition-all ${todaysTopOptionClassName}`} onClick={() => {setPromoOption('TODAYS_TOP')}}>Today's Top</button></li> */}
-                {/* <li><button className={`block px-4 pb-4 text-sm font-medium text-coolGray-600 hover:text-loyaltyGold-100 hover:border-loyaltyGold-100 transition-all ${bestDealOptionClassName}`} onClick={() => {setPromoOption('BEST_DEAL')}}>Best Deal</button></li> */}
-            </ul>
-
-            <div className='my-6 mt-8 flex flex-wrap justify-center md:justify-start'>
-                {(promoOption && promo.hasExtractedPromoFromDB && promos) ? 
-                    promos 
-                    : "Loading..."
-                }
-            </div>
-
-            <BottomNavbar/>
         </section>
     );
 }

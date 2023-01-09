@@ -101,29 +101,29 @@ export function SignUp() {
     return (
         <section className="bg-white bg-opacity-0 min-h-[70vh]">
             <div className="container px-4 mx-auto">
-            <div className="max-w-lg mx-auto">
+                <div className="max-w-lg mx-auto">
 
-                <div className="mb-7 text-center">
-                    <NavLink className="hidden mb-3 sm:inline-block" to={ROUTES.HOME_PAGE}>
-                        <img className="h-24" src="./loyalty_logo.png" alt=""/>
-                    </NavLink>
-                    <h3 className="mb-1 text-2xl text-coolGray-900 md:text-3xl font-bold">Register your account</h3>
-                    <p className="text-lg text-coolGray-500 font-medium">Jour our community</p>
-                    <hr className='mt-2 mb-2'/>
+                    <div className="mb-7 text-center">
+                        <NavLink className="hidden mb-3 sm:inline-block" to={ROUTES.HOME_PAGE}>
+                            <img className="h-24" src="./loyalty_logo.png" alt=""/>
+                        </NavLink>
+                        <h3 className="mb-1 text-2xl text-coolGray-900 md:text-3xl font-bold">Register your account</h3>
+                        <p className="text-lg text-coolGray-500 font-medium">Jour our community</p>
+                        <hr className='mt-2 mb-2'/>
+                    </div>
+
+                    {(showAddCardForm) ? <AddCard setAddCardComplete={setAddCardComplete}/> : ""}
+
+                    {(showAddAccountDetailsForm) ? <AddAccoumtDetails setAddAccountDetailsComplete={setAddAccountDetailsComplete} /> : ""}
+                    
+                    {(showVerificationForm) ? <ConfirmAccount /> : ""}
+
+                    <hr className='mb-2 mb-2'/>
+                    <p className="text-center">
+                        <span className="text-xs font-medium text-coolGray-800">Already have an account?</span>
+                        <NavLink className="inline-block text-xs ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all" to={ROUTES.SIGN_IN}>Sign In</NavLink>
+                    </p>
                 </div>
-
-                {(showAddCardForm) ? <AddCard setAddCardComplete={setAddCardComplete}/> : ""}
-
-                {(showAddAccountDetailsForm) ? <AddAccoumtDetails setAddAccountDetailsComplete={setAddAccountDetailsComplete} /> : ""}
-                
-                {(showVerificationForm) ? <ConfirmAccount /> : ""}
-
-                <hr className='mb-2 mb-2'/>
-                <p className="text-center">
-                    <span className="text-xs font-medium text-coolGray-800">Already have an account?</span>
-                    <NavLink className="inline-block text-xs ml-2 font-medium text-loyaltyGold-100 hover:text-loyaltyGold-200 hover:underline transition-all" to={ROUTES.SIGN_IN}>Sign In</NavLink>
-                </p>
-            </div>
             </div>
         </section>
     );

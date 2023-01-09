@@ -52,6 +52,7 @@ export function Card() {
         <section className="bg-white bg-opacity-0 p-2 md:p-6 px-4 pb-6 min-h-[70vh]">
              <div className="container px-4 mx-auto">
                 <div className="max-w-lg mx-auto">
+                    
                     <div className="mb-7 text-center">
                         <NavLink className="hidden mb-3 sm:inline-block" to={ROUTES.HOME_PAGE}>
                             <img className="h-24" src="./loyalty_logo.png" alt=""/>
@@ -61,7 +62,7 @@ export function Card() {
                         <hr className='mt-2 mb-2'/>
                     </div>
 
-                    <div className='bg-white p-3 rounded-md shadow-md relative max-w-min m-auto my-7'>
+                    <div className='relative max-w-min m-auto my-7 p-3 bg-white rounded-md shadow-md '>
                         <img className='absolute top-[-4.5px] right-[-4.5px] h-10' src={`./${card.card.card_type}-card-corner.png`} alt='Card Corner'/>
                         <img className="m-3 my-1 ml-1 h-14" src={`./client-logos/${card.card.client_name}.png`} alt='Business Logo'/>
                         <p className='m-3 mt-1 ml-1 mb-0 text-md font-bold text-loyaltyGold-100'>{customer.customer.full_name}</p>
