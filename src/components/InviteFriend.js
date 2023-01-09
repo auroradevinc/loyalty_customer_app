@@ -75,7 +75,7 @@ export function InviteFriend() {
                         {(hasNavigator) ? 
                             <div>
                                 <p className='my-3 text-md text-coolGray-500'>Or</p>
-                                <button className='py-2 px-4 w-full text-md leading-5 text-white bg-loyaltyGold-100 hover:bg-loyaltyGold-200 font-medium text-center focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all'><i className="fa-solid fa-up-right-from-square mr-2"></i>Share</button>
+                                <button className='py-2 px-4 w-full text-md leading-5 text-white bg-loyaltyGold-100 hover:bg-loyaltyGold-200 font-medium text-center focus:ring-2 focus:ring-loyaltyGold-100 focus:ring-opacity-50 rounded-md shadow-md hover:shadow-lg transition-all' onClick={handleShare}><i className="fa-solid fa-up-right-from-square mr-2"></i>Share</button>
                             </div>
                             : ""
                         }

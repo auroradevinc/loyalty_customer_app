@@ -50,6 +50,7 @@ export function SignUp() {
         try {
             let query = window.location.search.substring(1);
             query = query.split('&');
+            let id = (query[0].split('=')[1] === 'card_id') ? query[0].split('=')[1] : null;
             let card = {
                 'id': query[0].split('=')[1],
                 'cvc': query[1].split('=')[1],
