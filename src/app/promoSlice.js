@@ -91,7 +91,7 @@ function modifyPromos(promos) {
       // Covert To CamelCase
       promoInfo.client_name = promoInfo.client_name.toLowerCase().split(' ').map(elem => elem[0].toUpperCase()+ elem.slice(1)).join(' ');
       promoInfo.bus_name = promoInfo.bus_name.toLowerCase().split(' ').map(elem => elem[0].toUpperCase()+ elem.slice(1)).join(' ');
-      promoInfo['bus_image'] = './business-logos/' + promoInfo.bus_name.toUpperCase().replaceAll(' ', '_') + '.png';
+      promoInfo['bus_image'] = './business-logos/' + promoInfo.bus_name.toUpperCase().replaceAll(' ', '_').replaceAll('+', 'PLUS') + '.png';
       promoInfo.promo_image = './business-promos/' + promoInfo.promo_name.replaceAll(/%/g, '_PERCENT').replaceAll(/\$/g, 'DOLLAR_') + '.png';
       promoInfo.promo_name = promoInfo.promo_name.toLowerCase().split('_').map(elem => elem[0].toUpperCase()+ elem.slice(1)).join(' ');
       //promoInfo.promo_name = promoInfo.promo_name.split('_').join(' ');

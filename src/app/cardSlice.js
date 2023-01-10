@@ -23,6 +23,7 @@ async (param) => {
     let card = res.data.data.card;
     card['invite_link'] = `${window.location.host}/sign-up?invite_code=${card.invite_code}`;
     card['client_image'] = './client-logos/' + card.client_name.replaceAll(' ', '_') + '.png';
+    card['card_corner_image'] = './card-types/' + card.card_type + '_card_corner.png';
     return {message: "Card extracted from db", type: "success", data: res.data.data.card};
     }
     catch(err){
