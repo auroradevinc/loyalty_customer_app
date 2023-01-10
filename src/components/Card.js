@@ -64,7 +64,7 @@ export function Card() {
 
                     <div className='relative max-w-min m-auto my-7 p-3 bg-white rounded-md shadow-md '>
                         <img className='absolute top-[-4.5px] right-[-4.5px] h-10' src={`./${card.card.card_type}-card-corner.png`} alt='Card Corner'/>
-                        <img className="m-3 my-1 ml-1 h-14" src={`./client-logos/${card.card.client_name}.png`} alt='Business Logo'/>
+                        <img className="m-3 my-1 ml-1 h-14" src={card.card.client_image} alt='Business Logo'/>
                         <p className='m-3 mt-1 ml-1 mb-0 text-md font-bold text-loyaltyGold-100'>{customer.customer.full_name}</p>
                         <p className='m-3 mt-0 ml-1 text-xxs text-coolGray-500'>Member since: {customer.customer.member_since_simplified}</p>
                         <div className='p-3 m-auto mt-3 max-w-min border-[1px] border-loyaltyGold-100 shadow-md rounded-md'>

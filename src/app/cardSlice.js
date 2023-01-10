@@ -22,6 +22,7 @@ async (param) => {
     const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/get-customer-card-info?customer_id=${id}`);
     let card = res.data.data.card;
     card['invite_link'] = `${window.location.host}/sign-up?invite_code=${card.invite_code}`;
+    card['client_image'] = './client-logos/' + card.client_name.replaceAll(' ', '_') + '.png';
     return {message: "Card extracted from db", type: "success", data: res.data.data.card};
     }
     catch(err){

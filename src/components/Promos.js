@@ -110,7 +110,7 @@ export function Promos() {
         promo_list = promo_list.map((promo, index) => {
             return (
                 <div key={index} className="w-full max-w-[420px] md:w-[46%] lg:w-[29%] mb-5 mr-0 md:mr-5 p-5 border-[1px] bg-white border-coolGray-100 rounded-md shadow-md hover:shadow-lg cursor-pointer transition-all">
-                    <img className="object-fit h-52 lg:h-48 w-full mb-3 rounded-md shadow-md" src={`./business-promos/${promo.promo_image}.png`} alt='Promo'/>
+                    <img className="object-fit h-52 lg:h-48 w-full mb-3 rounded-md shadow-md" src={promo.promo_image} alt='Promo'/>
                     
                     <div className='flex flex-col justify-between items-center'>
                         <p className='mb-0 text-xxs font-regular text-coolGray-600'>{`Enjoy`}</p>
@@ -128,7 +128,7 @@ export function Promos() {
                     <hr className='my-3'/>
                     
                     <div className='flex items-center'>
-                        <img className="mr-5 p-1 h-14 md:h-20 border-2 border-double border-loyaltyGold-100 shadow-md rounded-full" src={`./business-logos/${promo.bus_name.replace(' ', '_')}.png`} alt='Business Logo'/>
+                        <img className="mr-5 p-1 h-14 md:h-20 border-2 border-double border-loyaltyGold-100 shadow-md rounded-full" src={promo.bus_image} alt='Business Logo'/>
                         <div>
                             <p className='mb-1 text-md text-loyaltyGold-100 font-semibold'>{promo.bus_name}</p> 
                             <p className='text-xs'>by {promo.client_name}</p>
