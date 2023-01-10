@@ -128,7 +128,7 @@ export function Promos() {
                     <hr className='my-3'/>
                     
                     <div className='flex items-center'>
-                        <img className="mr-5 p-1 h-14 md:h-20 border-2 border-double border-loyaltyGold-100 shadow-md rounded-full" src={`./business-logos/${promo.bus_name}.png`} alt='Business Logo'/>
+                        <img className="mr-5 p-1 h-14 md:h-20 border-2 border-double border-loyaltyGold-100 shadow-md rounded-full" src={`./business-logos/${promo.bus_name.replace(' ', '_')}.png`} alt='Business Logo'/>
                         <div>
                             <p className='mb-1 text-md text-loyaltyGold-100 font-semibold'>{promo.bus_name}</p> 
                             <p className='text-xs'>by {promo.client_name}</p>
