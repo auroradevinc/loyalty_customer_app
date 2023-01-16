@@ -31,10 +31,7 @@ const initialState = {
   hasCardDetailsVerifyingError: false,  // True when operation unsuccessful(produces error)
   verifyCardDetailsError: null,         // Store the error of the operation
 
-  card: {
-    id: null,
-    cvc: null,
-  }
+  card: {}
 };
 
 // Async Functions
@@ -95,8 +92,7 @@ export const appSlice = createSlice({
           console.log("appSlice: saveCardDetails");
           console.log('\t Request Fulfilled', {type: 'saveCardDetails/fulfilled', payload: action.payload});
           
-          state.card.id = action.payload.id;
-          state.card.cvc = action.payload.cvc;
+          state.card = action.payload;
           
           state.isCardDetailsSaving = false;
           state.hasCardDetailsSaved = true;

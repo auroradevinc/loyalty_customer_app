@@ -47,22 +47,25 @@ export function SignUp() {
         dispatch(setUpAuthState());
         dispatch(fetchUserFromLocal());
         
-        try {
-            let query = window.location.search.substring(1);
-            query = query.split('&');
-            let id = (query[0].split('=')[1] === 'card_id') ? query[0].split('=')[1] : null;
-            let card = {
-                'id': query[0].split('=')[1],
-                'cvc': query[1].split('=')[1],
-                'fromURL': true // Helps to differentiate between the source of card information
-            }
-            console.log("COMPONENT SignUp: Card details present in URL, Saving Card Details");
-            dispatch(saveCardDetails(card));
-            dispatch(verifyCardDetails(card));
+        
+        let query = window.location.search.substring(1);
+        query = query.split('&');
+        let card_id, card_cvc, invite_code = null;
+        query.forEach((el, index) => {
+            if(el.includes('card_id')){ card_id =  query[index].split('=')[1]}
+            if(el.includes('card_cvc')){ card_cvc =  query[index].split('=')[1]}
+            if(el.includes('invite_code')){ invite_code =  query[index].split('=')[1]}
+        });
+        console.log("COMPONENT SignUp: Card details parsing from URL");
+        let card = {
+            'id': card_id,
+            'cvc': card_cvc,
+            'invite_code': invite_code,
+            'fromURL': true // Helps to differentiate between the source of card information
         }
-        catch(e) {
-            console.log("COMPONENT SignUp: Card details NOT present in URL");
-        }
+        dispatch(saveCardDetails(card));
+        dispatch(verifyCardDetails(card));
+
     }, [dispatch])
 
     useEffect(() => {

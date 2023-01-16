@@ -46,7 +46,7 @@ export function InviteFriend() {
     let handleShare = () => {
         navigator.share({
             title: 'My Loyalty: Invite a Friend',
-            url: card.card.invite_link,
+            url: `/sign-up?invite_code=${card.card.invite_code}`,
         });
     }
 

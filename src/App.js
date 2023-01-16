@@ -59,8 +59,8 @@ function App() {
     //   console.log("COMPONENT App: User already logged in, Route to Promos");
     //   navigate(ROUTES.PROMOS);
     // }
-    if(!auth.isAuthenticated && (app.nav.active_link !== ROUTES.SIGN_IN || app.nav.active_link !== ROUTES.SIGN_UP)){
-      console.log("COMPONENT App: User Not logged in, Trying to access protected routes, Routing to SignIn page");
+    if(!auth.isAuthenticated && app.nav.active_link && (app.nav.active_link !== ROUTES.SIGN_IN || app.nav.active_link !== ROUTES.SIGN_UP)){
+      console.log("COMPONENT App: User Not logged in, Trying to access protected routes, Routing to SignIn/SignUp page", app.nav.active_link);
       navigate(ROUTES.SIGN_IN);
     }
 
