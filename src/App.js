@@ -64,11 +64,19 @@ function App() {
       navigate(ROUTES.SIGN_IN);
     }
 
+    if(!auth.userSession.jwtToken) {
+      console.log("COMPONENT App: JWT Token not available");
+      return;
+    }
+
     if(auth.isAuthenticated && !customer.hasCustomerExtractedFromDB) { 
       console.log("COMPONENT App: Customer Data from DB unavailable, Get Customer Data from DB");
       let data = {
           customer: {
-              id: auth.user.sub
+              id: auth.user.sub,
+          },
+          session: {
+            jwtToken: auth.userSession.jwtToken,
           }
       };
       dispatch(getCustomerFromDB(data));
@@ -79,6 +87,9 @@ function App() {
         let data = {
             customer: {
                 id: customer.customer.customer_id,
+            },
+            session: {
+              jwtToken: auth.userSession.jwtToken,
             }
         };
         dispatch(getCardFromDB(data));
@@ -89,11 +100,14 @@ function App() {
         let data = {
             card: {
                 id: card.card.card_id,
+            },
+            session: {
+              jwtToken: auth.userSession.jwtToken,
             }
         };
         dispatch(getPromoFromDB(data));
     }
-  }, [app.nav.active_link, auth.isAuthenticated, customer.hasCustomerExtractedFromDB, card.hasCardExtractedFromDB])
+  }, [app.nav.active_link, auth.isAuthenticated, auth.userSession.jwtToken, customer.hasCustomerExtractedFromDB, card.hasCardExtractedFromDB])
 
   return (
     <div id='wrapper' style={{ backgroundImage: "url('./pattern-white.svg')", backgroundPosition: "center", backgroundRepeat: "repeat" }}>

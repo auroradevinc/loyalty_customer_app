@@ -19,7 +19,10 @@ async (param) => {
     console.log("CardSlice: getCardFromDB");
     try{
     let id = param.customer.id;
-    const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/get-customer-card-info?customer_id=${id}`);
+    let authHeaders = {
+      'Authorization': param.session.jwtToken
+    }
+    const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/get-customer-card-info?customer_id=${id}`, {headers: authHeaders});
     let card = res.data.data.card;
     card['invite_link'] = `${window.location.host}/sign-up?invite_code=${card.invite_code}`;
     card['client_image'] = './client-logos/' + card.client_name.replaceAll(' ', '_') + '.png';

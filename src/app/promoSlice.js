@@ -20,7 +20,10 @@ export const getPromoFromDB = createAsyncThunk(
     console.log("promoSlice: getPromos");
     try {
       let id = param.card.id;
-      const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/get-customer-promo-info?card_id=${id}`);
+      let authHeaders = {
+        'Authorization': param.session.jwtToken
+      }
+      const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/get-customer-promo-info?card_id=${id}`, {headers: authHeaders});
       let promos = modifyPromos(res.data.data.promo);
       
       return {message: "customer promo extracted from db", type: "success", data: promos};

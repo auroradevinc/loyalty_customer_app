@@ -50,7 +50,10 @@ export const addCustomerToDB = createAsyncThunk(
       console.log("customerSlice: getCustomerFromDB");
       try{
         let id = param.customer.id;
-        const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/get-customer-info?customer_id=${id}`);
+        let authHeaders = {
+          'Authorization': param.session.jwtToken
+        }
+        const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/get-customer-info?customer_id=${id}`, {headers: authHeaders});
         
         let customer = res.data.data.customer;
         const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
