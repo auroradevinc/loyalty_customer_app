@@ -53,7 +53,7 @@ export const addCustomerToDB = createAsyncThunk(
         let authHeaders = {
           'Authorization': param.session.jwtToken
         }
-        const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/get-customer-info?authorizer=${process.env.REACT_APP_AWS_CUSTOMER_API_KEY}&customer_id=${id}`, {headers: authHeaders});
+        const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/get-customer-info?authorizer=${process.env.REACT_APP_AWS_API_KEY}&customer_id=${id}`, {headers: authHeaders});
         
         let customer = res.data.data.customer;
         const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
