@@ -40,7 +40,7 @@ export const verifyCardDetails = createAsyncThunk(
   async (param) => {
     console.log("appSlice: verifyCardDetails");
     try{
-      const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/verify-card?card_id=${param.id}&card_cvc=${param.cvc}`);
+      const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/verify-card?authorizer=${process.env.REACT_APP_AWS_CUSTOMER_API_KEY}&card_id=${param.id}&card_cvc=${param.cvc}`);
       if(res.data.type === "success"){ 
         return {message: "card valid", type: "success", data: null}; 
       }
@@ -59,7 +59,7 @@ export const assignNewCardDetails = createAsyncThunk(
   async (param) => {
     console.log("appSlice: assignNewCardDetails");
       try{
-        const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/assign-new-card`);
+        const res = await axios.get(`${process.env.REACT_APP_AWS_API_GATEWAY}/assign-new-card?authorizer=${process.env.REACT_APP_AWS_CUSTOMER_API_KEY}`);
         if(res.data.type === "success"){ 
           return {message: "card assigned", type: "success", data: res.data.data.card}; 
         }
