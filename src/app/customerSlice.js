@@ -35,7 +35,7 @@ export const addCustomerToDB = createAsyncThunk(
             address: null
           }
         };
-        const res = await axios.post(`${process.env.REACT_APP_AWS_API_GATEWAY}/signup`, data);
+        const res = await axios.post(`${process.env.REACT_APP_AWS_API_GATEWAY}/signup?authorizer=${process.env.REACT_APP_AWS_API_KEY}`, data);
         return {message: "customer added to db", type: "success", data: res.data};
       }
       catch(err){
