@@ -70,7 +70,7 @@ export function InviteFriend() {
                             <button className={`px-3 py-1 border-l-[1.5px] min-w-[103px] hover:text-loyaltyGold-100 hover:border-loyaltyGold-100 font-medium transition-all ${hasCopied ? 'text-loyaltyGold-100 border-loyaltyGold-100' : 'text-coolGray-500 border-coolGray-300'}`} onClick={handleCopy}>
                                 <i className={`fa-regular fa-copy mr-2`}></i>
                                 {(hasCopied) ? "Copied" : "Copy"}
-                                </button>
+                            </button>
                         </div>
                         {(hasNavigator) ? 
                             <div>
